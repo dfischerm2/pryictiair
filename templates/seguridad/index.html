@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block head %}
+{% endblock %}
+{% block content %}
+
+
+    <div class="panel panel-default" id="index-1">
+        <div class="panel-heading">
+            <h4 class="panel-title">Análisis de sitios web (Últimos 19 Días)</h4>
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                   data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning"
+                   data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+            </div>
+        </div>
+        <div class="panel-body pr-1">
+            <div id="interactive-chart" class="height-sm"></div>
+        </div>
+    </div>
+
+    {#    <div class="panel">#}
+    {#        <div class="panel-heading">#}
+    {#            <h4 class="panel-title"><i class="fa-solid fa-circle-info"></i> Calendario</h4>#}
+    {#        </div>#}
+    {#        <div class="panel-body">#}
+    {#            <div class="row">#}
+    {#                <div class="col-12">#}
+    {#                    <div id="calendar" class="vertical-box-column calendar"></div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="modal fade" id="modalDetalle">#}
+    {#        <div class="modal-dialog modal-dialog-scrollable">#}
+    {#            <div class="modal-content">#}
+    {#                <div class="modal-header">#}
+    {#                    <h5 id="titulo"></h5>#}
+    {#                    <button class="close" data-dismiss="modal" aria-label="Close">#}
+    {#                        <i class="fas fa-times"></i>#}
+    {#                    </button>#}
+    {#                </div>#}
+    {#                <div class="modal-body">#}
+    {#                    <form id="modalDetalleContenido" method="post">#}
+    {#                        {% csrf_token %}#}
+    {#                    </form>#}
+    {#                </div>#}
+    {#                <div class="modal-footer">#}
+    {#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>#}
+    {#                    <button type="button" class="btn btn-primary" id="btnToggleFecha"></button>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+{% endblock %}
+
+{% block jscript %}
+    {#    <link href="/static/assets/plugins/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media='print'/>#}
+    {#    <link href="/static/assets/plugins/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet"/>#}
+    {#    <style>#}
+    {#        .fc-content, .fc-time, .fc-title {#}
+    {#            font-size: 1.1em;#}
+    {#        }#}
+    {#    </style>#}
+    {#    <script src="/static/assets/plugins/fullcalendar/dist/fullcalendar.min.js"></script>#}
+    {#    <script src="/static/assets/plugins/fullcalendar/dist/locale/es.js"></script>#}
+    {#    <script src="/static/planificacion/calendario.js"></script>#}
+
+    <script>
+        var VisitaAnalitica = function () {
+            "use strict";
+
+            function showTooltip(x, y, contents) {
+                $('<div id="tooltip" class="flot-tooltip">' + contents + '</div>').css({
+                    top: y - 45,
+                    left: x - 55
+                }).appendTo("body").fadeIn(200);
+            }
+
+            if ($('#interactive-chart').length !== 0) {
+                var xLabel = [{% for u in rangofechas %}[{{ forloop.counter }}, '{{ u }}'],{% endfor %}];
+
+                var count = 1
+                var dataChat_values = []
+                var dataChat_values_temp = []
+
+                {% for fr in rangofechasstr %}
+                    var arr = ['{{ fr }}', 0]
+                    dataChat_values_temp.push(arr);
+                {% endfor %}
+
+                {% for u in ultimasvisitas %}
+                    var arr = ['{{ u.1|date:'Y-m-d' }}', {{ u.0 }}]
+                    dataChat_values.push(arr);
+                {% endfor %}
+
+                dataChat_values_temp.forEach(function (item) {
+                    dataChat_values.forEach(function (item2) {
+                        if (item2[0] === item[0]) {
+                            item[1] = item2[1]
+                        }
+                    })
+                    item[0] = count
+                    count += 1;
+                })
+
+                var dataChat = dataChat_values_temp;
+
+                $.plot($("#interactive-chart"),
+                    [
+                        {
+                            data: dataChat,
+                            label: "{{ nombreempresa }}",
+                            lines: {show: true, fill: true, lineWidth: 2},
+                            points: {show: true, radius: 3, fillColor: COLOR_WHITE},
+                            shadowSize: 0
+                        },
+                    ], {
+                        xaxis: {ticks: xLabel, tickDecimals: 0, tickColor: COLOR_DARK_TRANSPARENT_2},
+                        yaxis: {ticks: 10, tickColor: COLOR_DARK_TRANSPARENT_2, min: 0, max: {{ maxvisitaday }}},
+                        grid: {
+                            hoverable: true,
+                            clickable: true,
+                            tickColor: COLOR_DARK_TRANSPARENT_2,
+                            borderWidth: 1,
+                            backgroundColor: 'transparent',
+                            borderColor: COLOR_DARK_TRANSPARENT_2
+                        },
+                        legend: {
+                            labelBoxBorderColor: COLOR_DARK_TRANSPARENT_2,
+                            margin: 10,
+                            noColumns: 1,
+                            show: true
+                        }
+                    });
+
+                var previousPoint = null;
+                $("#interactive-chart").bind("plothover", function (event, pos, item) {
+                    $("#x").text(pos.x.toFixed(0));
+                    $("#y").text(pos.y.toFixed(0));
+                    if (item) {
+                        if (previousPoint !== item.dataIndex) {
+                            previousPoint = item.dataIndex;
+                            $("#tooltip").remove();
+                            var y = item.datapoint[1].toFixed(0);
+
+                            var content = item.series.label + " " + y;
+                            showTooltip(item.pageX, item.pageY, content);
+                        }
+                    } else {
+                        $("#tooltip").remove();
+                        previousPoint = null;
+                    }
+                    event.preventDefault();
+                });
+            }
+        };
+
+        $(document).ready(function () {
+            VisitaAnalitica();
+        });
+    </script>
+
+{% endblock %}
