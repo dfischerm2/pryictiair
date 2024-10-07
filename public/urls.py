@@ -1,4 +1,4 @@
-from django.conf.urls import url
+
 from django.urls import path
 
 from .acerade import acercade
@@ -15,14 +15,14 @@ from .view_perfil import perfil
 
 urlpatterns = [
     path('', index),
-    url(r'^acercade/', acercade),
+    path(r'^acercade/', acercade),
     #path('pago/<str:pedido_id>/', pagoView),
-    url(r'^perfil/', perfil),
+    path(r'^perfil/', perfil),
     # url(r'^register/', registro),
-    url(r'^login/', login_tienda),
-    url(r'^logout/', logout_tienda),
-    url(r'^restorepass/', restaurar),
-    url(r'^restoreusername/', recordarusername),
-    url(r'^changepass/', changepass),
+    path(r'^login/', login_tienda),
+    path(r'^logout/', logout_tienda),
+    path(r'^restorepass/', restaurar),
+    path(r'^restoreusername/', recordarusername),
+    path(r'^changepass/', changepass),
 
 ]
