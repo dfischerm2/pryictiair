@@ -23,7 +23,7 @@
             margin: 0 auto;
         }
 
-        .custom-card-ios {
+        .custom-card {
             background-color: #1c1c1e;
             border: none;
             border-radius: 12px;
@@ -32,12 +32,12 @@
             margin-bottom: 15px;
         }
 
-        .custom-card-ios:hover {
+        .custom-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
         }
 
-        .custom-card-body-ios {
+        .custom-card-body {
             padding: 20px 25px;
         }
 
@@ -57,7 +57,7 @@
 
         /* Rotación del icono */
         .rotate-icon {
-            float: right; /* Alinea el icono a la derecha */
+            float: right;
             transition: transform 0.3s ease;
         }
 
@@ -69,7 +69,7 @@
             transform: rotate(180deg); /* Flecha hacia arriba cuando está expandido */
         }
 
-        /* Listas sin estilos para un look limpio */
+        /* Listas */
         ul.custom-list {
             padding-left: 0;
             list-style: none;
@@ -87,11 +87,33 @@
             border-bottom: none;
         }
 
-        /* Efectos de transición para la animación */
+        /* Efectos de transición */
         .collapse {
-            transition: height 0.3s ease; /* Transición suave al expandirse/colapsarse */
+            transition: height 0.3s ease;
         }
 
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .custom-accordion-title {
+                font-size: 1.2rem;
+            }
+
+            .custom-card-body {
+                padding: 15px;
+            }
+
+            .custom-card {
+                margin-bottom: 10px;
+            }
+
+            .rotate-icon {
+                float: none;
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
     </style>
 {% endblock %}
 
@@ -868,7 +890,7 @@
                         <div class="accordion" id="accordionTopics">
 
                             <!-- Artificial Intelligence and Machine Learning -->
-                            <div class="card custom-card-ios">
+                            <div class="card custom-card">
                                 <div class="card-header" id="headingOne">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link custom-accordion-title" type="button"
@@ -881,7 +903,7 @@
                                 </div>
                                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
                                      data-parent="#accordionTopics">
-                                    <div class="card-body custom-card-body-ios">
+                                    <div class="card-body custom-card-body">
                                         <ul class="custom-list">
                                             <li>Statistic Learning & Pattern Recognition</li>
                                             <li>Deep Learning & Neural Network Robotics</li>
@@ -904,7 +926,7 @@
                             </div>
 
                             <!-- Big Data and Cloud Computing -->
-                            <div class="card custom-card-ios">
+                            <div class="card custom-card">
                                 <div class="card-header" id="headingTwo">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link custom-accordion-title collapsed" type="button"
@@ -917,7 +939,7 @@
                                 </div>
                                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                                      data-parent="#accordionTopics">
-                                    <div class="card-body custom-card-body-ios">
+                                    <div class="card-body custom-card-body">
                                         <ul class="custom-list">
                                             <li>Models and algorithms of Big Data</li>
                                             <li>Architecture of Big Data</li>
@@ -937,7 +959,7 @@
                             </div>
 
                             <!-- Internet of Things and Blockchain -->
-                            <div class="card custom-card-ios">
+                            <div class="card custom-card">
                                 <div class="card-header" id="headingThree">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link custom-accordion-title collapsed" type="button"
@@ -950,7 +972,7 @@
                                 </div>
                                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
                                      data-parent="#accordionTopics">
-                                    <div class="card-body custom-card-body-ios">
+                                    <div class="card-body custom-card-body">
                                         <ul class="custom-list">
                                             <li>Architecture for secure IoT</li>
                                             <li>Blockchain for security IoT</li>
@@ -972,7 +994,7 @@
                             </div>
 
                             <!-- Technology and Engineering Management -->
-                            <div class="card custom-card-ios">
+                            <div class="card custom-card">
                                 <div class="card-header" id="headingFour">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link custom-accordion-title collapsed" type="button"
@@ -985,7 +1007,7 @@
                                 </div>
                                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
                                      data-parent="#accordionTopics">
-                                    <div class="card-body custom-card-body-ios">
+                                    <div class="card-body custom-card-body">
                                         <ul class="custom-list">
                                             <li>Innovation, Entrepreneurship & Venture</li>
                                             <li>Technology for Entrepreneurship</li>
@@ -1010,7 +1032,7 @@
                             </div>
 
                             <!-- Technology for Education -->
-                            <div class="card custom-card-ios">
+                            <div class="card custom-card">
                                 <div class="card-header" id="headingFive">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link custom-accordion-title collapsed" type="button"
@@ -1023,7 +1045,7 @@
                                 </div>
                                 <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
                                      data-parent="#accordionTopics">
-                                    <div class="card-body custom-card-body-ios">
+                                    <div class="card-body custom-card-body">
                                         <ul class="custom-list">
                                             <li>E-Learning Platforms and Digital Classrooms</li>
                                             <li>EdTech and Inclusivity</li>
@@ -1038,7 +1060,7 @@
                             </div>
 
                             <!-- Energy and Sustainability -->
-                            <div class="card custom-card-ios">
+                            <div class="card custom-card">
                                 <div class="card-header" id="headingSix">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link custom-accordion-title collapsed" type="button"
@@ -1051,7 +1073,7 @@
                                 </div>
                                 <div id="collapseSix" class="collapse" aria-labelledby="headingSix"
                                      data-parent="#accordionTopics">
-                                    <div class="card-body custom-card-body-ios">
+                                    <div class="card-body custom-card-body">
                                         <ul class="custom-list">
                                             <li>Sustainable IT practices and renewable energy technologies</li>
                                             <li>IoT advancements and smart infrastructure</li>
@@ -1109,7 +1131,6 @@
             src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v16.0&appId=5465147420185697&autoLogAppEvents=1"
             nonce="GutKLHL1"></script>
     <!-- Popper.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <!-- Bootstrap 4 JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
@@ -1138,6 +1159,7 @@
                     }
                 }
             });
+
 
         })
     </script>
