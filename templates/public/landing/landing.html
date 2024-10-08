@@ -12,8 +12,84 @@
             font-size: 50px;
         }
 
-        .grey-hover{
-           max-width: 100%;
+        .grey-hover {
+            max-width: 100%;
+        }
+
+        .owl-carousel .item img {
+            max-height: 150px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .custom-card-ios {
+            background-color: #1c1c1e;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .custom-card-ios:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .custom-card-body-ios {
+            padding: 20px 25px;
+        }
+
+        .custom-accordion-title {
+            font-size: 1.5rem;
+            color: #EC167F;
+            font-weight: 600;
+            text-decoration: none;
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-accordion-title:hover {
+            color: #e01070;
+            text-decoration: none;
+        }
+
+        /* Rotación del icono */
+        .rotate-icon {
+            float: right; /* Alinea el icono a la derecha */
+            transition: transform 0.3s ease;
+        }
+
+        .collapsed .rotate-icon {
+            transform: rotate(0deg); /* Flecha hacia abajo cuando está colapsado */
+        }
+
+        .show .rotate-icon {
+            transform: rotate(180deg); /* Flecha hacia arriba cuando está expandido */
+        }
+
+        /* Listas sin estilos para un look limpio */
+        ul.custom-list {
+            padding-left: 0;
+            list-style: none;
+            margin: 0;
+        }
+
+        ul.custom-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #333333;
+            font-size: 1rem;
+            color: #e0e0e0;
+        }
+
+        ul.custom-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Efectos de transición para la animación */
+        .collapse {
+            transition: height 0.3s ease; /* Transición suave al expandirse/colapsarse */
         }
 
     </style>
@@ -221,7 +297,7 @@
 
 
 
-    <section id="section-sponsors">
+    <section id="section-sponsors" data-bgimage="url(static/exhibiz/images/bg/3.png) fixed center no-repeat">
         <div class="wm wm-border dark wow fadeInDown ">sponsors</div>
         <div class="container">
             <div class="row">
@@ -239,16 +315,18 @@
 
                     <h3>Indexed by</h3>
                     <div class="spacer-single"></div>
-                    <div class="row align-items-center">
-                        <div class="col-lg-3"><img src="/static/images/sponsor/Scopus.jpeg" alt="" class="grey-hover">
+
+                    <div class="owl-carousel owl-theme vertical-carousel">
+                        <div class="item"><img src="/static/images/sponsor/Scopus.jpeg" alt="" class="grey-hover"></div>
+                        <div class="item"><img src="/static/images/sponsor/SJR.jpeg" alt="" class="grey-hover"></div>
+                        <div class="item"><img src="/static/images/sponsor/Compendex.png" alt="" class="grey-hover">
                         </div>
-                        <div class="col-lg-3"><img src="/static/images/sponsor/SJR.jpeg" alt="" style="" class="grey-hover"></div>
-                        <div class="col-lg-3"><img src="/static/images/sponsor/Compendex.png" alt="" style="" class="grey-hover"></div>
-                        <div class="col-lg-3"><img src="/static/images/sponsor/Logoweb.png" alt="" style="" class="grey-hover"></div>
-                        <div class="col-lg-3"><img src="/static/images/sponsor/unemilog.jpeg" alt="" style="" class="grey-hover"></div>
-                        <div class="col-lg-3"><img src="/static/images/sponsor/uclm.jpeg" alt="" style="" class="grey-hover"></div>
-                        <div class="col-lg-3"><img src="/static/images/sponsor/unemi.jpeg" alt="" style="" class="grey-hover"></div>
-                        <div class="col-lg-3"><img src="/static/images/sponsor/viu.jpeg" alt="" style="" class="grey-hover"></div>
+                        <div class="item"><img src="/static/images/sponsor/Logoweb.png" alt="" class="grey-hover"></div>
+                        <div class="item"><img src="/static/images/sponsor/unemilog.jpeg" alt="" class="grey-hover">
+                        </div>
+                        <div class="item"><img src="/static/images/sponsor/uclm.jpeg" alt="" class="grey-hover"></div>
+                        <div class="item"><img src="/static/images/sponsor/unemi.jpeg" alt="" class="grey-hover"></div>
+                        <div class="item"><img src="/static/images/sponsor/viu.jpeg" alt="" class="grey-hover"></div>
                     </div>
                 </div>
             </div>
@@ -353,35 +431,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
-                    <h1>Organizing Committee</h1>
+                    <h1>International Speakers</h1>
                     <div class="separator"><span><i class="fa fa-square"></i></span></div>
                     <div class="spacer-single"></div>
                 </div>
 
                 <div class="clearfix"></div>
-
-                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
-                    <!-- team member -->
-                    <div class="de-team-list">
-                        <div class="team-pic">
-                            <img src="/static/images/men.jpeg" class="img-responsive" alt="">
-                        </div>
-                        <div class="team-desc">
-                            <h3>Fausto Pedro García Márquez </h3>
-                            <p class="lead">Teacher</p>
-                            <div class="small-border"></div>
-                            <p></p>
-
-                            <div class="social">
-                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- team close -->
-                </div>
-
                 <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
                     <!-- team member -->
                     <div class="de-team-list">
@@ -389,10 +444,11 @@
                             <img src="/static/images/women.jpeg" class="img-responsive" alt="">
                         </div>
                         <div class="team-desc">
-                            <h3>Mónica Karel Huerta</h3>
-                            <p class="lead">Teacher</p>
+                            <h3>Dra. Yudith Cardinale</h3>
+                            <p class="lead">Director of the ESenCIA Center</p>
                             <div class="small-border"></div>
-                            <p></p>
+                            <p>International University of Valencia, Spain. Director of the ESenCIA Center - Center for
+                                Studies in Data Science and Artificial Intelligence</p>
 
                             <div class="social">
                                 <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
@@ -401,32 +457,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- team close -->
-                </div>
+                    <div class="details text-center mt-2">
+                        <h4>Dra. Yudith Cardinale <a href="javascript:void(0)"
+                                                     class="btn btn-primary btn-rounded"><i
+                                class="fa fa-linkedin"></i></a></h4>
 
-                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
-                    <!-- team member -->
-                    <div class="de-team-list">
-                        <div class="team-pic">
-                            <img src="/static/images/men.jpeg" class="img-responsive" alt="">
-                        </div>
-                        <div class="team-desc">
-                            <h3>René Vinicio Sánchez Loja</h3>
-                            <p class="lead">Teacher</p>
-                            <div class="small-border"></div>
-                            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                                fugiat.</p>
-
-                            <div class="social">
-                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
-                            </div>
-                        </div>
                     </div>
                     <!-- team close -->
                 </div>
-
                 <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
                     <!-- team member -->
                     <div class="de-team-list">
@@ -434,10 +472,10 @@
                             <img src="/static/images/women.jpeg" class="img-responsive" alt="">
                         </div>
                         <div class="team-desc">
-                            <h3>Mariela Cerrada Lozada</h3>
-                            <p class="lead">Teacher</p>
+                            <h3>Dra. Alexandra La Cruz</h3>
+                            <p class="lead">AI Expert</p>
                             <div class="small-border"></div>
-                            <p>Universidad Internacional de Valencia, Spain</p>
+                            <p>University of Ibagué, Colombia. AI Expert</p>
 
                             <div class="social">
                                 <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
@@ -446,28 +484,144 @@
                             </div>
                         </div>
                     </div>
+                    <div class="details text-center mt-2">
+                        <h4>Dra. Alexandra La Cruz<a href="javascript:void(0)"
+                                                     class="btn btn-primary btn-rounded"><i
+                                class="fa fa-linkedin"></i></a></h4>
+
+                    </div>
                     <!-- team close -->
                 </div>
+                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
+                    <!-- team member -->
+                    <div class="de-team-list">
+                        <div class="team-pic">
+                            <img src="/static/images/men.jpeg" class="img-responsive" alt="">
+                        </div>
+                        <div class="team-desc">
+                            <h3>Dr. Diego Cabrera</h3>
+                            <p class="lead">AI Expert</p>
+                            <div class="small-border"></div>
+                            <p>Dongguan University of Technology, China. AI Expert</p>
 
-                <div class="d-flex justify-content-center">
-                    <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
+                            <div class="social">
+                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
+                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="details text-center mt-2">
+                        <h4>Dr. Diego Cabrera<a href="javascript:void(0)"
+                                                class="btn btn-primary btn-rounded"><i
+                                class="fa fa-linkedin"></i></a></h4>
+
+                    </div>
+                    <!-- team close -->
+                </div>
+                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
+                    <!-- team member -->
+                    <div class="de-team-list">
+                        <div class="team-pic">
+                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">
+                        </div>
+                        <div class="team-desc">
+                            <h3>Dra. Fania Pacheco </h3>
+                            <p class="lead">AI Expert</p>
+                            <div class="small-border"></div>
+                            <p>Université de Rouen, Lab. LITIS, Francia. AI Expert</p>
+
+                            <div class="social">
+                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
+                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="details text-center mt-2">
+                        <h4>Dra. Fania Pacheco<a href="javascript:void(0)"
+                                                 class="btn btn-primary btn-rounded"><i
+                                class="fa fa-linkedin"></i></a></h4>
+
+                    </div>
+                    <!-- team close -->
+                </div>
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Organizing Committee</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+                <div class="row align-items-center justify-content-center">
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
                         <!-- team member -->
                         <div class="de-team-list">
                             <div class="team-pic">
-                                <img src="/static/images/men.jpeg" class="img-responsive" alt="">
+                                <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
                             </div>
-                            <div class="team-desc">
-                                <h3>Roger Clotet </h3>
-                                <p class="lead">Teacher</p>
-                                <div class="small-border"></div>
-                                <p></p>
+                        </div>
+                        <div class="details text-center mt-2">
+                            <h4>Fausto Pedro García Márquez <a href="javascript:void(0)"
+                                                               class="btn btn-primary btn-rounded"><i
+                                    class="fa fa-linkedin"></i></a></h4>
 
-                                <div class="social">
-                                    <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                                    <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                                    <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
-                                </div>
+                        </div>
+                        <!-- team close -->
+                    </div>
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                        <!-- team member -->
+                        <div class="de-team-list">
+                            <div class="team-pic">
+                                <img src="/static/images/women.jpeg" class="img-responsive img-circle" alt="">
                             </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h4>Mónica Karel Huerta <a href="javascript:void(0)" class="btn btn-primary btn-rounded"><i
+                                    class="fa fa-linkedin"></i></a></h4>
+                        </div>
+                        <!-- team close -->
+                    </div>
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                        <!-- team member -->
+                        <div class="de-team-list">
+                            <div class="team-pic">
+                                <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h4>René Vinicio Sánchez Loja <a href="javascript:void(0)"
+                                                             class="btn btn-primary btn-rounded"><i
+                                    class="fa fa-linkedin"></i></a></h4>
+                        </div>
+                        <!-- team close -->
+                    </div>
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                        <!-- team member -->
+                        <div class="de-team-list">
+                            <div class="team-pic">
+                                <img src="/static/images/women.jpeg" class="img-responsive img-circle" alt="">
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h4>Mariela Cerrada Lozada <a href="javascript:void(0)" class="btn btn-primary btn-rounded"><i
+                                    class="fa fa-linkedin"></i></a></h4>
+                        </div>
+                        <!-- team close -->
+                    </div>
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                        <!-- team member -->
+                        <div class="de-team-list">
+                            <div class="team-pic">
+                                <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h4>Roger Clotet <a href="javascript:void(0)" class="btn btn-primary btn-rounded"><i
+                                    class="fa fa-linkedin"></i></a></h4>
                         </div>
                         <!-- team close -->
                     </div>
@@ -475,6 +629,112 @@
 
                 <div class="clearfix"></div>
 
+                <div class="clearfix">
+                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                        <h2>General Chairs</h2>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Fausto Pedro García Márquez <a href="javascript:void(0)"
+                                                                   class="btn btn-primary btn-rounded"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>René-Vinicio Sánchez <a href="javascript:void(0)"
+                                                            class="btn btn-primary btn-rounded"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/women.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Mariela Cerrada Lozada <a href="javascript:void(0)"
+                                                              class="btn btn-primary btn-rounded"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Edwuin Carrasquero Rodríguez <a href="javascript:void(0)"
+                                                                    class="btn btn-primary btn-rounded"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Roger Clotet <a href="javascript:void(0)"
+                                                    class="btn btn-primary btn-rounded"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/women.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Yudith Cardinale <a href="javascript:void(0)"
+                                                        class="btn btn-primary btn-rounded"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -591,43 +851,251 @@
                 </div>
             </div>
         </div>
-        </div>
     </section>
     <!-- section close -->
+    <section id="section-topics" aria-label="section-services-tab"
+             data-bgimage="url(static/exhibiz/images/bg/2.png) fixed center no-repeat">
+        <div class="wm wm-border dark wow fadeInDown ">topics</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Topics to be Developed</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+                <div class="de_tab_content text-left">
+                    <div id="tab1" class="tab_single_content dark">
+                        <div class="accordion" id="accordionTopics">
+
+                            <!-- Artificial Intelligence and Machine Learning -->
+                            <div class="card custom-card-ios">
+                                <div class="card-header" id="headingOne">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link custom-accordion-title" type="button"
+                                                data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                            Artificial Intelligence and Machine Learning
+                                            <i class="fa fa-chevron-down rotate-icon"></i>
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                     data-parent="#accordionTopics">
+                                    <div class="card-body custom-card-body-ios">
+                                        <ul class="custom-list">
+                                            <li>Statistic Learning & Pattern Recognition</li>
+                                            <li>Deep Learning & Neural Network Robotics</li>
+                                            <li>Remote Sensing and Applications</li>
+                                            <li>Medical Image Processing</li>
+                                            <li>Image and Video Retrieval</li>
+                                            <li>Speech, Audio and Music Processing</li>
+                                            <li>Computer Vision Applications</li>
+                                            <li>Natural language processing (NLP)</li>
+                                            <li>Image Processing & Computer Vision</li>
+                                            <li>Deep and Reinforcement learning</li>
+                                            <li>Distributed and decentralized machine learning algorithms</li>
+                                            <li>Distributed Intelligent Processing</li>
+                                            <li>Intelligent wireless communications</li>
+                                            <li>Ethics in AI</li>
+                                            <li>Robotics and intelligent automation</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Big Data and Cloud Computing -->
+                            <div class="card custom-card-ios">
+                                <div class="card-header" id="headingTwo">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link custom-accordion-title collapsed" type="button"
+                                                data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                                                aria-controls="collapseTwo">
+                                            Big Data and Cloud Computing
+                                            <i class="fa fa-chevron-down rotate-icon"></i>
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                     data-parent="#accordionTopics">
+                                    <div class="card-body custom-card-body-ios">
+                                        <ul class="custom-list">
+                                            <li>Models and algorithms of Big Data</li>
+                                            <li>Architecture of Big Data</li>
+                                            <li>Big Data Management</li>
+                                            <li>Big Data Analysis and Processing</li>
+                                            <li>Security and Privacy of Big Data</li>
+                                            <li>Big Data in Smart Cities</li>
+                                            <li>Search, Mining and Visualization of Big Data</li>
+                                            <li>Technologies, Services and Application of Big Data</li>
+                                            <li>Edge Computing</li>
+                                            <li>Architectures and systems of Cloud Computing</li>
+                                            <li>Models, Simulations, Designs, and Paradigms of Cloud Computing</li>
+                                            <li>Management and operations of Cloud Computing</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Internet of Things and Blockchain -->
+                            <div class="card custom-card-ios">
+                                <div class="card-header" id="headingThree">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link custom-accordion-title collapsed" type="button"
+                                                data-toggle="collapse" data-target="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                            Internet of Things and Blockchain
+                                            <i class="fa fa-chevron-down rotate-icon"></i>
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                     data-parent="#accordionTopics">
+                                    <div class="card-body custom-card-body-ios">
+                                        <ul class="custom-list">
+                                            <li>Architecture for secure IoT</li>
+                                            <li>Blockchain for security IoT</li>
+                                            <li>Intelligent Systems for IoT</li>
+                                            <li>Blockchain for Identity Management</li>
+                                            <li>Enterprise Blockchain Adoption</li>
+                                            <li>Data Compression in IoT Devices</li>
+                                            <li>Networking and Social Networks</li>
+                                            <li>IoT Services and Applications</li>
+                                            <li>Internet of things information security</li>
+                                            <li>Blockchain and Crypto Market Trends</li>
+                                            <li>Social Networks Analysis</li>
+                                            <li>Cloud computing in the IoT</li>
+                                            <li>Internet of things technology standard</li>
+                                            <li>Legal issues for Blockchain</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Technology and Engineering Management -->
+                            <div class="card custom-card-ios">
+                                <div class="card-header" id="headingFour">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link custom-accordion-title collapsed" type="button"
+                                                data-toggle="collapse" data-target="#collapseFour" aria-expanded="false"
+                                                aria-controls="collapseFour">
+                                            Technology and Engineering Management
+                                            <i class="fa fa-chevron-down rotate-icon"></i>
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+                                     data-parent="#accordionTopics">
+                                    <div class="card-body custom-card-body-ios">
+                                        <ul class="custom-list">
+                                            <li>Innovation, Entrepreneurship & Venture</li>
+                                            <li>Technology for Entrepreneurship</li>
+                                            <li>Open Innovation</li>
+                                            <li>Circular Economy</li>
+                                            <li>Operations Management</li>
+                                            <li>Social Implications of Technology</li>
+                                            <li>Technology Transfer</li>
+                                            <li>Technology and Innovation Management</li>
+                                            <li>Technology Policy Development and Assessment</li>
+                                            <li>Happiness Management</li>
+                                            <li>Engineering and Technology Skills for People and Organizations</li>
+                                            <li>Technologies for Upskilling and Reskilling</li>
+                                            <li>Technology Entrepreneurship</li>
+                                            <li>Engineering Innovation and Entrepreneurship</li>
+                                            <li>New Markets for Entrepreneurs</li>
+                                            <li>Venture Capital Investment</li>
+                                            <li>New business Models</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Technology for Education -->
+                            <div class="card custom-card-ios">
+                                <div class="card-header" id="headingFive">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link custom-accordion-title collapsed" type="button"
+                                                data-toggle="collapse" data-target="#collapseFive" aria-expanded="false"
+                                                aria-controls="collapseFive">
+                                            Technology for Education
+                                            <i class="fa fa-chevron-down rotate-icon"></i>
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
+                                     data-parent="#accordionTopics">
+                                    <div class="card-body custom-card-body-ios">
+                                        <ul class="custom-list">
+                                            <li>E-Learning Platforms and Digital Classrooms</li>
+                                            <li>EdTech and Inclusivity</li>
+                                            <li>AI and Machine Learning in Education</li>
+                                            <li>Augmented Reality (AR) and Virtual Reality (VR) in Education</li>
+                                            <li>Gamification and Interactive Learning</li>
+                                            <li>Learning Analytics and Data-Driven Education</li>
+                                            <li>Future of Work and Education Alignment</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Energy and Sustainability -->
+                            <div class="card custom-card-ios">
+                                <div class="card-header" id="headingSix">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link custom-accordion-title collapsed" type="button"
+                                                data-toggle="collapse" data-target="#collapseSix" aria-expanded="false"
+                                                aria-controls="collapseSix">
+                                            Energy and Sustainability
+                                            <i class="fa fa-chevron-down rotate-icon"></i>
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseSix" class="collapse" aria-labelledby="headingSix"
+                                     data-parent="#accordionTopics">
+                                    <div class="card-body custom-card-body-ios">
+                                        <ul class="custom-list">
+                                            <li>Sustainable IT practices and renewable energy technologies</li>
+                                            <li>IoT advancements and smart infrastructure</li>
+                                            <li>Electric Vehicles (EVs) and Infrastructure</li>
+                                            <li>Decarbonization and Carbon Capture Technologies</li>
+                                            <li>Energy Efficiency and Demand Response</li>
+                                            <li>Grid Modernization and Equity</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section id="section-fun-facts" class="jarallax text-light">
         <img src="/static/exhibiz/images/bg/3.jpg" class="jarallax-img" alt="">
         <div class="container">
             <div class="row">
-                <div class="col-md-3 col-xs-6 wow fadeIn" data-wow-delay=".5s">
+                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">
                     <div class="de_count">
                         <i class="icon_id-2 id-color-2"></i>
-                        <h3>8800</h3>
-                        <span class="text-white">Participants</span>
+                        <h3>120</h3>
+                        <span class="text-white">Attendee Capacity</span>
                     </div>
                 </div>
 
-                <div class="col-md-3 col-xs-6 wow fadeIn" data-wow-delay=".5s">
+                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">
                     <div class="de_count">
                         <i class="icon_easel id-color-2"></i>
-                        <h3>300</h3>
+                        <h3>6</h3>
                         <span class="text-white">Topics</span>
                     </div>
                 </div>
 
-                <div class="col-md-3 col-xs-6 wow fadeIn" data-wow-delay=".5s">
+                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">
                     <div class="de_count">
                         <i class="icon_headphones id-color-2"></i>
-                        <h3>50</h3>
+                        <h3>4</h3>
                         <span class="text-white">Speakers</span>
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-xs-6 wow fadeIn" data-wow-delay=".5s">
-                    <div class="de_count">
-                        <i class="icon_globe id-color-2"></i>
-                        <h3>20</h3>
-                        <span class="text-white">Awards</span>
                     </div>
                 </div>
             </div>
@@ -640,11 +1108,35 @@
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v16.0&appId=5465147420185697&autoLogAppEvents=1"
             nonce="GutKLHL1"></script>
+    <!-- Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <!-- Bootstrap 4 JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
         $(document).ready(function () {
             $(function () {
                 $('#defaultCountdown').countdown({until: new Date(2025, 2, 19, 8)}); // year, month, date, hour
+            });
+
+            $('.owl-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    600: {
+                        items: 2
+                    },
+                    1000: {
+                        items: 4 // Muestra 4 elementos a la vez
+                    }
+                }
             });
 
         })
