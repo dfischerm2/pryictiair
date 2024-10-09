@@ -1,129 +1,13 @@
 {% extends 'public/base.html' %}
 
 {% block head %}
-    <style>
-        @media only screen and (max-width: 600px) {
-            .center-mobile {
-                text-align: center;
-            }
-        }
-
-        .id-color-3{
-            color:#ffb9ff
-        }
-
-        .size-50 {
-            font-size: 70px;
-        }
-
-        .grey-hover {
-            max-width: 100%;
-        }
-
-        .owl-carousel .item img {
-            max-height: 150px;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .custom-card {
-            background-color: #1c1c1e;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 15px;
-        }
-
-        .custom-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
-        }
-
-        .custom-card-body {
-            padding: 20px 25px;
-        }
-
-        .custom-accordion-title {
-            font-size: 1.5rem;
-            color: #EC167F;
-            font-weight: 600;
-            text-decoration: none;
-            position: relative;
-            width: 100%;
-        }
-
-        .custom-accordion-title:hover {
-            color: #e01070;
-            text-decoration: none;
-        }
-
-        /* Rotación del icono */
-        .rotate-icon {
-            float: right;
-            transition: transform 0.3s ease;
-        }
-
-        .collapsed .rotate-icon {
-            transform: rotate(0deg); /* Flecha hacia abajo cuando está colapsado */
-        }
-
-        .show .rotate-icon {
-            transform: rotate(180deg); /* Flecha hacia arriba cuando está expandido */
-        }
-
-        /* Listas */
-        ul.custom-list {
-            padding-left: 0;
-            list-style: none;
-            margin: 0;
-        }
-
-        ul.custom-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid #333333;
-            font-size: 1rem;
-            color: #e0e0e0;
-        }
-
-        ul.custom-list li:last-child {
-            border-bottom: none;
-        }
-
-        /* Efectos de transición */
-        .collapse {
-            transition: height 0.3s ease;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .custom-accordion-title {
-                font-size: 1.2rem;
-            }
-
-            .custom-card-body {
-                padding: 15px;
-            }
-
-            .custom-card {
-                margin-bottom: 10px;
-            }
-
-            .rotate-icon {
-                float: none;
-                position: absolute;
-                right: 20px;
-                top: 50%;
-                transform: translateY(-50%);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/static/landing.css">
 {% endblock %}
 
 {% block content %}
 
-    <section id="section-hero" class="fullwidthbanner-container" aria-label="section-slider" data-bgcolor="#101010">
+    <section id="section-hero" class="fullwidthbanner-container text-light" aria-label="section-slider"
+             data-bgcolor="#101010">
         <div id="slider-revolution">
             <ul>
                 <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
@@ -277,39 +161,51 @@
 
 
     <section id="section-sponsors" data-bgimage="url(static/exhibiz/images/bg/3.png) fixed center no-repeat">
+        <div class="wm wm-border wow fadeInDown"></div>
         <div class="container">
             <div class="row">
                 <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
                     <h1>Published by</h1>
                     <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                    <div class="spacer-single"></div>
                 </div>
 
                 <div class="col-md-12 text-center wow fadeInUp">
                     <div class="spacer-single"></div>
-                    <img src="/static/images/iet.png" alt="" style="width:500px" class="grey-hover">
-                    <div class="spacer-double"></div>
+                    <img src="/static/images/iet.png" alt="" style="width:500px" class="grey-hover"><br>
 
                     <h2>Indexed by</h2>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+
+                    <div class="col-md-12 text-center">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <img src="/static/images/sponsor/Scopus.jpeg" alt="" class="grey-hover"></div>
+                            <div class="col-lg-4">
+                                <img src="/static/images/sponsor/SJR.jpeg" alt="" class="grey-hover"></div>
+                            <div class="col-lg-4">
+                                <img src="/static/images/sponsor/Compendex.png" class="grey-hover"></div>
+                        </div>
+                    </div>
+
+                    <h2>Sponsors</h2>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
                     <div class="spacer-single"></div>
 
                     <div class="owl-carousel owl-theme vertical-carousel">
-                        <div class="item"><img src="/static/images/sponsor/Scopus.jpeg" alt="" class="grey-hover"></div>
-                        <div class="item"><img src="/static/images/sponsor/SJR.jpeg" alt="" class="grey-hover"></div>
-                        <div class="item"><img src="/static/images/sponsor/Compendex.png" alt="" class="grey-hover">
-                        </div>
                         <div class="item"><img src="/static/images/sponsor/Logoweb.png" alt="" class="grey-hover"></div>
-                        <div class="item"><img src="/static/images/sponsor/unemilog.jpeg" alt="" class="grey-hover">
+                        <div class="item"><img src="/static/images/sponsor/LOGO-WEB-AZUL.png" alt="" class="grey-hover">
                         </div>
                         <div class="item"><img src="/static/images/sponsor/uclm.jpeg" alt="" class="grey-hover"></div>
-                        <div class="item"><img src="/static/images/sponsor/unemi.jpeg" alt="" class="grey-hover"></div>
-                        <div class="item"><img src="/static/images/sponsor/viu.jpeg" alt="" class="grey-hover"></div>
+                        <div class="item"><img src="/static/images/sponsor/unemilog.png" alt="" class="grey-hover">
+                        </div>
+                        <div class="item"><img src="/static/images/sponsor/Logo_VIU.png" alt="" class="grey-hover">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
 
 
     <section id="section-countdown" aria-label="section" class="gradient-to-right pt40 pb40">
@@ -324,8 +220,8 @@
     </section>
 
     <!-- section begin -->
-    <section id="section-about" data-bgimage="url(static/exhibiz/images/bg/1.png) fixed no-repeat">
-        <div class="wm wm-border dark wow fadeInDown">welcome</div>
+    <section id="section-about" data-bgimage="url(static/exhibiz/images/bg/1.png) fixed no-repeat" class="mb-3">
+        <div class="wm wm-border wow fadeInDown">welcome</div>
         <div class="container">
             <div class="row align-items-center">
 
@@ -341,8 +237,6 @@
                     </p>
 
                     <div class="spacer10"></div>
-
-                    <a href="#" class="btn-custom font-weight-bold text-white sm-mb-30">About Us</a>
                 </div>
 
                 <div class="col-lg-6 mb-sm-30 text-center wow fadeInRight">
@@ -358,429 +252,20 @@
         </div>
     </section>
 
-
-
-    <!-- section begin -->
-    <section id="section-features">
-        <div class="wm wm-border dark wow fadeInDown ">features</div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
-                    <h1>Why you should Join Event</h1>
-                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                    <div class="spacer-single"></div>
-                </div>
-
-
-                <div class="col-lg-4 wow fadeIn" data-wow-delay="0s">
-                    <div class="box-number square">
-                        <i class="bg-color hover-color-2 fa fa fa-mortar-board text-light"></i>
-                        <div class="text">
-                            <h3><span>Cutting-Edge Research</span></h3>
-                            <p>Delve into the latest advancements in Artificial Intelligence, Machine Learning, Big
-                                Data, and more. Present and discuss innovative solutions shaping the future of
-                                technology.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 wow fadeIn" data-wow-delay=".25s">
-                    <div class="box-number square">
-                        <i class="bg-color hover-color-2 fa fa-sitemap text-light"></i>
-                        <div class="text">
-                            <h3><span>Global Networking</span></h3>
-                            <p>Meet and collaborate with global thought leaders, top researchers, and industry
-                                professionals. Forge valuable connections that could lead to future partnerships and
-                                joint projects.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 wow fadeIn" data-wow-delay=".5s">
-                    <div class="box-number square">
-                        <i class="bg-color hover-color-2 fa fa-microphone text-light"></i>
-                        <div class="text">
-                            <h3><span>Renowned Speakers</span></h3>
-                            <p>Gain insights from internationally recognized experts in AI and technology, including
-                                keynote addresses from leading voices in research, academia, and industry.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="spacer-single sm-hide"></div>
-
-                <div class="col-lg-4 wow fadeIn" data-wow-delay=".75s">
-                    <div class="box-number square">
-                        <i class="bg-color hover-color-2 fa fa-certificate text-light"></i>
-                        <div class="text">
-                            <h3><span>Learn from Industry Experts</span></h3>
-                            <p>Get exclusive access to keynotes and sessions led by world-renowned experts in artificial
-                                intelligence and technology. Learn directly from those pushing the boundaries of
-                                innovation.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 wow fadeIn" data-wow-delay="1s">
-                    <div class="box-number square">
-                        <i class="bg-color hover-color-2  fa fa-book text-light"></i>
-                        <div class="text">
-                            <h3><span>Publish in Prestigious Journals</span></h3>
-                            <p>Submit your research for a chance to be published in SCOPUS and COMPENDEX indexed
-                                journals, gaining international recognition and elevating your academic profile.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 wow fadeIn" data-wow-delay="1.25s">
-                    <div class="box-number square">
-                        <i class="bg-color hover-color-2 fa fa-globe text-light"></i>
-                        <div class="text">
-                            <h3><span>Join from Anywhere</span></h3>
-                            <p>With our fully virtual event, you can participate from any location, making it easier
-                                than ever to attend sessions, engage in discussions, and present your work.</p>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-    </section>
-    <!-- section close -->
-
-    <!-- section begin -->
-    <section id="section-speakers" class="jarallax text-light">
-        <img src="/static/exhibiz/images/bg/1.jpg" class="jarallax-img" alt="">
-        <div class="wm wm-border dark wow fadeInDown">Committee</div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
-                    <h1>International Speakers</h1>
-                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                    <div class="spacer-single"></div>
-                </div>
-
-                <div class="clearfix"></div>
-                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
-                    <!-- team member -->
-                    <div class="de-team-list">
-                        <div class="team-pic">
-                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">
-                        </div>
-                        <div class="team-desc">
-                            <h3>Dra. Yudith Cardinale</h3>
-                            <p class="lead">Director of the ESenCIA Center</p>
-                            <div class="small-border"></div>
-                            <p>International University of Valencia, Spain. Director of the ESenCIA Center - Center for
-                                Studies in Data Science and Artificial Intelligence</p>
-
-                            <div class="social">
-                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="details text-center mt-2">
-                        <h4>Dra. Yudith Cardinale <a href="javascript:void(0)"
-                                                     class="btn btn-primary btn-rounded btn-mini"><i
-                                class="fa fa-linkedin"></i></a></h4>
-
-                    </div>
-                    <!-- team close -->
-                </div>
-                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
-                    <!-- team member -->
-                    <div class="de-team-list">
-                        <div class="team-pic">
-                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">
-                        </div>
-                        <div class="team-desc">
-                            <h3>Dra. Alexandra La Cruz</h3>
-                            <p class="lead">AI Expert</p>
-                            <div class="small-border"></div>
-                            <p>University of Ibagué, Colombia. AI Expert</p>
-
-                            <div class="social">
-                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="details text-center mt-2">
-                        <h4>Dra. Alexandra La Cruz <a href="javascript:void(0)"
-                                                     class="btn btn-primary btn-rounded btn-mini me-2"><i
-                                class="fa fa-linkedin"></i></a></h4>
-
-                    </div>
-                    <!-- team close -->
-                </div>
-                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
-                    <!-- team member -->
-                    <div class="de-team-list">
-                        <div class="team-pic">
-                            <img src="/static/images/men.jpeg" class="img-responsive" alt="">
-                        </div>
-                        <div class="team-desc">
-                            <h3>Dr. Diego Cabrera</h3>
-                            <p class="lead">AI Expert</p>
-                            <div class="small-border"></div>
-                            <p>Dongguan University of Technology, China. AI Expert</p>
-
-                            <div class="social">
-                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="details text-center mt-2">
-                        <h4>Dr. Diego Cabrera <a href="javascript:void(0)"
-                                                class="btn btn-primary btn-rounded btn-mini"><i
-                                class="fa fa-linkedin"></i></a></h4>
-
-                    </div>
-                    <!-- team close -->
-                </div>
-                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
-                    <!-- team member -->
-                    <div class="de-team-list">
-                        <div class="team-pic">
-                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">
-                        </div>
-                        <div class="team-desc">
-                            <h3>Dra. Fania Pacheco </h3>
-                            <p class="lead">AI Expert</p>
-                            <div class="small-border"></div>
-                            <p>Université de Rouen, Lab. LITIS, Francia. AI Expert</p>
-
-                            <div class="social">
-                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="details text-center mt-2">
-                        <h4>Dra. Fania Pacheco  <a href="javascript:void(0)"
-                                                 class="btn btn-primary btn-rounded btn-mini"><i
-                                class="fa fa-linkedin"></i></a></h4>
-
-                    </div>
-                    <!-- team close -->
-                </div>
-                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
-                    <h1>Organizing Committee</h1>
-                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                    <div class="spacer-single"></div>
-                </div>
-                <div class="row align-items-center justify-content-center">
-
-                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                        <!-- team member -->
-                        <div class="de-team-list">
-                            <div class="team-pic">
-                                <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
-                            </div>
-                        </div>
-                        <div class="details text-center mt-2">
-                            <h4>Fausto Pedro García Márquez <a href="javascript:void(0)"
-                                                               class="btn btn-primary btn-rounded btn-mini"><i
-                                    class="fa fa-linkedin"></i></a></h4>
-
-                        </div>
-                        <!-- team close -->
-                    </div>
-
-                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                        <!-- team member -->
-                        <div class="de-team-list">
-                            <div class="team-pic">
-                                <img src="/static/images/women.jpeg" class="img-responsive img-circle" alt="">
-                            </div>
-                        </div>
-                        <div class="text-center mt-2">
-                            <h4>Mónica Karel Huerta <a href="javascript:void(0)" class="btn btn-primary btn-rounded"><i
-                                    class="fa fa-linkedin"></i></a></h4>
-                        </div>
-                        <!-- team close -->
-                    </div>
-
-                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                        <!-- team member -->
-                        <div class="de-team-list">
-                            <div class="team-pic">
-                                <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
-                            </div>
-                        </div>
-                        <div class="text-center mt-2">
-                            <h4>René Vinicio Sánchez Loja <a href="javascript:void(0)"
-                                                             class="btn btn-primary btn-rounded"><i
-                                    class="fa fa-linkedin"></i></a></h4>
-                        </div>
-                        <!-- team close -->
-                    </div>
-
-                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                        <!-- team member -->
-                        <div class="de-team-list">
-                            <div class="team-pic">
-                                <img src="/static/images/women.jpeg" class="img-responsive img-circle" alt="">
-                            </div>
-                        </div>
-                        <div class="text-center mt-2">
-                            <h4>Mariela Cerrada Lozada <a href="javascript:void(0)" class="btn btn-primary btn-rounded"><i
-                                    class="fa fa-linkedin"></i></a></h4>
-                        </div>
-                        <!-- team close -->
-                    </div>
-
-                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                        <!-- team member -->
-                        <div class="de-team-list">
-                            <div class="team-pic">
-                                <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
-                            </div>
-                        </div>
-                        <div class="text-center mt-2">
-                            <h4>Roger Clotet <a href="javascript:void(0)" class="btn btn-primary btn-rounded"><i
-                                    class="fa fa-linkedin"></i></a></h4>
-                        </div>
-                        <!-- team close -->
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <div class="clearfix">
-                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
-                        <h2>General Chairs</h2>
-                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                        <div class="spacer-single"></div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                            <!-- team member -->
-                            <div class="de-team-list">
-                                <div class="team-pic">
-                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
-                                         alt="">
-                                </div>
-                            </div>
-                            <div class="details text-center mt-2">
-                                <h5>Fausto Pedro García Márquez <a href="javascript:void(0)"
-                                                                   class="btn btn-primary btn-rounded"><i
-                                        class="fa fa-linkedin"></i></a></h5>
-
-                            </div>
-                            <!-- team close -->
-                        </div>
-                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                            <!-- team member -->
-                            <div class="de-team-list">
-                                <div class="team-pic">
-                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
-                                         alt="">
-                                </div>
-                            </div>
-                            <div class="details text-center mt-2">
-                                <h5>René-Vinicio Sánchez <a href="javascript:void(0)"
-                                                            class="btn btn-primary btn-rounded"><i
-                                        class="fa fa-linkedin"></i></a></h5>
-
-                            </div>
-                            <!-- team close -->
-                        </div>
-                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                            <!-- team member -->
-                            <div class="de-team-list">
-                                <div class="team-pic">
-                                    <img src="/static/images/women.jpeg" class="img-responsive img-fluid img-circle"
-                                         alt="">
-                                </div>
-                            </div>
-                            <div class="details text-center mt-2">
-                                <h5>Mariela Cerrada Lozada <a href="javascript:void(0)"
-                                                              class="btn btn-primary btn-rounded"><i
-                                        class="fa fa-linkedin"></i></a></h5>
-
-                            </div>
-                            <!-- team close -->
-                        </div>
-                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                            <!-- team member -->
-                            <div class="de-team-list">
-                                <div class="team-pic">
-                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
-                                         alt="">
-                                </div>
-                            </div>
-                            <div class="details text-center mt-2">
-                                <h5>Edwuin Carrasquero Rodríguez <a href="javascript:void(0)"
-                                                                    class="btn btn-primary btn-rounded"><i
-                                        class="fa fa-linkedin"></i></a></h5>
-
-                            </div>
-                            <!-- team close -->
-                        </div>
-                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                            <!-- team member -->
-                            <div class="de-team-list">
-                                <div class="team-pic">
-                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
-                                         alt="">
-                                </div>
-                            </div>
-                            <div class="details text-center mt-2">
-                                <h5>Roger Clotet <a href="javascript:void(0)"
-                                                    class="btn btn-primary btn-rounded"><i
-                                        class="fa fa-linkedin"></i></a></h5>
-
-                            </div>
-                            <!-- team close -->
-                        </div>
-                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                            <!-- team member -->
-                            <div class="de-team-list">
-                                <div class="team-pic">
-                                    <img src="/static/images/women.jpeg" class="img-responsive img-fluid img-circle"
-                                         alt="">
-                                </div>
-                            </div>
-                            <div class="details text-center mt-2">
-                                <h5>Yudith Cardinale <a href="javascript:void(0)"
-                                                        class="btn btn-primary btn-rounded btn-mini"><i
-                                        class="fa fa-linkedin"></i></a></h5>
-
-                            </div>
-                            <!-- team close -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- section close -->
-
-
-    <!-- section begin -->
-    <section id="section-schedule" aria-label="section-services-tab"
+    <section id="section-importante" aria-label="section-services-tab"
              data-bgimage="url(static/exhibiz/images/bg/2.png) fixed center no-repeat">
-        <div class="wm wm-border dark wow fadeInDown ">schedule</div>
+        <div class="wm wm-border wow fadeInDown ">for authors</div>
         <div class="container">
             <div class="row">
-                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
-                    <h1>Important Deadlines for Paper Submission</h1>
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="importantdates">
+                    <h1>Important Dates</h1>
                     <div class="separator"><span><i class="fa fa-square"></i></span></div>
                     <div class="spacer-single"></div>
                 </div>
 
                 <div class="col-md-12 wow fadeInUp">
                     <div class="de_tab tab_style_4 text-center">
-                        <ul class="de_nav de_nav_dark">
+                        <ul class="de_nav">
                             <li class="active" data-link="#tab1">
                                 <h3>Paper Submission <span>Deadline</span></h3>
                                 <h4>Dec 1, 2024</h4>
@@ -790,81 +275,66 @@
                                 <h4>Jan 27, 2025</h4>
                             </li>
                             <li data-link="#tab1">
-                                <h3>Final Version <span>Submission</span></h3>
-                                <h4>Feb 27, 2025</h4>
+                                <h3>Camera <span>Ready</span></h3>
+                                <h4>Feb 16, 2025</h4>
+                            </li>
+                            <li data-link="#tab1">
+                                <h3>Conference <span>Dates</span></h3>
+                                <h4>March 19-21, 2025</h4>
                             </li>
                         </ul>
 
                     </div>
 
 
+                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="guidelines">
+                        <h1>Guidelines</h1>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
                     <div class="de_tab_content text-left">
-                        <div id="tab1" class="tab_single_content dark">
+                        <div id="tab1" class="tab_single_content">
                             <div class="row">
                                 <div class="col-md-12">
+                                    <div class="schedule-listing">
+                                        <div class="schedule-item">
+                                            <div class="sc-info">
+                                                <h3>Presentation Guidelines</h3>
+                                                <p>
+                                                <ul>
+                                                    <li>Only manuscripts written in English will be considered.</li>
+                                                    <li>Manuscripts should be between 10 and 18 pages in a single-column
+                                                        format, following the editorial guidelines of the conference
+                                                        proceedings.
+                                                    </li>
+                                                    <li>The acceptance of articles will be based on originality,
+                                                        relevance, and technical soundness.
+                                                    </li>
+                                                    <li>Clear identification of objectives, scientific questions, or
+                                                        hypotheses proposed in the article.
+                                                    </li>
+                                                    <li>Theoretical framework.</li>
+                                                    <li>Research methodology.</li>
+                                                    <li>Presentation and discussion of the results obtained, ensuring
+                                                        they align with the main topics of the conference.
+                                                    </li>
+                                                </ul>
+                                                </p>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
                                     <div class="schedule-listing">
                                         <div class="sc-info">
                                             <h3>Submission Guidelines</h3>
                                             <p>
-                                            <ul>
-                                                <li>Language: Only manuscripts in English will be accepted.</li>
-                                                <li>Length: Submissions should be between 10 to 18 pages, following
-                                                    the
-                                                    publisher’s format.
-                                                </li>
-                                                <li>Criteria: Papers will be evaluated based on originality,
-                                                    relevance,
-                                                    and technical soundness.
-                                                </li>
-                                                <li> Content: Manuscripts must clearly identify objectives,
-                                                    scientific
-                                                    questions, or hypotheses, supported by a theoretical base,
-                                                    research
-                                                    methodology, and discussion of results.
-                                                </li>
-                                            </ul>
-                                            </p>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
-                                <div class="schedule-listing">
-                                    <div class="schedule-item">
-                                        <div class="sc-info">
-                                            <h3>Review Process</h3>
-                                            <p>
-                                            <ul>
-                                                <li>Each paper will undergo a double-blind review by at least two
-                                                    independent reviewers.
-                                                </li>
-                                                <li>Max 3 papers per reviewer.</li>
-                                                <li>Submissions will be checked for plagiarism using tools like
-                                                    CrossCheck.
-                                                </li>
-                                            </ul>
-                                            </p>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
-                                <div class="schedule-listing">
-                                    <div class="schedule-item">
-                                        <div class="sc-info">
-                                            <h3>Review Criteria</h3>
-                                            <p>
-                                            <ol>
-                                                <li>Empirical base and practical applicability
-                                                </li>
-                                                <li>Clear identification of objectives and hypotheses.</li>
-                                                <li>Theoretical foundation and robustness</li>
-                                                <li>Research methodology</li>
-                                                <li>Results presentation and discussion</li>
-                                                <li>Scientific or practical novelty</li>
-                                                <li>Relevance to the conference topics</li>
-                                                <li>Papers must have less than 20% similarity with other works to be
-                                                    accepted.
-                                                </li>
-                                            </ol>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                                                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                                commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                                                occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                                mollit anim id est laborum.
                                             </p>
                                         </div>
                                         <div class="clearfix"></div>
@@ -873,23 +343,62 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="callforpapers">
+                        <h1>Call for papers</h1>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="file-info">
+                                <img src="/static/images/icons/pdf.png" class="file-icon" alt="PDF Icon">
+                                <span>Call for Papers (PDF)</span>
+                            </div>
+                            <a href="https://ictiair.tiacon.org/_files/ugd/1ffe67_436b7f6e802d4ef9bda9762a6e2e39f1.pdf?index=true"
+                               class="btn btn-primary btn-lg" target="_blank">
+                                <i class="fa fa-download"></i> Download
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="file-info">
+                                <img src="/static/images/icons/doc.png" class="file-icon" alt="Word Icon">
+                                <span>Word Template (DOCX)</span>
+                            </div>
+                            <a href="https://ictiair.tiacon.org/_files/ugd/1ffe67_8ef967ab10714f8aaa9f5b9f4a64bb5f.docx?dn=ICTIAIR%20-%20Full%20Paper%20Template.docx"
+                               class="btn btn-primary btn-lg" target="_blank">
+                                <i class="fa fa-download"></i> Download
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="file-info">
+                                <img src="/static/images/icons/latex.png" class="file-icon" alt="LaTeX Icon">
+                                <span>LaTeX Template (ZIP)</span>
+                            </div>
+                            <a href="https://ictiair.tiacon.org/_files/archives/1ffe67_0bfb1bbae033431dae2909119d0bed0b.zip?dn=IET%20LaTeX%20Template.zip"
+                               class="btn btn-primary btn-lg" target="_blank">
+                                <i class="fa fa-download"></i> Download
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
-    <!-- section close -->
+
     <section id="section-topics" aria-label="section-services-tab"
              data-bgimage="url(static/exhibiz/images/bg/2.png) fixed center no-repeat">
-        <div class="wm wm-border dark wow fadeInDown ">topics</div>
+        <div class="wm wm-border wow fadeInDown ">topics</div>
         <div class="container">
             <div class="row">
                 <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
-                    <h1>Topics to be Developed</h1>
+                    <h1>Topics of Interest</h1>
                     <div class="separator"><span><i class="fa fa-square"></i></span></div>
                     <div class="spacer-single"></div>
                 </div>
                 <div class="de_tab_content text-left">
-                    <div id="tab1" class="tab_single_content dark">
+                    <div id="tab1" class="tab_single_content">
                         <div class="accordion" id="accordionTopics">
 
                             <!-- Artificial Intelligence and Machine Learning -->
@@ -904,7 +413,7 @@
                                         </button>
                                     </h5>
                                 </div>
-                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
                                      data-parent="#accordionTopics">
                                     <div class="card-body custom-card-body">
                                         <ul class="custom-list">
@@ -1096,35 +605,499 @@
         </div>
     </section>
 
-    <section id="section-fun-facts" class="jarallax text-light">
-        <img src="/static/exhibiz/images/bg/3.jpg" class="jarallax-img" alt="">
+    <!-- section begin -->
+    <section id="section-speakers" class="jarallax text-light">
+        <img src="/static/exhibiz/images/bg/1.jpg" class="jarallax-img" alt="">
+        <div class="wm wm-border wow fadeInDown">Committee</div>
         <div class="container">
             <div class="row">
-                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">
-                    <div class="de_count">
-                        <i class="icon_id-2 id-color-2"></i>
-                        <h3>120</h3>
-                        <span class="text-white">Attendee Capacity</span>
+                {#                <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="speakers">#}
+                {#                    <h1>International Speakers</h1>#}
+                {#                    <div class="separator"><span><i class="fa fa-square"></i></span></div>#}
+                {#                    <div class="spacer-single"></div>#}
+                {#                </div>#}
+                {##}
+                {#                <div class="clearfix"></div>#}
+                {#                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">#}
+                {#                    <!-- team member -->#}
+                {#                    <div class="de-team-list">#}
+                {#                        <div class="team-pic">#}
+                {#                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">#}
+                {#                        </div>#}
+                {#                        <div class="team-desc">#}
+                {#                            <h3>Dra. Yudith Cardinale</h3>#}
+                {#                            <p class="lead">Director of the ESenCIA Center</p>#}
+                {#                            <div class="small-border"></div>#}
+                {#                            <p>International University of Valencia, Spain. Director of the ESenCIA Center - Center for#}
+                {#                                Studies in Data Science and Artificial Intelligence</p>#}
+                {##}
+                {#                            <div class="social">#}
+                {#                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>#}
+                {#                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>#}
+                {#                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <div class="details text-center mt-2">#}
+                {#                        <h4>Dra. Yudith Cardinale <a href="javascript:void(0)"#}
+                {#                                                     class="btn btn-primary btn-rounded btn-mini"><i#}
+                {#                                class="fa fa-linkedin"></i></a></h4>#}
+                {##}
+                {#                    </div>#}
+                {#                    <!-- team close -->#}
+                {#                </div>#}
+                {#                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">#}
+                {#                    <!-- team member -->#}
+                {#                    <div class="de-team-list">#}
+                {#                        <div class="team-pic">#}
+                {#                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">#}
+                {#                        </div>#}
+                {#                        <div class="team-desc">#}
+                {#                            <h3>Dra. Alexandra La Cruz</h3>#}
+                {#                            <p class="lead">AI Expert</p>#}
+                {#                            <div class="small-border"></div>#}
+                {#                            <p>University of Ibagué, Colombia. AI Expert</p>#}
+                {##}
+                {#                            <div class="social">#}
+                {#                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>#}
+                {#                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>#}
+                {#                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <div class="details text-center mt-2">#}
+                {#                        <h4>Dra. Alexandra La Cruz <a href="javascript:void(0)"#}
+                {#                                                      class="btn btn-primary btn-rounded btn-mini me-2"><i#}
+                {#                                class="fa fa-linkedin"></i></a></h4>#}
+                {##}
+                {#                    </div>#}
+                {#                    <!-- team close -->#}
+                {#                </div>#}
+                {#                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">#}
+                {#                    <!-- team member -->#}
+                {#                    <div class="de-team-list">#}
+                {#                        <div class="team-pic">#}
+                {#                            <img src="/static/images/men.jpeg" class="img-responsive" alt="">#}
+                {#                        </div>#}
+                {#                        <div class="team-desc">#}
+                {#                            <h3>Dr. Diego Cabrera</h3>#}
+                {#                            <p class="lead">AI Expert</p>#}
+                {#                            <div class="small-border"></div>#}
+                {#                            <p>Dongguan University of Technology, China. AI Expert</p>#}
+                {##}
+                {#                            <div class="social">#}
+                {#                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>#}
+                {#                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>#}
+                {#                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <div class="details text-center mt-2">#}
+                {#                        <h4>Dr. Diego Cabrera <a href="javascript:void(0)"#}
+                {#                                                 class="btn btn-primary btn-rounded btn-mini"><i#}
+                {#                                class="fa fa-linkedin"></i></a></h4>#}
+                {##}
+                {#                    </div>#}
+                {#                    <!-- team close -->#}
+                {#                </div>#}
+                {#                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">#}
+                {#                    <!-- team member -->#}
+                {#                    <div class="de-team-list">#}
+                {#                        <div class="team-pic">#}
+                {#                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">#}
+                {#                        </div>#}
+                {#                        <div class="team-desc">#}
+                {#                            <h3>Dra. Fania Pacheco </h3>#}
+                {#                            <p class="lead">AI Expert</p>#}
+                {#                            <div class="small-border"></div>#}
+                {#                            <p>Université de Rouen, Lab. LITIS, Francia. AI Expert</p>#}
+                {##}
+                {#                            <div class="social">#}
+                {#                                <a href="#"><i class="fa fa-facebook fa-lg"></i></a>#}
+                {#                                <a href="#"><i class="fa fa-twitter fa-lg"></i></a>#}
+                {#                                <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <div class="details text-center mt-2">#}
+                {#                        <h4>Dra. Fania Pacheco <a href="javascript:void(0)"#}
+                {#                                                  class="btn btn-primary btn-rounded btn-mini"><i#}
+                {#                                class="fa fa-linkedin"></i></a></h4>#}
+                {##}
+                {#                    </div>#}
+                {#                    <!-- team close -->#}
+                {#                </div>#}
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="org_comite">
+                    <h1>Organizing Committee</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+                <div class="row align-items-center justify-content-center">
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                        <!-- team member -->
+                        <div class="de-team-list">
+                            <div class="team-pic">
+                                <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
+                            </div>
+                        </div>
+                        <div class="details text-center mt-2">
+                            <h4>Fausto Pedro García Márquez <a href="javascript:void(0)"
+                                                               class="btn btn-primary btn-rounded btn-mini"><i
+                                    class="fa fa-linkedin"></i></a></h4>
+
+                        </div>
+                        <!-- team close -->
+                    </div>
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                        <!-- team member -->
+                        <div class="de-team-list">
+                            <div class="team-pic">
+                                <img src="/static/images/women.jpeg" class="img-responsive img-circle" alt="">
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h4>Mónica Karel Huerta <a href="javascript:void(0)"
+                                                       class="btn btn-primary btn-rounded  btn-mini"><i
+                                    class="fa fa-linkedin"></i></a></h4>
+                        </div>
+                        <!-- team close -->
+                    </div>
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                        <!-- team member -->
+                        <div class="de-team-list">
+                            <div class="team-pic">
+                                <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h4>René Vinicio Sánchez Loja <a href="javascript:void(0)"
+                                                             class="btn btn-primary btn-rounded  btn-mini"><i
+                                    class="fa fa-linkedin"></i></a></h4>
+                        </div>
+                        <!-- team close -->
+                    </div>
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                        <!-- team member -->
+                        <div class="de-team-list">
+                            <div class="team-pic">
+                                <img src="/static/images/women.jpeg" class="img-responsive img-circle" alt="">
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h4>Mariela Cerrada Lozada <a href="javascript:void(0)"
+                                                          class="btn btn-primary btn-rounded btn-mini"><i
+                                    class="fa fa-linkedin"></i></a></h4>
+                        </div>
+                        <!-- team close -->
+                    </div>
+
+                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                        <!-- team member -->
+                        <div class="de-team-list">
+                            <div class="team-pic">
+                                <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h4>Roger Clotet <a href="javascript:void(0)"
+                                                class="btn btn-primary btn-rounded btn-mini"><i
+                                    class="fa fa-linkedin"></i></a></h4>
+                        </div>
+                        <!-- team close -->
                     </div>
                 </div>
 
-                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">
-                    <div class="de_count">
-                        <i class="icon_easel id-color-2"></i>
-                        <h3>6</h3>
-                        <span class="text-white">Topics</span>
-                    </div>
-                </div>
+                <div class="clearfix"></div>
 
-                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">
-                    <div class="de_count">
-                        <i class="icon_headphones id-color-2"></i>
-                        <h3>4</h3>
-                        <span class="text-white">Speakers</span>
+                <div class="clearfix">
+                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="gen_chairs">
+                        <h2>General Chairs</h2>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Fausto Pedro García Márquez <a href="javascript:void(0)"
+                                                                   class="btn btn-primary btn-rounded btn-mini"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>René-Vinicio Sánchez <a href="javascript:void(0)"
+                                                            class="btn btn-primary btn-rounded btn-mini"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/women.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Mariela Cerrada Lozada <a href="javascript:void(0)"
+                                                              class="btn btn-primary btn-rounded btn-mini"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Edwuin Carrasquero Rodríguez <a href="javascript:void(0)"
+                                                                    class="btn btn-primary btn-rounded btn-mini"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/men.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Roger Clotet <a href="javascript:void(0)"
+                                                    class="btn btn-primary btn-rounded btn-mini"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/women.jpeg" class="img-responsive img-fluid img-circle"
+                                         alt="">
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h5>Yudith Cardinale <a href="javascript:void(0)"
+                                                        class="btn btn-primary btn-rounded btn-mini"><i
+                                        class="fa fa-linkedin"></i></a></h5>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+    <!-- section close -->
+
+    <section id="section-features">
+        <div class="wm wm-border wow fadeInDown ">features</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Why you should Join Event</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa fa-mortar-board text-light"></i>
+                        <div class="text">
+                            <h3><span>Cutting-Edge Research</span></h3>
+                            <p>Delve into the latest advancements in Artificial Intelligence, Machine Learning, Big
+                                Data, and more. Present and discuss innovative solutions shaping the future of
+                                technology.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".25s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa-sitemap text-light"></i>
+                        <div class="text">
+                            <h3><span>Global Networking</span></h3>
+                            <p>Meet and collaborate with global thought leaders, top researchers, and industry
+                                professionals. Forge valuable connections that could lead to future partnerships and
+                                joint projects.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".5s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa-microphone text-light"></i>
+                        <div class="text">
+                            <h3><span>Renowned Speakers</span></h3>
+                            <p>Gain insights from internationally recognized experts in AI and technology, including
+                                keynote addresses from leading voices in research, academia, and industry.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spacer-single sm-hide"></div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".75s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa-certificate text-light"></i>
+                        <div class="text">
+                            <h3><span>Learn from Industry Experts</span></h3>
+                            <p>Get exclusive access to keynotes and sessions led by world-renowned experts in artificial
+                                intelligence and technology. Learn directly from those pushing the boundaries of
+                                innovation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="1s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2  fa fa-book text-light"></i>
+                        <div class="text">
+                            <h3><span>Publish in Prestigious Journals</span></h3>
+                            <p>Submit your research for a chance to be published in SCOPUS and COMPENDEX indexed
+                                journals, gaining international recognition and elevating your academic profile.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="1.25s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa-globe text-light"></i>
+                        <div class="text">
+                            <h3><span>Join from Anywhere</span></h3>
+                            <p>With our fully virtual event, you can participate from any location, making it easier
+                                than ever to attend sessions, engage in discussions, and present your work.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    {#    <section id="section-fun-facts" class="jarallax text-light">#}
+    {#        <img src="/static/exhibiz/images/bg/3.jpg" class="jarallax-img" alt="">#}
+    {#        <div class="container">#}
+    {#            <div class="row">#}
+    {#                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">#}
+    {#                    <div class="de_count">#}
+    {#                        <i class="icon_id-2 id-color-2"></i>#}
+    {#                        <h3>120</h3>#}
+    {#                        <span class="text-white">Attendee Capacity</span>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {##}
+    {#                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">#}
+    {#                    <div class="de_count">#}
+    {#                        <i class="icon_easel id-color-2"></i>#}
+    {#                        <h3>6</h3>#}
+    {#                        <span class="text-white">Topics</span>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {##}
+    {#                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">#}
+    {#                    <div class="de_count">#}
+    {#                        <i class="icon_headphones id-color-2"></i>#}
+    {#                        <h3>4</h3>#}
+    {#                        <span class="text-white">Speakers</span>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </section>#}
+
+    <section id="section-contacts" class="text-light" data-bgcolor="#101010">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Contact Us</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+
+                <div class="col-md-8 offset-md-2 wow fadeInUp">
+                    <form name="contactForm" id='contact_form' method="post"
+                          action='https://www.madebydesignesia.com/themes/exhibiz/email.php'>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id='name_error' class='error'>Please enter your name.</div>
+                                <div>
+                                    <input type='text' name='name' id='name' class="form-control"
+                                           placeholder="Your Name">
+                                </div>
+
+                                <div id='email_error' class='error'>Please enter your valid E-mail ID.</div>
+                                <div>
+                                    <input type='text' name='email' id='email' class="form-control"
+                                           placeholder="Your Email">
+                                </div>
+
+                                <div id='phone_error' class='error'>Please enter your phone number.</div>
+                                <div>
+                                    <input type='text' name='phone' id='phone' class="form-control"
+                                           placeholder="Your Phone">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id='message_error' class='error'>Please enter your message.</div>
+                                <div>
+                                    <textarea name='message' id='message' class="form-control"
+                                              placeholder="Additional Message"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <p id='submit'>
+                                    <input type='submit' id='send_message' value='Send Email' class="btn btn-line">
+                                </p>
+                                <div id='mail_success' class='success'>Your message has been sent successfully.</div>
+                                <div id='mail_fail' class='error'>Sorry, error occured this time sending your message.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+
     </section>
 {% endblock %}
 
@@ -1143,9 +1116,17 @@
                 $('#defaultCountdown').countdown({until: new Date(2025, 2, 19, 8)}); // year, month, date, hour
             });
 
+            $('#accordionTopics').on('show.bs.collapse', function (e) {
+                $(e.target).prev('.card-header').find('.rotate-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            });
+
+            $('#accordionTopics').on('hide.bs.collapse', function (e) {
+                $(e.target).prev('.card-header').find('.rotate-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            });
+
             $('.owl-carousel').owlCarousel({
                 loop: true,
-                margin: 10,
+                margin: 40,
                 nav: false,
                 dots: false,
                 autoplay: true,

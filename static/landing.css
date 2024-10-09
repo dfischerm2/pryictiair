@@ -1,0 +1,293 @@
+@media only screen and (max-width: 600px) {
+    .center-mobile {
+        text-align: center;
+    }
+}
+
+.id-color-3 {
+    color: #ffb9ff
+}
+
+.size-50 {
+    font-size: 70px;
+}
+
+.grey-hover {
+    max-width: 100%;
+}
+
+.owl-carousel .item img {
+    max-height: 150px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.owl-carousel .item {
+    margin-right: 30px; /* Ajusta este valor para cambiar la separación */
+}
+
+.custom-card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.custom-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.custom-card-body {
+    padding: 20px 25px;
+}
+
+.custom-accordion-title {
+    font-size: 1.5rem;
+    color: #0056b3;
+    font-weight: 600;
+    text-decoration: none;
+    position: relative;
+    width: 100%;
+}
+
+.custom-accordion-title:hover {
+    color: #004085;
+    text-decoration: none;
+}
+
+/* Rotación del icono */
+.rotate-icon {
+    float: right;
+    transition: transform 0.3s ease;
+}
+
+.collapsed .rotate-icon {
+    transform: rotate(0deg); /* Flecha hacia abajo cuando está colapsado */
+}
+
+.show .rotate-icon {
+    transform: rotate(180deg); /* Flecha hacia arriba cuando está expandido */
+}
+
+/* Listas */
+ul.custom-list {
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+}
+
+ul.custom-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 1rem;
+    color: #555555;
+}
+
+ul.custom-list li:last-child {
+    border-bottom: none;
+}
+
+/* Efectos de transición */
+.collapse {
+    transition: height 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .custom-accordion-title {
+        font-size: 1.2rem;
+    }
+
+    .custom-card-body {
+        padding: 15px;
+    }
+
+    .custom-card {
+        margin-bottom: 10px;
+    }
+
+    .rotate-icon {
+        float: none;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+.list-group-item {
+    padding: 20px 15px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f9f9f9;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+/* Estilos del contenedor del archivo */
+.file-info {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo del icono */
+.file-icon {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+    object-fit: contain;
+}
+
+/* Estilos del texto de los archivos */
+.file-info span {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Estilos del botón de descarga */
+.btn-outline-primary {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: 2px solid #EC167F;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary i {
+    margin-right: 8px;
+}
+
+.btn-outline-primary:hover {
+    background-color: #EC167F;
+    border: 2px solid #EC167F;
+    color: #fff !important;
+    text-decoration: none;
+}
+
+.important-section {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 40px;
+}
+
+.important-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Lista de descarga personalizada */
+.list-group-item {
+    padding: 20px 25px;
+    background-color: #f9f9f9;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f1f1f1;
+}
+
+/* Estilo del icono del archivo */
+.file-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    object-fit: contain;
+}
+
+.btn-primary {
+    background-color: #EC167F;
+    color: #fff !important;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary i {
+    margin-right: 8px;
+}
+
+/* Efecto hover del botón primario */
+.btn-primary:hover {
+    background-color: #D01572 !important;;
+    transform: translateY(-2px);
+    color: #fff !important;;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Efecto activo del botón primario */
+.btn-primary:active {
+    background-color: #C21368;
+    transform: translateY(1px);
+}
+
+.btn-mini {
+    background-color: #EC167F;
+    color: #fff;
+    font-size: 0.8rem; /* Tamaño de fuente reducido */
+    font-weight: 600;
+    padding: 5px 15px; /* Tamaño de padding más pequeño */
+    border: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+.btn-mini i {
+    margin-right: 5px;
+    font-size: 0.9rem; /* Icono proporcionalmente más pequeño */
+}
+
+/* Efecto hover del botón mini */
+.btn-mini:hover {
+    background-color: #D01572;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Efecto activo del botón mini */
+.btn-mini:active {
+    background-color: #C21368;
+    transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+    .list-group-item {
+        flex-direction: column; /* Coloca los elementos en una columna */
+        align-items: flex-start; /* Alinea los elementos al inicio */
+        padding: 20px;
+    }
+
+    .list-group-item .file-info {
+        margin-bottom: 10px; /* Añade espacio entre el texto y el botón */
+    }
+
+    .list-group-item .file-info img {
+        margin-right: 10px; /* Reduce el espacio a la derecha del icono */
+    }
+
+    .btn-lg {
+        width: 100%; /* El botón ocupará todo el ancho */
+        text-align: center; /* Centra el texto del botón */
+    }
+}
