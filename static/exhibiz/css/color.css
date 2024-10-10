@@ -77,7 +77,7 @@ input[type=submit].btn-custom,
 
 section.gradient-to-right,
 .ps1-deco{
-background:linear-gradient(to right, var(--primary-color-1), var(--secondary-color));
+background:linear-gradient(to right, var(--primary-color-1), #07143d);
 }
 
 .countdown-s1 .countdown-show4 .countdown-section{

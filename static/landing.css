@@ -160,7 +160,7 @@ ul.custom-list li:last-child {
     font-size: 0.9rem;
     font-weight: 600;
     padding: 10px 20px;
-    border: 2px solid #EC167F;
+    border: 2px solid #060a38;
     border-radius: 50px;
     transition: all 0.3s ease;
 }
@@ -170,8 +170,8 @@ ul.custom-list li:last-child {
 }
 
 .btn-outline-primary:hover {
-    background-color: #EC167F;
-    border: 2px solid #EC167F;
+    background-color: #060a38;
+    border: 2px solid #060a38;
     color: #fff !important;
     text-decoration: none;
 }
@@ -213,7 +213,7 @@ ul.custom-list li:last-child {
 }
 
 .btn-primary {
-    background-color: #EC167F;
+    background-color: #162347;
     color: #fff !important;
     font-size: 1.1rem;
     font-weight: 600;
@@ -229,7 +229,7 @@ ul.custom-list li:last-child {
 
 /* Efecto hover del botón primario */
 .btn-primary:hover {
-    background-color: #D01572 !important;;
+    background-color: #0f54ef !important;;
     transform: translateY(-2px);
     color: #fff !important;;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -237,12 +237,12 @@ ul.custom-list li:last-child {
 
 /* Efecto activo del botón primario */
 .btn-primary:active {
-    background-color: #C21368;
+    background-color: #0f54ef;
     transform: translateY(1px);
 }
 
 .btn-mini {
-    background-color: #EC167F;
+    background-color: #162347;
     color: #fff;
     font-size: 0.8rem; /* Tamaño de fuente reducido */
     font-weight: 600;
@@ -260,14 +260,14 @@ ul.custom-list li:last-child {
 
 /* Efecto hover del botón mini */
 .btn-mini:hover {
-    background-color: #D01572;
+    background-color: #0f54ef;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Efecto activo del botón mini */
 .btn-mini:active {
-    background-color: #C21368;
+    background-color: #0f54ef;
     transform: translateY(1px);
 }
 
@@ -290,4 +290,8 @@ ul.custom-list li:last-child {
         width: 100%; /* El botón ocupará todo el ancho */
         text-align: center; /* Centra el texto del botón */
     }
+}
+
+.img-sponsor{
+    width: 300px !important;
 }
