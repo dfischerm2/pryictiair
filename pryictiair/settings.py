@@ -16,7 +16,6 @@ WKHTMLTOPDF_DEBUG = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_AGE = 28800
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_USE_TLS = True
 # EMAIL_HOST = 'smtp.gmail.com'
@@ -56,7 +55,6 @@ with open(os.path.join(BASE_DIR, 'credenciales.json')) as json_file:
 
 WKHTMLTOPDF_CMD_OPTIONS = {'encoding': 'utf8', 'quiet': True, 'enable-local-file-access': True}
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -78,6 +76,7 @@ INSTALLED_APPS = [
     'form_utils',
     'webpush',
     'pwa',
+    'landing',
 ]
 
 MIDDLEWARE = [
@@ -97,8 +96,10 @@ ROOT_URLCONF = 'pryictiair.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'landing/templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -194,8 +195,6 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
 # PWA
 # vapid keys para notificaciones push
 with open(os.path.join(BASE_DIR, 'vapid.json')) as json_file:
@@ -209,7 +208,6 @@ WEBPUSH_SETTINGS = {
     "VAPID_PRIVATE_KEY": VAPID_PRIVATE_KEY,
     "VAPID_ADMIN_EMAIL": VAPID_ADMIN_EMAIL
 }
-
 
 # PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'serviceworker.js')  # 'static', 'pwa', 'js', 'serviceworker.js')
 # PWA_APP_NAME = 'IMAE'

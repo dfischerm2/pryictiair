@@ -14,6 +14,7 @@ from django.views.static import serve
 from autenticacion.urls import autenticacion_urls
 from autenticacion.view_perfil import perfilView
 from core.ajax import ConsultasAjax
+from landing.urls import landing_urls
 from pryictiair.view_clearsitedata import clearSiteDataView
 from pryictiair import settings
 from pryictiair.view_redirect import redirectView, redirectToUrlView
@@ -49,6 +50,14 @@ urls_sistema = (
         "url": 'seguridad/',
         "sub_urls": seguridad_urls,
         "include": include('seguridad.urls'),
+        "name": None,
+        "vista": None
+    },
+    {
+        "nombre": "Landing",
+        "url": 'landing/',
+        "sub_urls": landing_urls,
+        "include": include('landing.urls'),
         "name": None,
         "vista": None
     },
@@ -101,11 +110,11 @@ if db_table_exists(Modulo._meta.db_table):
         if u["sub_urls"]:
             for su in u["sub_urls"]:
                 mod_url = "/{}{}".format(u["url"], su["url"])
-                # if modulos.filter(url=mod_url).exists():
-                #     mod = modulos.filter(url=mod_url).first()
-                #     if mod.nombre != su["nombre"]:
-                #         mod.nombre = su["nombre"]
-                #         mod.save()
+                if modulos.filter(url=mod_url).exists():
+                    mod = modulos.filter(url=mod_url).first()
+                    if mod.nombre != su["nombre"]:
+                        mod.nombre = su["nombre"]
+                        mod.save()
 
 admin.site.site_header = "{} {}".format("Administración", "pryictiair")
 admin.site.site_title = "{} {}".format("Administración", "pryictiair")
