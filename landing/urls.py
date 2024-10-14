@@ -1,8 +1,11 @@
 from django.urls import re_path
 
+from landing.views.adm_committee import committeeMemberView
+from landing.views.adm_committee_category import committeeCategoryView
 from landing.views.adm_guideline import guidelineView
 from landing.views.adm_guideline_type import guidelineTypeView
 from landing.views.adm_sponsor import sponsorView
+from landing.views.adm_summary import summaryView
 from landing.views.adm_topic import topicView
 from landing.views.adm_topic_categories import topicCategoryView
 
@@ -31,6 +34,21 @@ landing_urls = (
         "nombre": "Guideline",
         "url": 'guideline/',
         "vista": guidelineView,
+    },
+    {
+        "nombre": "Summary",
+        "url": 'summary/',
+        "vista": summaryView,
+    },
+    {
+        "nombre": "Committee category",
+        "url": 'committee_category/',
+        "vista": committeeCategoryView,
+    },
+    {
+        "nombre": "Committee member",
+        "url": 'committee_member/',
+        "vista": committeeMemberView,
     },
 )
 
