@@ -34,6 +34,8 @@ def summaryView(request):
                 if action == 'add':
                     form = Formulario(request.POST, request=request)
                     if form.is_valid():
+                        if form.cleaned_data['activo']:
+                            model.objects.filter(activo=True).update(activo=False)
                         form.save()
                         log(f"Registró un nuevo resumen {form.instance.__str__()}", request, "add",
                             obj=form.instance.id)
@@ -46,6 +48,8 @@ def summaryView(request):
                     filtro = model.objects.get(pk=int(request.POST['pk']))
                     form = Formulario(request.POST, instance=filtro, request=request)
                     if form.is_valid() and filtro:
+                        if form.cleaned_data['activo']:
+                            model.objects.filter(activo=True).exclude(pk=filtro.pk).update(activo=False)
                         form.save()
                         log(f"Editó el resumen {filtro.__str__()}", request, "change", obj=filtro.id)
                         messages.success(request, "Resumen modificado con éxito")

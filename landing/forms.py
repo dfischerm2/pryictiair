@@ -97,7 +97,7 @@ class ImportantDateForm(ModelFormBase):
 class SummaryForm(ModelFormBase):
     class Meta:
         model = Summary
-        fields = ('title', 'description',)
+        fields = ('title', 'description', 'activo',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -111,7 +111,7 @@ class SummaryForm(ModelFormBase):
 class CommitteeCategoryForm(ModelFormBase):
     class Meta:
         model = CommitteeCategory
-        fields = ('name',)
+        fields = ('name', 'order')
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -125,7 +125,7 @@ class CommitteeCategoryForm(ModelFormBase):
 class CommitteeMemberForm(ModelFormBase):
     class Meta:
         model = CommitteeMember
-        fields = ('category', 'name', 'degree', 'photo', 'linkedin', 'x', 'instagram', 'facebook', 'youtube',)
+        fields = ('category', 'name', 'degree', 'rol', 'description_rol', 'photo', 'linkedin', 'x', 'instagram', 'facebook', 'youtube',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)

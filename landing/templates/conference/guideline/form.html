@@ -51,6 +51,13 @@
     {{ form.media }}
     <script type="text/javascript">
         $(document).ready(function () {
+            $.fn.select2.defaults.set('language', 'es');
+            $('.jselect2').select2({
+                width:'50%',
+                minimumResultsForSearch:0
+            });
+        });
+        $(document).ready(function () {
             var imagenprincipal = $('#id_image').dropify({
                 messages: {
                     default: 'Arrastre y suelte un archivo o haga clic aquí.',

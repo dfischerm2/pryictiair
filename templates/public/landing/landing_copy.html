@@ -1,0 +1,711 @@
+{% extends 'public/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/landing.css">
+{% endblock %}
+
+{% block content %}
+
+    <section id="section-hero" class="fullwidthbanner-container text-light" aria-label="section-slider"
+             data-bgcolor="#101010">
+        <div id="slider-revolution">
+            <ul>
+                <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
+                    <!--  BACKGROUND IMAGE -->
+                    <img alt="" class="rev-slidebg" data-bgparallax="0"
+                         src="/static/images/landing/3d-rendering-dark-earth-space.jpg">
+                </li>
+
+                <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
+                    <!--  BACKGROUND IMAGE -->
+                    <img alt="" class="rev-slidebg" data-bgparallax="0" src="/static/images/landing/9067755.jpg">
+                </li>
+
+            </ul>
+
+            <div style="" class="tp-static-layers">
+                <div
+                        class="text-center tp-caption size-28 font-weight-bold text-white tp-static-layer"
+                        data-x="['center','center','center','center']"
+                        data-hoffset="['0']"
+                        data-y="['top','top','top','top']"
+                        data-voffset="['185']"
+                        data-lineheight="['90','90','90','90']"
+                        data-width="none"
+                        data-height="none"
+                        data-whitespace="nowrap"
+                        data-type="text"
+                        data-responsive_offset="on"
+                        data-startslide="0"
+                        data-endslide="3"
+                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"}]'
+                        data-textAlign="['center','center','center','center']"
+                        data-paddingtop="[0,0,0,0]"
+                        data-paddingright="[0,0,0,0]"
+                        data-paddingbottom="[0,0,0,0]"
+                        data-paddingleft="[0,0,0,0]"
+                >
+                </div>
+
+                <div
+                        class="text-center tp-caption size-50 font-weight-bold text-white tp-static-layer mb-3 mt-3"
+                        data-x="['center','center','center','center']"
+                        data-hoffset="['0']"
+                        data-y="['center','center','center','center']"
+                        data-lineheight="['70','70','70','70']"
+                        data-width="none"
+                        data-height="none"
+                        data-whitespace="nowrap"
+                        data-type="text"
+                        data-responsive_offset="on"
+                        data-startslide="0"
+                        data-endslide="3"
+                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"}]'
+                        data-textAlign="['center','center','center','center']"
+                        data-paddingtop="[0,0,0,0]"
+                        data-paddingright="[0,0,0,0]"
+                        data-paddingbottom="[0,0,0,0]"
+                        data-paddingleft="[0,0,0,0]"
+                >
+                    International Conference <br>on Technological Innovation <br>
+                    & AI Research
+                </div>
+
+
+                <div
+                        class="text-center tp-caption size-20 text-white tp-static-layer"
+                        data-x="['center','center','center','center']"
+                        data-hoffset="['0']"
+                        data-y="['top','top','top','top']"
+                        data-voffset="['430']"
+                        data-lineheight="['90','90','90','90']"
+                        data-width="none"
+                        data-height="none"
+                        data-whitespace="nowrap"
+                        data-type="text"
+                        data-responsive_offset="on"
+                        data-startslide="0"
+                        data-endslide="3"
+                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"}]'
+                        data-textAlign="['center','center','center','center']"
+                        data-paddingtop="[0,0,0,0]"
+                        data-paddingright="[0,0,0,0]"
+                        data-paddingbottom="[0,0,0,0]"
+                        data-paddingleft="[0,0,0,0]"
+                >
+
+                    <div class="spacer-single"></div>
+                    <div class="d-lg-flex justify-content-center sm-hide">
+                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-calendar-check-o id-color"></i><span
+                                class="text-white">March 19th to 21th 2025</span></div>
+                        {#                                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-user id-color"></i><span class="text-white">12 Speakers</span></div>#}
+                        {#                                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-map-marker id-color"></i><span class="text-white">Palo Alto, California</span></div>#}
+                    </div>
+                </div>
+
+
+                {#                <div#}
+                {#                        class="tp-caption tp-static-layer"#}
+                {#                        data-x="['center','center','center','center']"#}
+                {#                        data-hoffset="['0']"#}
+                {#                        data-y="['top','top','top','top']"#}
+                {#                        data-voffset="['506']"#}
+                {#                        data-width="none"#}
+                {#                        data-height="none"#}
+                {#                        data-whitespace="nowrap"#}
+                {#                        data-type="button"#}
+                {##}
+                {#                        data-responsive_offset="on"#}
+                {#                        data-responsive="off"#}
+                {#                        data-startslide="0"#}
+                {#                        data-endslide="3"#}
+                {#                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255, 255, 255, 1.00);bg:rgba(255, 255, 255, 0.15);bw:2px 2px 2px 2px;"}]'#}
+                {#                        data-textAlign="['center','center','center','center']"#}
+                {#                        data-paddingtop="[12,12,12,12]"#}
+                {#                        data-paddingright="[20,20,20,20]"#}
+                {#                        data-paddingbottom="[12,12,12,12]"#}
+                {#                        data-paddingleft="[20,20,20,20]"#}
+                {#                >#}
+                {#                    <a href="#section-ticket" class="btn-custom text-white scroll-to">Get Ticket</a>#}
+                {#                </div>#}
+
+                <div
+                        class="tp-caption tp-static-layer"
+                        data-x="['center','center','center','center']"
+                        data-hoffset="['0']"
+                        data-y="['top','top','top','top']"
+                        data-voffset="['506']"
+                        data-width="none"
+                        data-height="none"
+                        data-whitespace="nowrap"
+                        data-type="button"
+
+                        data-responsive_offset="on"
+                        data-responsive="off"
+                        data-startslide="0"
+                        data-endslide="3"
+                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255, 255, 255, 1.00);bg:rgba(255, 255, 255, 0.15);bw:2px 2px 2px 2px;"}]'
+                        data-textAlign="['center','center','center','center']"
+                        data-paddingtop="[12,12,12,12]"
+                        data-paddingright="[20,20,20,20]"
+                        data-paddingbottom="[12,12,12,12]"
+                        data-paddingleft="[20,20,20,20]"
+                >
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- revolution slider close -->
+
+
+    <section id="section-sponsors" data-bgimage="url(static/images/landing/3.png) fixed center no-repeat">
+        <div class="wm wm-border wow fadeInDown"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Published by</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                </div>
+
+                <div class="col-md-12 text-center wow fadeInUp">
+                    <div class="spacer-single"></div>
+                    <img src="/static/images/iet.png" alt="" style="width:300px" class="grey-hover img-sponsor"><br>
+
+                    <h2>Indexed by</h2>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+
+                    <div class="col-md-12 text-center">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <img src="/static/images/sponsor/Scopus.jpeg" alt="" class="grey-hover img-sponsor">
+                            </div>
+                            <div class="col-lg-4">
+                                <img src="/static/images/sponsor/SJR.jpeg" alt="" class="grey-hover img-sponsor"></div>
+                            <div class="col-lg-4">
+                                <img src="/static/images/sponsor/Compendex.png" class="grey-hover img-sponsor"></div>
+                        </div>
+                    </div>
+
+                    <h2>Sponsors</h2>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+
+                    <div class="owl-carousel owl-theme vertical-carousel">
+                        {% for s in sponsor %}
+                            {% if s.image %}
+                                <div class="item"><img src="{{ s.image.url }}" alt="s.name"
+                                                       class="grey-hover img-sponsor"></div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="section-countdown" aria-label="section" class="gradient-to-right pt40 pb40">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="spacer-single"></div>
+                    <div id="defaultCountdown"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- section begin -->
+    <section id="section-about" data-bgimage="url(static/exhibiz/images/bg/1.png) fixed no-repeat" class="mb-3">
+        <div class="wm wm-border wow fadeInDown">welcome</div>
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0s">
+                    {% if summary %}
+                        <h2>{{ summary.title }}</h2>
+                        <p>
+                            {{ summary.description }}.
+                        </p>
+                    {% endif %}
+
+                    <div class="spacer10"></div>
+                </div>
+
+                <div class="col-lg-6 mb-sm-30 text-center wow fadeInRight">
+                    <div class="de-images">
+                        <img class="di-small wow fadeIn" src="/static/images/landing/6.jpg" alt="">
+                        <img class="di-small-2 wow fadeIn" src="/static/images/landing/5.jpg" alt="">
+                        <img class="di-big img-fluid wow fadeInRight" data-wow-delay=".25s"
+                             src="/static/images/landing/4.jpeg" alt="">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="section-importante" aria-label="section-services-tab"
+             data-bgimage="url(static/images/landing/2.png) fixed center no-repeat">
+        <div class="wm wm-border wow fadeInDown ">for authors</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="importantdates">
+                    <h1>Important Dates</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+
+                <div class="col-md-12 wow fadeInUp">
+                    <div class="de_tab tab_style_4 text-center">
+                        <ul class="de_nav">
+                            <li class="active" data-link="#tab1">
+                                <h3>Paper Submission <span>Deadline</span></h3>
+                                <h4>Dec 1, 2024</h4>
+                            </li>
+                            <li data-link="#tab1">
+                                <h3>Notification of <span>Acceptance</span></h3>
+                                <h4>Jan 27, 2025</h4>
+                            </li>
+                            <li data-link="#tab1">
+                                <h3>Camera <span>Ready</span></h3>
+                                <h4>Feb 16, 2025</h4>
+                            </li>
+                            <li data-link="#tab1">
+                                <h3>Conference <span>Dates</span></h3>
+                                <h4>March 19-21, 2025</h4>
+                            </li>
+                        </ul>
+
+                    </div>
+
+
+                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="guidelines">
+                        <h1>Guidelines</h1>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
+                    <div class="de_tab_content text-left">
+                        <div id="tab1" class="tab_single_content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {% for gl in guidelines_by_type %}
+                                        <div class="schedule-listing">
+                                            <div class="schedule-item">
+                                                <div class="sc-info">
+                                                    <h3>{{ gl.name }}</h3>
+                                                    <p>
+                                                    <ul>
+                                                        {% for g in gl.guidelines.all %}
+                                                            <li>{{ g.content }}.</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                    </p>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="callforpapers">
+                        <h1>Call for papers</h1>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="file-info">
+                                <img src="/static/images/icons/pdf.png" class="file-icon" alt="PDF Icon">
+                                <span>Call for Papers (PDF)</span>
+                            </div>
+                            <a href="https://ictiair.tiacon.org/_files/ugd/1ffe67_436b7f6e802d4ef9bda9762a6e2e39f1.pdf?index=true"
+                               class="btn btn-primary btn-lg" target="_blank">
+                                <i class="fa fa-download"></i> Download
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="file-info">
+                                <img src="/static/images/icons/doc.png" class="file-icon" alt="Word Icon">
+                                <span>Word Template (DOCX)</span>
+                            </div>
+                            <a href="https://ictiair.tiacon.org/_files/ugd/1ffe67_8ef967ab10714f8aaa9f5b9f4a64bb5f.docx?dn=ICTIAIR%20-%20Full%20Paper%20Template.docx"
+                               class="btn btn-primary btn-lg" target="_blank">
+                                <i class="fa fa-download"></i> Download
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="file-info">
+                                <img src="/static/images/icons/latex.png" class="file-icon" alt="LaTeX Icon">
+                                <span>LaTeX Template (ZIP)</span>
+                            </div>
+                            <a href="https://ictiair.tiacon.org/_files/archives/1ffe67_0bfb1bbae033431dae2909119d0bed0b.zip?dn=IET%20LaTeX%20Template.zip"
+                               class="btn btn-primary btn-lg" target="_blank">
+                                <i class="fa fa-download"></i> Download
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="section-topics" aria-label="section-services-tab"
+             data-bgimage="url(static/images/landing/2.png) fixed center no-repeat">
+        <div class="wm wm-border wow fadeInDown ">topics</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Topics of Interest</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+                <div class="de_tab_content text-left">
+                    <div id="tab1" class="tab_single_content">
+                        <div class="accordion" id="accordionTopics">
+
+                            {% for tc in topics_by_category %}
+                                <div class="card custom-card">
+                                    <div class="card-header" id="headingOne_{{ tc.id }}">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link custom-accordion-title" type="button"
+                                                    data-toggle="collapse" data-target="#collapseOne_{{ tc.id }}"
+                                                    aria-expanded="true"
+                                                    aria-controls="collapseOne_{{ tc.id }}">
+                                                {{ tc.name }}
+                                                <i class="fa fa-chevron-down rotate-icon"></i>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne_{{ tc.id }}" class="collapse"
+                                         aria-labelledby="headingOne_{{ tc.id }}"
+                                         data-parent="#accordionTopics">
+                                        <div class="card-body custom-card-body">
+                                            <ul class="custom-list">
+                                                {% for t in tc.topics.all %}
+                                                    <li>{{ t.name }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- section begin -->
+    <section id="section-speakers" class="jarallax text-light">
+        <img src="/static/images/landing/3333.jpg" class="jarallax-img" alt="">
+        <div class="wm wm-border wow fadeInDown">Committee</div>
+        <div class="container">
+            <div class="row">
+                {% if committe_principal %}
+                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="speakers">
+                        <h1>{{ committe_principal.name }}</h1>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    {% for cp in committe_principal.members.all %}
+                        <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
+                            <!-- team member -->
+                            <div class="de-team-list">
+                                <div class="team-pic">
+                                    <img src="/static/images/women.jpeg" class="img-responsive" alt="">
+                                </div>
+                                <div class="team-desc">
+                                    <h3>{{ cp.degree }} {{ cp.name }}</h3>
+                                    <p class="lead">{{ cp.rol }}</p>
+                                    <div class="small-border"></div>
+                                    <p>{{ cp.description_rol }}</p>
+
+                                    <div class="social">
+                                        {% if cp.facebook %}
+                                            <a href="{{ cp.facebook }}"><i
+                                                    class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                        {% if cp.x %}
+                                            <a href="{{ cp.x }}"><i class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                        {% if cp.linkedin %}
+                                            <a href="{{ cp.linkedin }}"><i
+                                                    class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="details text-center mt-2">
+                                <h4>{{ cp.degree }} {{ cp.name }} <a href="javascript:void(0)"
+                                                                     class="btn btn-primary btn-rounded btn-mini"><i
+                                        class="fa fa-linkedin"></i></a></h4>
+
+                            </div>
+                            <!-- team close -->
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% for cm in committe_all %}
+                    <div class="col-md-12 text-center wow fadeInUp" id="org_comite_{{ cm.id }}">
+                        <h1>{{ cm.name }}</h1>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        {% for c in cm.members.all %}
+                            <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                                <!-- team member -->
+                                <div class="de-team-list">
+                                    <div class="team-pic">
+                                        <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
+                                    </div>
+                                </div>
+                                <div class="details text-center mt-2">
+                                    <h4>{{ c.name }} <a href="javascript:void(0)"
+                                                        class="btn btn-primary btn-rounded btn-mini"><i
+                                            class="fa fa-linkedin"></i></a></h4>
+
+                                </div>
+                                <!-- team close -->
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- section close -->
+
+    <section id="section-features">
+        <div class="wm wm-border wow fadeInDown ">features</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Why you should Join Event</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa fa-mortar-board text-light"></i>
+                        <div class="text">
+                            <h3><span>Cutting-Edge Research</span></h3>
+                            <p>Delve into the latest advancements in Artificial Intelligence, Machine Learning, Big
+                                Data, and more. Present and discuss innovative solutions shaping the future of
+                                technology.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".25s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa-sitemap text-light"></i>
+                        <div class="text">
+                            <h3><span>Global Networking</span></h3>
+                            <p>Meet and collaborate with global thought leaders, top researchers, and industry
+                                professionals. Forge valuable connections that could lead to future partnerships and
+                                joint projects.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".5s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa-microphone text-light"></i>
+                        <div class="text">
+                            <h3><span>Renowned Speakers</span></h3>
+                            <p>Gain insights from internationally recognized experts in AI and technology, including
+                                keynote addresses from leading voices in research, academia, and industry.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spacer-single sm-hide"></div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".75s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa-certificate text-light"></i>
+                        <div class="text">
+                            <h3><span>Learn from Industry Experts</span></h3>
+                            <p>Get exclusive access to keynotes and sessions led by world-renowned experts in artificial
+                                intelligence and technology. Learn directly from those pushing the boundaries of
+                                innovation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="1s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2  fa fa-book text-light"></i>
+                        <div class="text">
+                            <h3><span>Publish in Prestigious Journals</span></h3>
+                            <p>Submit your research for a chance to be published in SCOPUS and COMPENDEX indexed
+                                journals, gaining international recognition and elevating your academic profile.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="1.25s">
+                    <div class="box-number square">
+                        <i class="bg-color hover-color-2 fa fa-globe text-light"></i>
+                        <div class="text">
+                            <h3><span>Join from Anywhere</span></h3>
+                            <p>With our fully virtual event, you can participate from any location, making it easier
+                                than ever to attend sessions, engage in discussions, and present your work.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    {#    <section id="section-fun-facts" class="jarallax text-light">#}
+    {#        <img src="/static/exhibiz/images/bg/3.jpg" class="jarallax-img" alt="">#}
+    {#        <div class="container">#}
+    {#            <div class="row">#}
+    {#                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">#}
+    {#                    <div class="de_count">#}
+    {#                        <i class="icon_id-2 id-color-2"></i>#}
+    {#                        <h3>120</h3>#}
+    {#                        <span class="text-white">Attendee Capacity</span>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {##}
+    {#                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">#}
+    {#                    <div class="de_count">#}
+    {#                        <i class="icon_easel id-color-2"></i>#}
+    {#                        <h3>6</h3>#}
+    {#                        <span class="text-white">Topics</span>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {##}
+    {#                <div class="col-md-4 col-xs-6 wow fadeIn" data-wow-delay=".5s">#}
+    {#                    <div class="de_count">#}
+    {#                        <i class="icon_headphones id-color-2"></i>#}
+    {#                        <h3>4</h3>#}
+    {#                        <span class="text-white">Speakers</span>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </section>#}
+
+    <section id="section-contacts" class="text-light" data-bgcolor="#101010">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Contact Us</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+
+                <div class="col-md-8 offset-md-2 wow fadeInUp">
+                    <form name="contactForm" id='contact_form' method="post"
+                          action='https://www.madebydesignesia.com/themes/exhibiz/email.php'>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id='name_error' class='error'>Please enter your name.</div>
+                                <div>
+                                    <input type='text' name='name' id='name' class="form-control"
+                                           placeholder="Your Name">
+                                </div>
+
+                                <div id='email_error' class='error'>Please enter your valid E-mail ID.</div>
+                                <div>
+                                    <input type='text' name='email' id='email' class="form-control"
+                                           placeholder="Your Email">
+                                </div>
+
+                                <div id='phone_error' class='error'>Please enter your phone number.</div>
+                                <div>
+                                    <input type='text' name='phone' id='phone' class="form-control"
+                                           placeholder="Your Phone">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id='message_error' class='error'>Please enter your message.</div>
+                                <div>
+                                    <textarea name='message' id='message' class="form-control"
+                                              placeholder="Additional Message"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <p id='submit'>
+                                    <input type='submit' id='send_message' value='Send Email' class="btn btn-line">
+                                </p>
+                                <div id='mail_success' class='success'>Your message has been sent successfully.</div>
+                                <div id='mail_fail' class='error'>Sorry, error occured this time sending your message.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+
+    </section>
+{% endblock %}
+
+{% block jscript %}
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v16.0&appId=5465147420185697&autoLogAppEvents=1"
+            nonce="GutKLHL1"></script>
+    <!-- Popper.js -->
+    <!-- Bootstrap 4 JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#defaultCountdown').countdown({until: new Date(2025, 2, 19, 8)}); // year, month, date, hour
+            });
+
+            $('#accordionTopics').on('show.bs.collapse', function (e) {
+                $(e.target).prev('.card-header').find('.rotate-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            });
+
+            $('#accordionTopics').on('hide.bs.collapse', function (e) {
+                $(e.target).prev('.card-header').find('.rotate-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            });
+
+            $('.owl-carousel').owlCarousel({
+                loop: true,
+                margin: 40,
+                nav: false,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    600: {
+                        items: 2
+                    },
+                    1000: {
+                        items: 4 // Muestra 4 elementos a la vez
+                    }
+                }
+            });
+
+
+        })
+    </script>
+{% endblock %}
+
+
+

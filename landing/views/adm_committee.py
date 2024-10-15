@@ -78,21 +78,21 @@ def committeeMemberView(request):
             data["action"] = action = request.GET['action']
             if action == 'add':
                 data["form"] = Formulario()
-                return render(request, 'committee/member/form.html', data)
+                return render(request, 'conference/committee_member/form.html', data)
 
             elif action == 'change':
                 pk = int(request.GET['pk'])
                 committee_member = model.objects.get(pk=pk)
                 data["pk"] = pk
                 data["form"] = Formulario(instance=committee_member)
-                return render(request, 'committee/member/form.html', data)
+                return render(request, 'conference/committee_member/form.html', data)
 
             elif action == 'ver':
                 pk = int(request.GET['pk'])
                 committee_member = model.objects.get(pk=pk)
                 data["pk"] = pk
                 data["form"] = Formulario(instance=committee_member, ver=True)
-                return render(request, 'committee/member/form.html', data)
+                return render(request, 'conference/committee_member/form.html', data)
 
         # Filtrado y listado
         criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(), ''
@@ -105,4 +105,4 @@ def committeeMemberView(request):
         data["list_count"] = listado.count()
         data["url_vars"] = url_vars
         paginador(request, listado, 20, data, url_vars)
-        return render(request, 'committee/member/listado.html', data)
+        return render(request, 'conference/committee_member/listado.html', data)

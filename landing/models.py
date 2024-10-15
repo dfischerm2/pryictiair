@@ -84,6 +84,7 @@ class ImportantDate(ModeloBase):
 class Summary(ModeloBase):
     title = models.CharField(max_length=200)
     description = models.TextField()
+    activo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
@@ -96,6 +97,7 @@ class Summary(ModeloBase):
 
 class CommitteeCategory(ModeloBase):
     name = models.CharField(max_length=200)
+    order = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -103,14 +105,16 @@ class CommitteeCategory(ModeloBase):
     class Meta:
         verbose_name = 'Committee Category'
         verbose_name_plural = 'Committee Categories'
-        ordering = ['name']
+        ordering = ['order']
 
 
 class CommitteeMember(ModeloBase):
     category = models.ForeignKey(CommitteeCategory, related_name='members', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     degree = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='committee_members/')
+    rol = models.CharField(max_length=500, default='')
+    description_rol = models.TextField(default='')
+    photo = models.ImageField(upload_to='committee_members/', null=True, blank=True)
     linkedin = models.URLField(blank=True, null=True)
     facebook = models.URLField(blank=True, null=True)
     instagram = models.URLField(blank=True, null=True)

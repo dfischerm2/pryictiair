@@ -16,6 +16,7 @@ from seguridad.models import *
 
 
 def index(request):
+    from landing.models import Sponsor, Summary, GuidelineType, TopicCategory, CommitteeCategory
     data = {
         'titulo': 'Inicio',
         'ruta': request.path,
@@ -29,18 +30,32 @@ def index(request):
         if 'action' in request.GET:
             data["action"] = action = request.GET['action']
 
-
         # CONTADOR ENTORNO
         ipresult = get_client_ip(request)
         dispositivo = request.META['HTTP_USER_AGENT']
+        sponsors = Sponsor.objects.filter(status=True)
+        summary = Summary.objects.filter(status=True, activo=True).order_by('-id').first()
+        guidelines_by_type = GuidelineType.objects.prefetch_related('guidelines').filter(status=True)
+        topics_by_category = TopicCategory.objects.prefetch_related('topics').filter(status=True)
+        committe_principal = CommitteeCategory.objects.prefetch_related('members').filter(status=True, order=0).first()
+        committe_all = CommitteeCategory.objects.prefetch_related('members').filter(status=True).exclude(order=0)
         if not VisitaEntorno.objects.filter(fecha_visita=datetime.now().date(),
                                             ip=ipresult, dispositivo=dispositivo).exists():
             if not request.user.is_authenticated:
-                VisitaEntorno.objects.create(fecha_visita=datetime.now().date(), ip=ipresult, hora_visita=datetime.now().time(),
+                VisitaEntorno.objects.create(fecha_visita=datetime.now().date(), ip=ipresult,
+                                             hora_visita=datetime.now().time(),
                                              dispositivo=dispositivo)
             else:
-                VisitaEntorno.objects.create(fecha_visita=datetime.now().date(), ip=ipresult, hora_visita=datetime.now().time(), user_id=request.user.pk,
+                VisitaEntorno.objects.create(fecha_visita=datetime.now().date(), ip=ipresult,
+                                             hora_visita=datetime.now().time(), user_id=request.user.pk,
                                              dispositivo=dispositivo)
 
+        data['sponsor'] = sponsors
+        data['summary'] = summary
+        data['guidelines_by_type'] = guidelines_by_type
+        data['topics_by_category'] = topics_by_category
+        data['committe_principal'] = committe_principal
+        data['committe_all'] = committe_all
 
-        return render(request, 'public/landing/landing.html', data)
+        # return render(request, 'public/landing/landing.html', data)
+        return render(request, 'public/landing/landing_copy.html', data)
