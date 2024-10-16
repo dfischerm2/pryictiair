@@ -7,7 +7,7 @@ from core.custom_models import ModelFormBase
 class SponsorForm(ModelFormBase):
     class Meta:
         model = Sponsor
-        fields = ('name', 'image',)
+        fields = ('name', 'image', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -21,7 +21,7 @@ class SponsorForm(ModelFormBase):
 class TopicCategoryForm(ModelFormBase):
     class Meta:
         model = TopicCategory
-        fields = ('name',)
+        fields = ('name', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -35,7 +35,7 @@ class TopicCategoryForm(ModelFormBase):
 class TopicForm(ModelFormBase):
     class Meta:
         model = Topic
-        fields = ('category', 'name',)
+        fields = ('category', 'name', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -52,7 +52,7 @@ class TopicForm(ModelFormBase):
 class GuidelineTypeForm(ModelFormBase):
     class Meta:
         model = GuidelineType
-        fields = ('name',)
+        fields = ('name', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -66,7 +66,7 @@ class GuidelineTypeForm(ModelFormBase):
 class GuidelineForm(ModelFormBase):
     class Meta:
         model = Guideline
-        fields = ('guideline_type', 'content',)
+        fields = ('guideline_type', 'content', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -83,7 +83,7 @@ class GuidelineForm(ModelFormBase):
 class ImportantDateForm(ModelFormBase):
     class Meta:
         model = ImportantDate
-        fields = ('title', 'date',)
+        fields = ('title', 'date', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -97,7 +97,7 @@ class ImportantDateForm(ModelFormBase):
 class SummaryForm(ModelFormBase):
     class Meta:
         model = Summary
-        fields = ('title', 'description', 'activo',)
+        fields = ('title', 'description', 'activo', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -111,7 +111,7 @@ class SummaryForm(ModelFormBase):
 class CommitteeCategoryForm(ModelFormBase):
     class Meta:
         model = CommitteeCategory
-        fields = ('name', 'order')
+        fields = ('name', 'order', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -125,7 +125,9 @@ class CommitteeCategoryForm(ModelFormBase):
 class CommitteeMemberForm(ModelFormBase):
     class Meta:
         model = CommitteeMember
-        fields = ('category', 'name', 'degree', 'rol', 'description_rol', 'photo', 'linkedin', 'x', 'instagram', 'facebook', 'youtube',)
+        fields = (
+        'category', 'name', 'degree', 'rol', 'description_rol', 'photo', 'linkedin', 'x', 'instagram', 'facebook',
+        'youtube', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)

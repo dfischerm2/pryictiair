@@ -298,7 +298,9 @@
                                                     <p>
                                                     <ul>
                                                         {% for g in gl.guidelines.all %}
-                                                            <li>{{ g.content }}.</li>
+                                                            {% if g.status and g.public %}
+                                                                <li>{{ g.content }}.</li>
+                                                            {% endif %}
                                                         {% endfor %}
                                                     </ul>
                                                     </p>
@@ -388,7 +390,9 @@
                                         <div class="card-body custom-card-body">
                                             <ul class="custom-list">
                                                 {% for t in tc.topics.all %}
+                                                    {% if t.status and t.public %}
                                                     <li>{{ t.name }}</li>
+                                                    {% endif %}
                                                 {% endfor %}
                                             </ul>
                                         </div>
@@ -417,11 +421,16 @@
 
                     <div class="clearfix"></div>
                     {% for cp in committe_principal.members.all %}
+                        {% if cp.status and cp.public %}
                         <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
                             <!-- team member -->
                             <div class="de-team-list">
                                 <div class="team-pic">
-                                    <img src="/static/images/women.jpeg" class="img-responsive" alt="">
+                                    {% if cp.photo %}
+                                        <img src="{{ cp.photo.url }}" class="img-responsive" alt="{{ cp.name }}">
+                                    {% else %}
+                                        <img src="/static/images/women.jpeg" class="img-responsive" alt="">
+                                    {% endif %}
                                 </div>
                                 <div class="team-desc">
                                     <h3>{{ cp.degree }} {{ cp.name }}</h3>
@@ -449,6 +458,7 @@
                             </div>
                             <!-- team close -->
                         </div>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
                 {% for cm in committe_all %}
@@ -459,11 +469,16 @@
                     </div>
                     <div class="row align-items-center justify-content-center">
                         {% for c in cm.members.all %}
+                            {% if c.status and c.public %}
                             <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
                                 <!-- team member -->
                                 <div class="de-team-list">
                                     <div class="team-pic">
-                                        <img src="/static/images/men.jpeg" class="img-responsive img-circle" alt="">
+                                        {% if c.photo %}
+                                            <img src="{{ c.photo.url }}" class="img-responsive" alt="{{ cp.name }}">
+                                        {% else %}
+                                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="details text-center mt-2">
@@ -474,6 +489,7 @@
                                 </div>
                                 <!-- team close -->
                             </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% endfor %}

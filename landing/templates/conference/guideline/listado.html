@@ -42,6 +42,9 @@
                             Contenido
                         </th>
                         <th class="text-center">
+                            Público
+                        </th>
+                        <th class="text-center">
                             Acción
                         </th>
                     </tr>
@@ -54,6 +57,13 @@
                             </td>
                             <td style="text-align: center">
                                 {{ l.content }}
+                            </td>
+                            <td style="text-align: center">
+                                {% if l.public %}
+                                    SI
+                                {% else %}
+                                    NO
+                                {% endif %}
                             </td>
                             <td class="with-btn-group text-center" nowrap>
                                 <div class="btn-group dropleft">

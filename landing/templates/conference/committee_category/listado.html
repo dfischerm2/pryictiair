@@ -42,6 +42,10 @@
                             Orden
                         </th>
                         <th class="text-center">
+                            Público
+                        </th>
+                        l
+                        <th class="text-center">
                             Acción
                         </th>
                     </tr>
@@ -55,6 +59,14 @@
                             <td style="text-align: center">
                                 {{ l.order }}
                             </td>
+                            <td style="text-align: center">
+                                {% if l.public %}
+                                    SI
+                                {% else %}
+                                    NO
+                                {% endif %}
+                            </td>
+                            l
                             <td class="with-btn-group text-center" nowrap>
                                 <div class="btn-group dropleft">
                                     <button type="button" class="btn btn-white btn-sm width-100 dropdown-toggle"

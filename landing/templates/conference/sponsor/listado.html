@@ -42,6 +42,9 @@
                             Imagen
                         </th>
                         <th class="text-center">
+                            Público
+                        </th>
+                        <th class="text-center">
                             Acción
                         </th>
                     </tr>
@@ -63,6 +66,13 @@
                                              width="50px" align="middle"
                                              alt="...">
                                     </a>
+                                {% endif %}
+                            </td>
+                            <td style="text-align: center">
+                                {% if l.public %}
+                                    SI
+                                {% else %}
+                                    NO
                                 {% endif %}
                             </td>
                             <td class="with-btn-group text-center" nowrap>

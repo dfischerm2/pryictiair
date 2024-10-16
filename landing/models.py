@@ -6,6 +6,7 @@ from core.custom_models import ModeloBase
 
 
 class Sponsor(ModeloBase):
+    public = models.BooleanField(default=True)
     name = models.CharField(max_length=500)
     image = models.ImageField(upload_to='sponsor/')
 
@@ -19,6 +20,7 @@ class Sponsor(ModeloBase):
 
 
 class TopicCategory(ModeloBase):
+    public = models.BooleanField(default=True)
     name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -31,6 +33,7 @@ class TopicCategory(ModeloBase):
 
 
 class Topic(ModeloBase):
+    public = models.BooleanField(default=True)
     category = models.ForeignKey(TopicCategory, related_name='topics', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
 
@@ -44,6 +47,7 @@ class Topic(ModeloBase):
 
 
 class GuidelineType(ModeloBase):
+    public = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -56,6 +60,7 @@ class GuidelineType(ModeloBase):
 
 
 class Guideline(ModeloBase):
+    public = models.BooleanField(default=True)
     guideline_type = models.ForeignKey(GuidelineType, related_name='guidelines', on_delete=models.CASCADE)
     content = models.TextField()
 
@@ -69,6 +74,7 @@ class Guideline(ModeloBase):
 
 
 class ImportantDate(ModeloBase):
+    public = models.BooleanField(default=True)
     title = models.CharField(max_length=200)
     date = models.DateField()
 
@@ -82,6 +88,7 @@ class ImportantDate(ModeloBase):
 
 
 class Summary(ModeloBase):
+    public = models.BooleanField(default=True)
     title = models.CharField(max_length=200)
     description = models.TextField()
     activo = models.BooleanField(default=True)
@@ -96,6 +103,7 @@ class Summary(ModeloBase):
 
 
 class CommitteeCategory(ModeloBase):
+    public = models.BooleanField(default=True)
     name = models.CharField(max_length=200)
     order = models.IntegerField(default=0, null=True, blank=True)
 
@@ -109,6 +117,7 @@ class CommitteeCategory(ModeloBase):
 
 
 class CommitteeMember(ModeloBase):
+    public = models.BooleanField(default=True)
     category = models.ForeignKey(CommitteeCategory, related_name='members', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     degree = models.CharField(max_length=100)

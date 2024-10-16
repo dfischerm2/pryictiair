@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="GET">
+        <div class="container-fluid px-0">
+            <div class="form-row">
+                <div class="col-md-3 col-sm-12">
+                    <select class="form-control" name="notified">
+                        <option value="">Filtrar por estado de notificación</option>
+                        <option value="1" {% if notified == '1' %}selected{% endif %}>Notificado</option>
+                        <option value="0" {% if notified == '0' %}selected{% endif %}>No Notificado</option>
+                    </select>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Buscar por nombre o identificación"
+                               aria-label="Buscar"
+                               aria-describedby="button-addon2" name="criterio" value="{{ criterio }}">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="button-addon2"><i
+                                    class="fa fa-search"></i></button>
+                            {% if url_vars %}
+                                <a title="Ver todo" href="{{ ruta }}" class="btn btn-primary">
+                                    <i class="fas fa-sync-alt"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {#    <!-- Botón para agregar una nueva persona notificada -->#}
+    {#    <div class="mb-3">#}
+    {#        <a href="?action=add&{{ dict_url_vars }}" class="btn btn-success"><i class="fas fa-plus-circle mr-2"></i>#}
+    {#            Nueva persona notificada</a>#}
+    {#    </div>#}
+
+    <!-- Tabla de resultados -->
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table id="tabla" class="table table-hover table-td-valign-middle table-bordered">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th class="text-center">Identificación</th>
+                        <th class="text-center">Nombre Completo</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">País</th>
+                        <th class="text-center">Estado Notificación</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for l in listado %}
+                        <tr>
+                            <td class="text-center">{{ l.identification }}</td>
+                            <td class="text-center">{{ l.first_name }} {{ l.middle_name }} {{ l.last_name }}</td>
+                            <td class="text-center">{{ l.email }}</td>
+                            <td class="text-center">{{ l.country }}</td>
+                            <td class="text-center">{{ l.notified|yesno:"Notificado,No Notificado" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No se encontraron resultados.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- paginacion -->
+                {% include 'paginacion.html' %}
+                <!-- final de la paginacion -->
+
+                <!-- Total de registros -->
+                <div class="container-fluid">
+                    <hr>
+                    <div class="form-row mb-3 text-right">
+                        <span class="badge badge-info ml-1"
+                              style="font-size: 15px;">Total de registros: {{ list_count }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

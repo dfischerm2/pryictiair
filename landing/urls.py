@@ -8,6 +8,7 @@ from landing.views.adm_sponsor import sponsorView
 from landing.views.adm_summary import summaryView
 from landing.views.adm_topic import topicView
 from landing.views.adm_topic_categories import topicCategoryView
+from landing.views.view_notificacions import personNotificacionView
 
 landing_urls = (
     {
@@ -49,6 +50,11 @@ landing_urls = (
         "nombre": "Committee member",
         "url": 'committee_member/',
         "vista": committeeMemberView,
+    },
+    {
+        "nombre": "Notifications",
+        "url": 'notified/',
+        "vista": personNotificacionView,
     },
 )
 

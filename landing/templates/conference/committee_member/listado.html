@@ -51,6 +51,9 @@
                             Redes sociales
                         </th>
                         <th class="text-center">
+                            Público
+                        </th>
+                        <th class="text-center">
                             Acción
                         </th>
                     </tr>
@@ -84,7 +87,7 @@
                                 {% if l.linkedin %}
                                     <a href="{{ l.linkedin }}"
                                        target="_blank">
-                                    <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+                                        <i class="fa fa-linkedin-square" aria-hidden="true"></i>
                                     </a>
                                     <br>
                                 {% endif %}
@@ -115,6 +118,13 @@
                                         <i class="fa fa-youtube-square" aria-hidden="true"></i>
                                     </a>
                                     <br>
+                                {% endif %}
+                            </td>
+                            <td style="text-align: center">
+                                {% if l.public %}
+                                    SI
+                                {% else %}
+                                    NO
                                 {% endif %}
                             </td>
                             <td class="with-btn-group text-center" nowrap>

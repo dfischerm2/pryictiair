@@ -33,12 +33,12 @@ def index(request):
         # CONTADOR ENTORNO
         ipresult = get_client_ip(request)
         dispositivo = request.META['HTTP_USER_AGENT']
-        sponsors = Sponsor.objects.filter(status=True)
-        summary = Summary.objects.filter(status=True, activo=True).order_by('-id').first()
-        guidelines_by_type = GuidelineType.objects.prefetch_related('guidelines').filter(status=True)
-        topics_by_category = TopicCategory.objects.prefetch_related('topics').filter(status=True)
-        committe_principal = CommitteeCategory.objects.prefetch_related('members').filter(status=True, order=0).first()
-        committe_all = CommitteeCategory.objects.prefetch_related('members').filter(status=True).exclude(order=0)
+        sponsors = Sponsor.objects.filter(status=True, public=True)
+        summary = Summary.objects.filter(status=True, activo=True, public=True).order_by('-id').first()
+        guidelines_by_type = GuidelineType.objects.prefetch_related('guidelines').filter(status=True, public=True)
+        topics_by_category = TopicCategory.objects.prefetch_related('topics').filter(status=True, public=True)
+        committe_principal = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True, order=0).first()
+        committe_all = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True).exclude(order=0)
         if not VisitaEntorno.objects.filter(fecha_visita=datetime.now().date(),
                                             ip=ipresult, dispositivo=dispositivo).exists():
             if not request.user.is_authenticated:
