@@ -128,3 +128,27 @@ class CommitteeMember(ModeloBase):
         verbose_name = 'Committee Member'
         verbose_name_plural = 'Committee Members'
         ordering = ['name']
+
+
+class PersonNotificacion(ModeloBase):
+    identification = models.CharField(max_length=200, unique=True, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    last_name = models.CharField(max_length=300, null=True, blank=True)
+    first_name = models.CharField(max_length=300, null=True, blank=True)
+    middle_name = models.CharField(max_length=300, null=True, blank=True)
+    prefered_name = models.CharField(max_length=400, null=True, blank=True)
+    name_prefix = models.CharField(max_length=200, null=True, blank=True)
+    name_suffix = models.CharField(max_length=200, null=True, blank=True)
+    country = models.CharField(max_length=200, null=True, blank=True)
+    notified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{ self.identification } - {self.last_name} {self.first_name} {self.middle_name}"
+
+    def get_name_prefix_suffix(self):
+        return f"{ self.name_prefix } {self.last_name} {self.first_name} {self.middle_name} { self.name_suffix}".strip()
+
+    class Meta:
+        verbose_name = 'Person Notificacion'
+        verbose_name_plural = 'Person Notificaciones'
+        ordering = ['identification']
