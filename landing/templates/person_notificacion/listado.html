@@ -58,7 +58,14 @@
                             <td class="text-center">{{ l.first_name }} {{ l.middle_name }} {{ l.last_name }}</td>
                             <td class="text-center">{{ l.email }}</td>
                             <td class="text-center">{{ l.country }}</td>
-                            <td class="text-center">{{ l.notified|yesno:"Notificado,No Notificado" }}</td>
+                            <td class="text-center">
+                                {% if l.notified %}
+                                    <i class="fas fa-check-circle text-success"></i><br>
+                                    Date notified: {{ l.date_notified|date:'d/m/Y H:i:s' }}
+                                {% else %}
+                                    <i class="fas fa-times-circle text-danger"></i>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% empty %}
                         <tr>

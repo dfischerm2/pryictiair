@@ -150,6 +150,7 @@ class PersonNotificacion(ModeloBase):
     name_suffix = models.CharField(max_length=200, null=True, blank=True)
     country = models.CharField(max_length=200, null=True, blank=True)
     notified = models.BooleanField(default=False)
+    date_notified = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{ self.identification } - {self.last_name} {self.first_name} {self.middle_name}"
