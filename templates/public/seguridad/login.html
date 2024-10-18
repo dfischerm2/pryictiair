@@ -1,25 +1,79 @@
 {% extends 'public/base.html' %}
 {% block link %}{% endblock %}
-{% block content %}
+{% block head %}
+    <style>#slider-revolution .tp-bullets, /* Ocultar los botones de navegación */
+    #slider-revolution .tp-leftarrow, /* Ocultar la flecha izquierda */
+    #slider-revolution .tp-rightarrow { /* Ocultar la flecha derecha */
+        display: none !important;
+    }
 
-    <div class="d-flex flex-column align-items-center position-relative mt-100"
+    .tp-fullwidth-forcer{
+        height: 300px!important;
+    }
+
+    .mb-100{
+        margin-bottom: 400px;
+    }
+
+    .btn-primary{
+        color: #fff;
+    }
+
+    </style>
+{% endblock %}
+{% block content %}
+    <section id="section-hero" class="fullwidthbanner-container text-light" aria-label="section-slider" data-bgcolor="#101010" style="height: 300px!important;">
+        <div id="slider-revolution" style="height: 300px!important;">
+            <ul>
+                <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
+                    <!--  BACKGROUND IMAGE -->
+                    <img alt="" class="rev-slidebg" data-bgparallax="0"
+                         src="/static/images/landing/3d-rendering-dark-earth-space.jpg">
+                </li>
+
+            </ul>
+
+            <div style="" class="tp-static-layers">
+                <div
+                        class="text-center tp-caption size-28 font-weight-bold text-white tp-static-layer"
+                        data-x="['center','center','center','center']"
+                        data-hoffset="['0']"
+                        data-y="['top','top','top','top']"
+                        data-voffset="['185']"
+                        data-lineheight="['90','90','90','90']"
+                        data-width="none"
+                        data-height="none"
+                        data-whitespace="nowrap"
+                        data-type="text"
+                        data-responsive_offset="on"
+                        data-startslide="0"
+                        data-endslide="3"
+                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"}]'
+                        data-textAlign="['center','center','center','center']"
+                        data-paddingtop="[0,0,0,0]"
+                        data-paddingright="[0,0,0,0]"
+                        data-paddingbottom="[0,0,0,0]"
+                        data-paddingleft="[0,0,0,0]"
+                >
+
+                <h1>Login</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="d-flex flex-column align-items-center position-relative mt-5 "
          style="margin-top: 125px; padding: 25px">
         <div class="d-flex flex-column align-items-center w-lg-50 h-100 px-3 px-lg-5 pt-2">
             <div class="w-100 mt-auto" style="max-width: 526px;">
-                <h1>Iniciar Sesión</h1>
-                {#                <p class="pb-3 mb-3 mb-lg-4">#}
-                {#                    ¿Aún no tienes una cuenta?&nbsp;&nbsp;<a href='/register/'>Registrate ahora!</a>#}
-                {#                </p>#}
                 <form method="post" id="frm-logear">
                     {% csrf_token %}
                     {% if next %}
                         <input type="hidden" name="next" value="{{ next }}">
                     {% endif %}
                     <div class="pb-3 mb-3">
-                        <div class="position-relative"><i
-                                class="ai-user fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                        <div class="position-relative"><i class="fa fa-user fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                             <input class="form-control form-control-lg ps-5" type="text"
-                                   placeholder="Cédula de Identidad"
+                                   placeholder="Username"
                                    name="usuario" id="id_usuario"
                                    required>
                         </div>
@@ -27,24 +81,22 @@
                     <div class="mb-4">
                         <div class="form-group m-b-15">
                             <input class="form-control form-control-lg" type="password"
-                                   placeholder="********" data-toggle="password"
-                                   data-placement="after"
+                                   placeholder="********"
                                    name="password" required>
                         </div>
                         <br>
-                        <span class="text-muted mt-6"><i class="fa fa-info-circle"></i> Nota: Si es la primera vez que ingresa su contraseña es su número de cédula</span>
+                        <span class="text-muted mt-6"><i class="fa fa-info-circle"></i> Note: If you're having trouble logging in, try these options</span>
                     </div>
                     <div class="d-flex flex-wrap align-items-center justify-content-between pb-4">
-                        <a class="fs-sm fw-semibold text-decoration-none my-1" href="/restoreusername/">¿Olvidaste tu
-                            nombre de usuario?</a>
-                        <a class="fs-sm fw-semibold text-decoration-none my-1" href="/restorepass/">¿Olvidaste tu
-                            contraseña?</a>
+                        <a class="fs-sm fw-semibold text-decoration-none my-1 btn-link" href="/restoreusername/">¿Forgot your username?</a>
+                        <a class="fs-sm fw-semibold text-decoration-none my-1 btn-link" href="/restorepass/">¿Forgot your password?</a>
                     </div>
-                    <button class="btn btn-lg btn-primary w-100 mb-4" type="submit">Ingresar a mi cuenta</button>
+                    <button class="btn btn-lg btn-primary w-100 mb-4" type="submit">Log in to my account</button>
                 </form>
             </div>
         </div>
     </div>
+    <div class="mb-100"></div>
 
 {% endblock %}
 {% block jscript %}
