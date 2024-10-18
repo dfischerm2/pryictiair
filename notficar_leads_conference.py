@@ -25,7 +25,7 @@ def notificar_conference():
                     'persona': person,
                 }
                 to = person.email  # 'hllerenaa@unemi.edu.ec' #
-                send_html_mail(subject, "email/email_ictiair.html", datos, [to], [], [])
+                send_html_mail(subject, "email/email_ictiair.html", datos, [to], ['desarrolloepunemi@gmail.com'], [])
                 person.notified = True
                 person.save()
                 print(f"{count}.- Persona notificada: ({person.id}) {person.__str__()}")
