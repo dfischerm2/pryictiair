@@ -57,5 +57,5 @@ def index(request):
         data['committe_principal'] = committe_principal
         data['committe_all'] = committe_all
 
-        # return render(request, 'public/landing/landing.html', data)
-        return render(request, 'public/landing/landing_copy.html', data)
+        return render(request, 'public/landing/landing.html', data)
+        # return render(request, 'public/landing/landing_copy.html', data)
