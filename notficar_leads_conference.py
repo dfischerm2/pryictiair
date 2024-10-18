@@ -1,4 +1,5 @@
 import os, sys
+
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pryictiair.settings')
@@ -9,6 +10,7 @@ from landing.models import PersonNotificacion
 from pryictiair.settings import BASE_DIR
 from django.db import transaction
 
+from time import sleep
 from core.email_config import send_html_mail
 
 
@@ -30,6 +32,8 @@ def notificar_conference():
                 person.save()
                 print(f"{count}.- Persona notificada: ({person.id}) {person.__str__()}")
                 count += 1
+                if count % 15 == 0:
+                    sleep(15)
             except Exception as e:
                 per_error_nn.append(person.id)
         print(f"Registros no notificados({len(per_error_nn)}): ", per_error_nn)
