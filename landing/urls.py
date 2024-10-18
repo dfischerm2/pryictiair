@@ -1,16 +1,26 @@
 from django.urls import re_path
 
+from landing.views.adm_callforpapers import callPaperView
 from landing.views.adm_committee import committeeMemberView
 from landing.views.adm_committee_category import committeeCategoryView
 from landing.views.adm_guideline import guidelineView
 from landing.views.adm_guideline_type import guidelineTypeView
+from landing.views.adm_important_date import importantDateView
+from landing.views.adm_principalcarrousel import carrouselImageView
 from landing.views.adm_sponsor import sponsorView
+from landing.views.adm_sponsor_category import sponsorCategoryView
 from landing.views.adm_summary import summaryView
+from landing.views.adm_summary_image import summaryImageView
 from landing.views.adm_topic import topicView
 from landing.views.adm_topic_categories import topicCategoryView
 from landing.views.view_notificacions import personNotificacionView
 
 landing_urls = (
+    {
+        "nombre": "Sponsors Category",
+        "url": 'sponsor_category/',
+        "vista": sponsorCategoryView,
+    },
     {
         "nombre": "Sponsors",
         "url": 'sponsor/',
@@ -42,6 +52,11 @@ landing_urls = (
         "vista": summaryView,
     },
     {
+        "nombre": "Summary Image",
+        "url": 'summary/images/',
+        "vista": summaryImageView,
+    },
+    {
         "nombre": "Committee category",
         "url": 'committee_category/',
         "vista": committeeCategoryView,
@@ -50,6 +65,21 @@ landing_urls = (
         "nombre": "Committee member",
         "url": 'committee_member/',
         "vista": committeeMemberView,
+    },
+    {
+        "nombre": "Carrousel",
+        "url": 'carrousel/',
+        "vista": carrouselImageView,
+    },
+    {
+        "nombre": "Call For Papers",
+        "url": 'call_paper/',
+        "vista": callPaperView,
+    },
+    {
+        "nombre": "Important dates",
+        "url": 'important_date/',
+        "vista": importantDateView,
     },
     {
         "nombre": "Notifications",

@@ -143,7 +143,7 @@
                         }
                     }).done(function (data) {
                         setTimeout($.unblockUI, 1);
-                        if (data.error === false) {
+                        if (data[0].error === false) {
                             location.reload();
                         }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
