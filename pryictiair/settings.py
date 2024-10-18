@@ -197,17 +197,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # PWA
 # vapid keys para notificaciones push
-with open(os.path.join(BASE_DIR, 'vapid.json')) as json_file:
-    data = json.load(json_file)
-    VAPID_PUBLIC_KEY = data['VAPID_PUBLIC_KEY']
-    VAPID_PRIVATE_KEY = data['VAPID_PRIVATE_KEY']
-    VAPID_ADMIN_EMAIL = data['VAPID_ADMIN_EMAIL']
-
-WEBPUSH_SETTINGS = {
-    "VAPID_PUBLIC_KEY": VAPID_PUBLIC_KEY,
-    "VAPID_PRIVATE_KEY": VAPID_PRIVATE_KEY,
-    "VAPID_ADMIN_EMAIL": VAPID_ADMIN_EMAIL
-}
+# with open(os.path.join(BASE_DIR, 'vapid.json')) as json_file:
+#     data = json.load(json_file)
+#     VAPID_PUBLIC_KEY = data['VAPID_PUBLIC_KEY']
+#     VAPID_PRIVATE_KEY = data['VAPID_PRIVATE_KEY']
+#     VAPID_ADMIN_EMAIL = data['VAPID_ADMIN_EMAIL']
+#
+# WEBPUSH_SETTINGS = {
+#     "VAPID_PUBLIC_KEY": VAPID_PUBLIC_KEY,
+#     "VAPID_PRIVATE_KEY": VAPID_PRIVATE_KEY,
+#     "VAPID_ADMIN_EMAIL": VAPID_ADMIN_EMAIL
+# }
 
 # PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'serviceworker.js')  # 'static', 'pwa', 'js', 'serviceworker.js')
 # PWA_APP_NAME = 'IMAE'
