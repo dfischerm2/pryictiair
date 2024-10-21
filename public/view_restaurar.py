@@ -37,7 +37,7 @@ def generarclave():
 
 def restaurar(request):
     confi = Configuracion.objects.first()
-    data = {'titulo': 'Recuperar Clave', 'url_auth':True}
+    data = {'titulo': 'Recover Password', 'url_auth':True}
     addData(request, data)
     resp = {'resp': False}
     if request.method == 'POST':
@@ -59,24 +59,24 @@ def restaurar(request):
                                     'fecha': str(time.strftime("%Y-%m-%d %H:%M")),
                                     'correo': str(settings.EMAIL_HOST_USER)
                                 }
-                                subject = 'Cambio de contraseña'
+                                subject = 'Password Change'
                                 to = user.email
                                 send_html_mail(subject, "email/recuperar.html", datos, [to], [], [])
                                 resp['resp'] = True
                                 resp['url'] = '/'
-                                messages.success(request, 'Clave restaurada, revise su dirección de correo electrónico.')
+                                messages.success(request, 'Password restored, please check your email address.')
                             else:
-                                resp['error'] = 'El correo ingresado, no esta asociado.'
+                                resp['error'] = 'The entered email is not associated.'
                         else:
-                            resp['error'] = 'El correo ingresado, no esta asociado.'
+                            resp['error'] = 'The entered email is not associated.'
                 else:
-                    resp['error'] = 'El correo ingresado, no esta asociado.'
+                    resp['error'] = 'The entered email is not associated.'
                     return JsonResponse(resp)
             except Exception as ex:
                 resp['error'] = str(ex)
             return JsonResponse(resp)
         else:
-            data['error'] = 'Credenciales Incorrectas'
+            data['error'] = 'Incorrect Credentials'
             return JsonResponse(data)
 
     elif request.method == 'GET':

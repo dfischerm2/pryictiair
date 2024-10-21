@@ -16,7 +16,7 @@ activate(settings.TIME_ZONE)
 
 
 def login_tienda(request):
-    data = {'titulo': 'Iniciar Sesión', 'url_auth':True}
+    data = {'titulo': 'Log In', 'url_auth':True}
     addData(request, data)
     if request.method == 'GET':
         des, data['next'] = get_decrypt(request.GET.get('next'))
