@@ -107,7 +107,7 @@
                         }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         if (jqXHR.status === 403) {
-                            location.reload();
+                           console.log('Acceso denegado');
                         }
                         mensajeDanger('Error de conexión.');
                     });
