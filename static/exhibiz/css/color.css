@@ -135,7 +135,7 @@ blockquote.testimonial-big:before,
 .list-inline-style-1 li:before,
 .de-team-list p.lead
 {
-	color:var(--primary-color-1);
+	/*color:var(--primary-color-1);*/
 }
 
 .id-color-2,
