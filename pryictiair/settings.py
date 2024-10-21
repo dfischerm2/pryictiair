@@ -77,9 +77,11 @@ INSTALLED_APPS = [
     'webpush',
     'pwa',
     'landing',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -197,17 +199,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # PWA
 # vapid keys para notificaciones push
-# with open(os.path.join(BASE_DIR, 'vapid.json')) as json_file:
-#     data = json.load(json_file)
-#     VAPID_PUBLIC_KEY = data['VAPID_PUBLIC_KEY']
-#     VAPID_PRIVATE_KEY = data['VAPID_PRIVATE_KEY']
-#     VAPID_ADMIN_EMAIL = data['VAPID_ADMIN_EMAIL']
-#
-# WEBPUSH_SETTINGS = {
-#     "VAPID_PUBLIC_KEY": VAPID_PUBLIC_KEY,
-#     "VAPID_PRIVATE_KEY": VAPID_PRIVATE_KEY,
-#     "VAPID_ADMIN_EMAIL": VAPID_ADMIN_EMAIL
-# }
+with open(os.path.join(BASE_DIR, 'vapid.json')) as json_file:
+    data = json.load(json_file)
+    VAPID_PUBLIC_KEY = data['VAPID_PUBLIC_KEY']
+    VAPID_PRIVATE_KEY = data['VAPID_PRIVATE_KEY']
+    VAPID_ADMIN_EMAIL = data['VAPID_ADMIN_EMAIL']
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": VAPID_PUBLIC_KEY,
+    "VAPID_PRIVATE_KEY": VAPID_PRIVATE_KEY,
+    "VAPID_ADMIN_EMAIL": VAPID_ADMIN_EMAIL
+}
 
 # PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'serviceworker.js')  # 'static', 'pwa', 'js', 'serviceworker.js')
 # PWA_APP_NAME = 'IMAE'
@@ -315,3 +317,55 @@ LOGIN_URL = '/login/'
 
 FILE_CHARSET = 'utf-8'
 DEFAULT_CHARSET = 'utf-8'
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOWED_ORIGINS = [
+    'https://ictiair.tiacon.org',
+    'https://www.ictiair.tiacon.org',
+    'http://127.0.0.1:8080',
+    'http://127.0.0.1',
+    'http://localhost:8000',
+    'http://localhost:8080',
+    'http://localhost',
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    'https://ictiair.tiacon.org',
+    'https://www.ictiair.tiacon.org',
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'https://ictiair.tiacon.org',
+    'https://www.ictiair.tiacon.org',
+]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://ictiair.tiacon.org',
+    'https://www.ictiair.tiacon.org',
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_ALLOW_CREDENTIALS = True

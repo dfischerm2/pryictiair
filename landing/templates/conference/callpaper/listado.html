@@ -25,7 +25,7 @@
 
     <div class="mb-3">
         <a href="?action=add&{{ dict_url_vars }}" class="btn btn-success"><i class="fas fa-plus-circle mr-2"></i>
-            Nueva Categoría de comite</a>
+            Nuevo Paper</a>
     </div>
 
 
@@ -36,22 +36,19 @@
                     <thead class="thead-dark">
                     <tr>
                         <th class="text-center">
-                            Categoría
+                            Orden
+                        </th>
+                        <th class="text-center">
+                            Tipo de documento
                         </th>
                         <th class="text-center">
                             Nombre
                         </th>
                         <th class="text-center">
-                            Foto
+                            Archivo Ejemplo
                         </th>
                         <th class="text-center">
-                            Grado
-                        </th>
-                        <th class="text-center">
-                            Redes sociales
-                        </th>
-                        <th class="text-center">
-                            Público
+                            Publico
                         </th>
                         <th class="text-center">
                             Acción
@@ -62,62 +59,22 @@
                     {% for l in listado %}
                         <tr>
                             <td style="text-align: center">
-                                {{ l.category }}
+                                {{ l.order }}
+                            </td>
+                            <td style="text-align: center">
+                                {{ l.get_type_document_display }}
                             </td>
                             <td style="text-align: center">
                                 {{ l.name }}
                             </td>
                             <td style="text-align: center">
-                                {{ l.degree }}
-                            </td>
-                            <td style="text-align: center">
-                                {% if l.photo == '' %}
+                                {% if l.file_example == '' %}
                                     S/A
                                 {% else %}
-                                    <a href="{{ l.photo.url }}" data-lightbox="roadtrip"
+                                    <a target="_blank" href="{{ l.file_example.url }}" data-lightbox="roadtrip"
                                        title="{{ l.name }}">
-                                        <img id="presentaimg2" src="{{ l.photo.url }}"
-                                             class="img-thumbnail"
-                                             width="50px" align="middle"
-                                             alt="...">
+                                        <i class="fa fa-file"></i>
                                     </a>
-                                {% endif %}
-                            </td>
-                            <td style="text-align: center">
-                                {% if l.linkedin %}
-                                    <a href="{{ l.linkedin }}"
-                                       target="_blank">
-                                        <i class="fa fa-linkedin-square" aria-hidden="true"></i>
-                                    </a>
-                                    <br>
-                                {% endif %}
-                                {% if l.facebook %}
-                                    <a href="{{ l.facebook }}"
-                                       target="_blank">
-                                        <i class="fa fa-facebook-square" aria-hidden="true"></i>
-                                    </a>
-                                    <br>
-                                {% endif %}
-                                {% if l.instagram %}
-                                    <a href="{{ l.instagram }}"
-                                       target="_blank">
-                                        <i class="fa fa-instagram" aria-hidden="true"></i>
-                                    </a>
-                                    <br>
-                                {% endif %}
-                                {% if l.x %}
-                                    <a href="{{ l.x }}"
-                                       target="_blank">
-                                        <i class="fa fa-twitter-square" aria-hidden="true"></i>
-                                    </a>
-                                    <br>
-                                {% endif %}
-                                {% if l.youtube %}
-                                    <a href="{{ l.youtube }}"
-                                       target="_blank">
-                                        <i class="fa fa-youtube-square" aria-hidden="true"></i>
-                                    </a>
-                                    <br>
                                 {% endif %}
                             </td>
                             <td style="text-align: center">

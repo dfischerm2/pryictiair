@@ -16,7 +16,7 @@ activate(settings.TIME_ZONE)
 
 
 def login_tienda(request):
-    data = {'titulo': 'Iniciar Sesión', 'url_auth':True}
+    data = {'titulo': 'Log In', 'url_auth':True}
     addData(request, data)
     if request.method == 'GET':
         des, data['next'] = get_decrypt(request.GET.get('next'))
@@ -45,14 +45,14 @@ def login_tienda(request):
                         if request.POST.get('next'):
                             datos['redirect'] = request.POST.get('next')
                     else:
-                        datos['error'] = 'Este usuario a sido desvinculado del sistema'
+                        datos['error'] = 'This user has been removed from the system.'
                 else:
-                    datos['error'] = 'Credenciales Incorrectas'
+                    datos['error'] = 'Incorrect Credentials'
             else:
-                datos['error'] = 'Usuario no existe'
+                datos['error'] = 'User does not exist.'
             return JsonResponse(datos)
     except Exception as ex:
-        datos['error'] = 'Credenciales Incorrectas'
+        datos['error'] = 'Incorrect Credentials'
         messages.error(request, ex)
         return JsonResponse(datos)
 

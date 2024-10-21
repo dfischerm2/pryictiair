@@ -4,21 +4,17 @@
 
     <div class="d-flex flex-column align-items-center position-relative mt-100" style="margin-top: 125px; padding: 25px">
         <div class="mt-auto" style="max-width: 700px">
-            <h1 class="pt-3 pb-2 pb-lg-3">¿Olvidaste tu contraseña?</h1>
-            <p class="pb-2">Cambie su contraseña en tres sencillos pasos. Esto ayuda a mantener segura su nueva
-                contraseña.</p>
+            <h1 class="pt-3 pb-2 pb-lg-3">¿Forgot your password?</h1>
+            <p class="pb-2">Change your password in three easy steps. This helps keep your new password secure.</p>
             <ul class="list-unstyled pb-2 pb-lg-0 mb-4 mb-lg-5">
                 <li class="d-flex mb-2">
-                    <span class="text-primary fw-semibold me-2">1.</span>Complete su dirección de correo electrónico
-                    abajo.
+                    <span class="text-primary fw-semibold me-2">1.</span>Complete your email address.
                 </li>
                 <li class="d-flex mb-2">
-                    <span class="text-primary fw-semibold me-2">2.</span> Le enviaremos un correo electrónico temporal
-                    código.
+                    <span class="text-primary fw-semibold me-2">2.</span> We will send you a temporary email code.
                 </li>
                 <li class="d-flex mb-2">
-                    <span class="text-primary fw-semibold me-2">3.</span>Usa el código para cambiar tu contraseña en
-                    nuestro sitio web seguro.
+                    <span class="text-primary fw-semibold me-2">3.</span>Use the code to change your password on our secure website.
                 </li>
             </ul>
             <div class="card border-black">
@@ -27,12 +23,12 @@
                         <div class="position-relative"><i
                                 class="ai-key fs-lg position-absolute top-50 start-0 translate-middle-y text-black opacity-80 ms-3"></i>
                             <input class="form-control form-control-lg ps-5 input-record" type="email"  style="background-color: #ffffff;   color: black;"
-                                   placeholder="Correo electronico" name="email" id="recoverEmail" required>
+                                   placeholder="Email address" name="email" id="recoverEmail" required>
                         </div>
                     </div>
                     <center>
                     <button type="submit" class="btn btn-success transition-3d-hover">
-                        <i class="fa fa-sync"></i>&nbsp; Recuperar Contraseña
+                        <i class="fa fa-sync"></i>&nbsp; Recover Password
                     </button>
                     </center>
                 </form>
@@ -70,7 +66,7 @@
                     }
                 }).fail(function () {
                     setTimeout($.unblockUI, 1);
-                    mensajeDanger('Error de conexión.')
+                    mensajeDanger('Connection error.')
                 });
             }
         });

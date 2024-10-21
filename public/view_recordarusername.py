@@ -28,7 +28,7 @@ from django.utils.timezone import activate
 
 def recordarusername(request):
     confi = Configuracion.objects.first()
-    data = {'titulo': 'Recuperar Nombre de Usuario', 'url_auth':True}
+    data = {'titulo': 'Recover Username', 'url_auth':True}
     addData(request, data)
     resp = {'resp': False}
     if request.method == 'POST':
@@ -46,21 +46,21 @@ def recordarusername(request):
                                 'fecha': str(time.strftime("%Y-%m-%d %H:%M")),
                                 'correo': str(settings.EMAIL_HOST_USER)
                             }
-                            subject = 'Recordar nombre de usuario'
+                            subject = 'Recover Username'
                             to = us.email
                             send_html_mail(subject, "email/restaurar.html", datos, [to], [], [])
                             resp['resp'] = True
                             resp['url'] = '/'
-                            messages.success(request,'Recordatorio enviado, revise su dirección de correo electrónico.')
+                            messages.success(request,'Reminder sent, please check your email address.')
                         else:
-                            resp['error'] = 'Usuario esta deshabilitado'
+                            resp['error'] = 'User is disabled.'
                 else:
-                    resp['error'] = 'No existe usuarios asociados a este correo {} '.format(email)
+                    resp['error'] = 'No users are associated with this email {} '.format(email)
             except Exception as ex:
                 resp['error'] = str(ex)
             return JsonResponse(resp)
         else:
-            data['error'] = 'Credenciales Incorrectas'
+            data['error'] = 'Incorrect Credentials.'
             return JsonResponse(data)
 
     elif request.method == 'GET':

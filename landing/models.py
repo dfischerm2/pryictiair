@@ -4,8 +4,22 @@ from core.custom_models import ModeloBase
 
 # Create your models here.
 
+class SponsorCategory(ModeloBase):
+    order = models.IntegerField(default=0)
+    public = models.BooleanField(default=True)
+    name = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Sponsor Category'
+        verbose_name_plural = 'Sponsor Categories'
+        ordering = ['order']
+
 
 class Sponsor(ModeloBase):
+    category = models.ForeignKey(SponsorCategory, on_delete=models.CASCADE, null=True, blank=True)
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=500)
     image = models.ImageField(upload_to='sponsor/')
@@ -76,19 +90,43 @@ class Guideline(ModeloBase):
 class ImportantDate(ModeloBase):
     public = models.BooleanField(default=True)
     title = models.CharField(max_length=200)
-    date = models.DateField()
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.title} - {self.date}"
+        return f"{self.title} - {self.start_date}"
 
     class Meta:
         verbose_name = 'Important Date'
         verbose_name_plural = 'Important Dates'
-        ordering = ['date']
+        ordering = ['start_date']
+
+    def get_formatted_date_range(self):
+        if self.start_date and self.end_date:
+            start_month = self.start_date.strftime("%B")
+            start_day = self.start_date.strftime("%d")
+
+            end_month = self.end_date.strftime("%B")
+            end_day = self.end_date.strftime("%d")
+
+            if start_month == end_month:
+                if start_day == end_day:
+                    return f"{start_month} {start_day}, {self.start_date.year}"
+                return f"{start_month} {start_day} - {end_day}, {self.start_date.year}"
+            else:
+                return f"{start_month} {start_day} - {end_month} {end_day}, {self.start_date.year}"
+        elif self.start_date:
+            start_month = self.start_date.strftime("%B")
+            start_day = self.start_date.strftime("%d")
+            return f"{start_month} {start_day}, {self.start_date.year}"
+        return ""
 
 
 class Summary(ModeloBase):
     public = models.BooleanField(default=True)
+    title_principal = models.CharField(max_length=200, default='')
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
     title = models.CharField(max_length=200)
     description = models.TextField()
     activo = models.BooleanField(default=True)
@@ -100,6 +138,44 @@ class Summary(ModeloBase):
         verbose_name = 'Summary'
         verbose_name_plural = 'Summaries'
         ordering = ['title']
+
+    def get_formatted_date_range(self):
+        if self.start_date and self.end_date:
+            start_month = self.start_date.strftime("%B")
+            start_day = self.start_date.strftime("%d")
+            start_suffix = self._get_day_suffix(self.start_date.day)
+
+            end_month = self.end_date.strftime("%B")
+            end_day = self.end_date.strftime("%d")
+            end_suffix = self._get_day_suffix(self.end_date.day)
+
+            if start_month == end_month:
+                return f"{start_month} {start_day}{start_suffix} to {end_day}{end_suffix}, {self.start_date.year}"
+            else:
+                return f"{start_month} {start_day}{start_suffix} to {end_month} {end_day}{end_suffix}, {self.start_date.year}"
+        return ""
+
+    def _get_day_suffix(self, day):
+        # Retorna el sufijo correcto para los días (1st, 2nd, 3rd, etc.)
+        if 11 <= day <= 13:
+            return "th"
+        else:
+            return {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
+
+
+class SummaryImage(ModeloBase):
+    public = models.BooleanField(default=True, )
+    summary = models.ForeignKey(Summary, related_name='images', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='summary_images/')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Summary Image'
+        verbose_name_plural = 'Summary Images'
+        ordering = ['name']
 
 
 class CommitteeCategory(ModeloBase):
@@ -153,12 +229,59 @@ class PersonNotificacion(ModeloBase):
     date_notified = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f"{ self.identification } - {self.last_name} {self.first_name} {self.middle_name}"
+        return f"{self.identification} - {self.last_name} {self.first_name} {self.middle_name}"
 
     def get_name_prefix_suffix(self):
-        return f"{ self.name_prefix } {self.last_name} {self.first_name} {self.middle_name} { self.name_suffix}".strip()
+        return f"{self.name_prefix} {self.last_name} {self.first_name} {self.middle_name} {self.name_suffix}".strip()
 
     class Meta:
         verbose_name = 'Person Notificacion'
         verbose_name_plural = 'Person Notificaciones'
         ordering = ['identification']
+
+
+class PrincipalCarrousel(ModeloBase):
+    public = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
+    name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='principal_carrousel/', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Principal Carrousel'
+        verbose_name_plural = 'Principal Carrousel'
+        ordering = ['name']
+
+
+TYPE_DOCUMENT = (
+    (1, 'DOCX'),
+    (2, 'PDF'),
+    (3, 'ZIP'),
+)
+
+
+class CallForPapers(ModeloBase):
+    public = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
+    type_document = models.IntegerField(choices=TYPE_DOCUMENT)
+    name = models.CharField(max_length=200)
+    file_example = models.FileField(upload_to='callforpapers/')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Call For Papers'
+        verbose_name_plural = 'Call For Papers'
+        ordering = ['order']
+
+    def get_image_by_type_document(self):
+        if self.type_document == 1:
+            return '/static/images/icons/doc.png'
+        if self.type_document == 2:
+            return '/static/images/icons/pdf.png'
+        if self.type_document == 3:
+            return '/static/images/icons/latex.png'
+        return '/static/images/icons/pdf.png'
