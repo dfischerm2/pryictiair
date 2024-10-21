@@ -323,13 +323,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
-    'https://ister.tech',
-    'https://www.ister.tech',
-    'https://admisiones.ister.edu.ec',
-    'https://procesos.ister.edu.ec',
-    'https://postulate.ister.edu.ec',
-    'https://homologacion.ister.edu.ec',
-    'https://ister.academicok.com',
+    'https://ictiair.tiacon.org',
+    'https://www.ictiair.tiacon.org',
     'http://127.0.0.1:8080',
     'http://127.0.0.1',
     'http://localhost:8000',
@@ -338,23 +333,13 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    'https://ister.tech',
-    'https://www.ister.tech',
-    'https://procesos.ister.edu.ec',
-    'https://admisiones.ister.edu.ec',
-    'https://postulate.ister.edu.ec',
-    'https://homologacion.ister.edu.ec',
-    'https://ister.academicok.com',
+    'https://ictiair.tiacon.org',
+    'https://www.ictiair.tiacon.org',
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'https://ister.tech',
-    'https://www.ister.tech',
-    'https://procesos.ister.edu.ec',
-    'https://admisiones.ister.edu.ec',
-    'https://postulate.ister.edu.ec',
-    'https://homologacion.ister.edu.ec',
-    'https://ister.academicok.com',
+    'https://ictiair.tiacon.org',
+    'https://www.ictiair.tiacon.org',
 ]
 
 CORS_ALLOW_METHODS = [
@@ -367,13 +352,8 @@ CORS_ALLOW_METHODS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://ister.tech',
-    'https://www.ister.tech',
-    'https://procesos.ister.edu.ec',
-    'https://admisiones.ister.edu.ec',
-    'https://postulate.ister.edu.ec',
-    'https://homologacion.ister.edu.ec',
-    'https://ister.academicok.com',
+    'https://ictiair.tiacon.org',
+    'https://www.ictiair.tiacon.org',
 ]
 
 CORS_ALLOW_HEADERS = [
