@@ -77,9 +77,11 @@ INSTALLED_APPS = [
     'webpush',
     'pwa',
     'landing',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -315,3 +317,75 @@ LOGIN_URL = '/login/'
 
 FILE_CHARSET = 'utf-8'
 DEFAULT_CHARSET = 'utf-8'
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOWED_ORIGINS = [
+    'https://ister.tech',
+    'https://www.ister.tech',
+    'https://admisiones.ister.edu.ec',
+    'https://procesos.ister.edu.ec',
+    'https://postulate.ister.edu.ec',
+    'https://homologacion.ister.edu.ec',
+    'https://ister.academicok.com',
+    'http://127.0.0.1:8080',
+    'http://127.0.0.1',
+    'http://localhost:8000',
+    'http://localhost:8080',
+    'http://localhost',
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    'https://ister.tech',
+    'https://www.ister.tech',
+    'https://procesos.ister.edu.ec',
+    'https://admisiones.ister.edu.ec',
+    'https://postulate.ister.edu.ec',
+    'https://homologacion.ister.edu.ec',
+    'https://ister.academicok.com',
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'https://ister.tech',
+    'https://www.ister.tech',
+    'https://procesos.ister.edu.ec',
+    'https://admisiones.ister.edu.ec',
+    'https://postulate.ister.edu.ec',
+    'https://homologacion.ister.edu.ec',
+    'https://ister.academicok.com',
+]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://ister.tech',
+    'https://www.ister.tech',
+    'https://procesos.ister.edu.ec',
+    'https://admisiones.ister.edu.ec',
+    'https://postulate.ister.edu.ec',
+    'https://homologacion.ister.edu.ec',
+    'https://ister.academicok.com',
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_ALLOW_CREDENTIALS = True
