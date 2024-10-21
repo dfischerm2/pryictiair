@@ -45,10 +45,7 @@
                             ¿Activo?
                         </th>
                         <th class="text-center">
-                            Público
-                        </th>
-                        <th class="text-center">
-                            Acción
+                            Detalle
                         </th>
                     </tr>
                     </thead>
@@ -62,18 +59,12 @@
                                 {{ l.description }}
                             </td>
                             <td style="text-align: center">
-                                {% if l.activo %}
-                                    SI
-                                {% else %}
-                                    NO
-                                {% endif %}
-                            </td>
-                            <td style="text-align: center">
-                                {% if l.public %}
-                                    SI
-                                {% else %}
-                                    NO
-                                {% endif %}
+                                Activo: <span class="fas {% if l.activo %}fa-check-circle text-success{% else %}fa-times-circle text-danger{% endif %}"></span><br>
+                                Publico: <span class="fas {% if l.public %}fa-check-circle text-success{% else %}fa-times-circle text-danger{% endif %}"></span><br>
+                                V. Committe: <span class="fas {% if l.view_committe %}fa-check-circle text-success{% else %}fa-times-circle text-danger{% endif %}"></span><br>
+                                V. Topics: <span class="fas {% if l.view_topics %}fa-check-circle text-success{% else %}fa-times-circle text-danger{% endif %}"></span><br>
+                                V. Sponsor: <span class="fas {% if l.view_sponsors %}fa-check-circle text-success{% else %}fa-times-circle text-danger{% endif %}"></span><br>
+                                V. CallForPapers: <span class="fas {% if l.view_call_for_papers %}fa-check-circle text-success{% else %}fa-times-circle text-danger{% endif %}"></span>
                             </td>
                             <td class="with-btn-group text-center" nowrap>
                                 <div class="btn-group dropleft">

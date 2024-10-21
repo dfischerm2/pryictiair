@@ -130,6 +130,14 @@ class Summary(ModeloBase):
     title = models.CharField(max_length=200)
     description = models.TextField()
     activo = models.BooleanField(default=True)
+    view_committe = models.BooleanField(default=False)
+    text_committe = models.CharField(max_length=200, default='', null=True, blank=True)
+    view_topics = models.BooleanField(default=False)
+    text_topics = models.CharField(max_length=200, default='', null=True, blank=True)
+    view_sponsors = models.BooleanField(default=False)
+    text_sponsors = models.CharField(max_length=200, default='', null=True, blank=True)
+    view_call_for_papers = models.BooleanField(default=False)
+    text_call_for_papers = models.CharField(max_length=200, default='', null=True, blank=True)
 
     def __str__(self):
         return self.title

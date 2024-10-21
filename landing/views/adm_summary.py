@@ -82,21 +82,21 @@ def summaryView(request):
             data["action"] = action = request.GET['action']
             if action == 'add':
                 data["form"] = Formulario()
-                return render(request, 'conference/summary/form.html', data)
+                return render(request, 'conference/summary/form_summary.html', data)
 
             elif action == 'change':
                 pk = int(request.GET['pk'])
                 summary = model.objects.get(pk=pk)
                 data["pk"] = pk
                 data["form"] = Formulario(instance=summary)
-                return render(request, 'conference/summary/form.html', data)
+                return render(request, 'conference/summary/form_summary.html', data)
 
             elif action == 'ver':
                 pk = int(request.GET['pk'])
                 summary = model.objects.get(pk=pk)
                 data["pk"] = pk
                 data["form"] = Formulario(instance=summary, ver=True)
-                return render(request, 'conference/summary/form.html', data)
+                return render(request, 'conference/summary/form_summary.html', data)
 
         # Filtrado y listado
         criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(), ''

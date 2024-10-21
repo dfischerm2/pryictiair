@@ -67,8 +67,9 @@
                         data-paddingbottom="[0,0,0,0]"
                         data-paddingleft="[0,0,0,0]"
                 >
-                    International Conference <br>on Technological Innovation <br>
-                    & AI Research
+                    {% if summary %}
+                        {{ summary.title_principal|safe }}
+                    {% endif %}
                 </div>
 
 
@@ -97,7 +98,9 @@
                     <div class="spacer-single"></div>
                     <div class="d-lg-flex justify-content-center sm-hide">
                         <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-calendar-check-o id-color"></i><span
-                                class="text-white">March 19th to 21th 2025</span></div>
+                                class="text-white">{% if summary %}
+                            {{ summary.get_formatted_date_range }}
+                        {% endif %}</span></div>
                         {#                                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-user id-color"></i><span class="text-white">12 Speakers</span></div>#}
                         {#                                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-map-marker id-color"></i><span class="text-white">Palo Alto, California</span></div>#}
                     </div>
@@ -162,43 +165,26 @@
         <div class="wm wm-border wow fadeInDown"></div>
         <div class="container">
             <div class="row">
-                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
-                    <h1>Published by</h1>
-                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                </div>
-
                 <div class="col-md-12 text-center wow fadeInUp">
-                    <div class="spacer-single"></div>
-                    <img src="/static/images/iet.png" alt="" style="width:300px" class="grey-hover img-sponsor"><br>
-
-                    <h2>Indexed by</h2>
-                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                    <div class="spacer-single"></div>
-
-                    <div class="col-md-12 text-center">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <img src="/static/images/sponsor/Scopus.jpeg" alt="" class="grey-hover img-sponsor">
+                    {% if summary.view_sponsors %}
+                        {% for sp in sponsor %}
+                            <h2>{{ sp.name }}</h2>
+                            <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                            <div class="spacer-single"></div>
+                            <div class="owl-carousel owl-theme vertical-carousel">
+                                {% for s in sp.sponsors.all %}
+                                    <div class="col-md-12 text-center">
+                                        {% if s.image %}
+                                            <div class="item"><img src="{{ s.image.url }}" alt="s.name"
+                                                                   class="grey-hover img-sponsor"></div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
                             </div>
-                            <div class="col-lg-4">
-                                <img src="/static/images/sponsor/SJR.jpeg" alt="" class="grey-hover img-sponsor"></div>
-                            <div class="col-lg-4">
-                                <img src="/static/images/sponsor/Compendex.png" class="grey-hover img-sponsor"></div>
-                        </div>
-                    </div>
-
-                    <h2>Sponsors</h2>
-                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                    <div class="spacer-single"></div>
-
-                    <div class="owl-carousel owl-theme vertical-carousel">
-                        {% for s in sponsor %}
-                            {% if s.image %}
-                                <div class="item"><img src="{{ s.image.url }}" alt="s.name"
-                                                       class="grey-hover img-sponsor"></div>
-                            {% endif %}
                         {% endfor %}
-                    </div>
+                    {% else %}
+                        <h1>{{ summary.text_sponsors }}</h1>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -260,22 +246,12 @@
                 <div class="col-md-12 wow fadeInUp">
                     <div class="de_tab tab_style_4 text-center">
                         <ul class="de_nav">
-                            <li class="active" data-link="#tab1">
-                                <h3>Paper Submission <span>Deadline</span></h3>
-                                <h4>Dec 1, 2024</h4>
-                            </li>
-                            <li data-link="#tab1">
-                                <h3>Notification of <span>Acceptance</span></h3>
-                                <h4>Jan 27, 2025</h4>
-                            </li>
-                            <li data-link="#tab1">
-                                <h3>Camera <span>Ready</span></h3>
-                                <h4>Feb 16, 2025</h4>
-                            </li>
-                            <li data-link="#tab1">
-                                <h3>Conference <span>Dates</span></h3>
-                                <h4>March 19-21, 2025</h4>
-                            </li>
+                            {% for imd in importan_dates %}
+                                <li {% if forloop.first %}class="active"{% endif %} data-link="#tab{{ imd.id }}">
+                                    <h3>{{ imd.title }}</h3>
+                                    <h4>{{ imd.get_formatted_date_range }}</h4>
+                                </li>
+                            {% endfor %}
                         </ul>
 
                     </div>
@@ -321,36 +297,23 @@
                     </div>
 
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="file-info">
-                                <img src="/static/images/icons/pdf.png" class="file-icon" alt="PDF Icon">
-                                <span>Call for Papers (PDF)</span>
-                            </div>
-                            <a href="https://ictiair.tiacon.org/_files/ugd/1ffe67_436b7f6e802d4ef9bda9762a6e2e39f1.pdf?index=true"
-                               class="btn btn-primary btn-lg" target="_blank">
-                                <i class="fa fa-download"></i> Download
-                            </a>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="file-info">
-                                <img src="/static/images/icons/doc.png" class="file-icon" alt="Word Icon">
-                                <span>Word Template (DOCX)</span>
-                            </div>
-                            <a href="https://ictiair.tiacon.org/_files/ugd/1ffe67_8ef967ab10714f8aaa9f5b9f4a64bb5f.docx?dn=ICTIAIR%20-%20Full%20Paper%20Template.docx"
-                               class="btn btn-primary btn-lg" target="_blank">
-                                <i class="fa fa-download"></i> Download
-                            </a>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="file-info">
-                                <img src="/static/images/icons/latex.png" class="file-icon" alt="LaTeX Icon">
-                                <span>LaTeX Template (ZIP)</span>
-                            </div>
-                            <a href="https://ictiair.tiacon.org/_files/archives/1ffe67_0bfb1bbae033431dae2909119d0bed0b.zip?dn=IET%20LaTeX%20Template.zip"
-                               class="btn btn-primary btn-lg" target="_blank">
-                                <i class="fa fa-download"></i> Download
-                            </a>
-                        </li>
+                        {% for cfp in call_for_papers %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="file-info">
+                                    <img src="{{ cfp.get_image_by_type_document }}" class="file-icon"
+                                         alt="{{ cfp.get_type_document_display }} Icon">
+                                    <span>{{ cfp.name }}</span>
+                                </div>
+                                {% if cfp.file_example %}
+                                    <a href="{{ cfp.file_example.url }}"
+                                       class="btn btn-primary btn-lg" target="_blank">
+                                        <i class="fa fa-download"></i> Download
+                                    </a>
+                                {% endif %}
+                            </li>
+                            {% empty %}
+                            <h1>Comming soon</h1>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
@@ -391,7 +354,7 @@
                                             <ul class="custom-list">
                                                 {% for t in tc.topics.all %}
                                                     {% if t.status and t.public %}
-                                                    <li>{{ t.name }}</li>
+                                                        <li>{{ t.name }}</li>
                                                     {% endif %}
                                                 {% endfor %}
                                             </ul>
@@ -411,89 +374,96 @@
         <img src="/static/images/landing/3333.jpg" class="jarallax-img" alt="">
         <div class="wm wm-border wow fadeInDown">Committee</div>
         <div class="container">
-            <div class="row">
-                {% if committe_principal %}
-                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="speakers">
-                        <h1>{{ committe_principal.name }}</h1>
-                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                        <div class="spacer-single"></div>
-                    </div>
-
-                    <div class="clearfix"></div>
-                    {% for cp in committe_principal.members.all %}
-                        {% if cp.status and cp.public %}
-                        <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
-                            <!-- team member -->
-                            <div class="de-team-list">
-                                <div class="team-pic">
-                                    {% if cp.photo %}
-                                        <img src="{{ cp.photo.url }}" class="img-responsive" alt="{{ cp.name }}">
-                                    {% else %}
-                                        <img src="/static/images/women.jpeg" class="img-responsive" alt="">
-                                    {% endif %}
-                                </div>
-                                <div class="team-desc">
-                                    <h3>{{ cp.degree }} {{ cp.name }}</h3>
-                                    <p class="lead">{{ cp.rol }}</p>
-                                    <div class="small-border"></div>
-                                    <p>{{ cp.description_rol }}</p>
-
-                                    <div class="social">
-                                        {% if cp.facebook %}
-                                            <a href="{{ cp.facebook }}"><i
-                                                    class="fa fa-facebook fa-lg"></i></a>{% endif %}
-                                        {% if cp.x %}
-                                            <a href="{{ cp.x }}"><i class="fa fa-facebook fa-lg"></i></a>{% endif %}
-                                        {% if cp.linkedin %}
-                                            <a href="{{ cp.linkedin }}"><i
-                                                    class="fa fa-facebook fa-lg"></i></a>{% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="details text-center mt-2">
-                                <h4>{{ cp.degree }} {{ cp.name }} <a href="javascript:void(0)"
-                                                                     class="btn btn-primary btn-rounded btn-mini"><i
-                                        class="fa fa-linkedin"></i></a></h4>
-
-                            </div>
-                            <!-- team close -->
+            {% if summary.view_committe %}
+                <div class="row">
+                    {% if committe_principal %}
+                        <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="speakers">
+                            <h1>{{ committe_principal.name }}</h1>
+                            <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                            <div class="spacer-single"></div>
                         </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% for cm in committe_all %}
-                    <div class="col-md-12 text-center wow fadeInUp" id="org_comite_{{ cm.id }}">
-                        <h1>{{ cm.name }}</h1>
-                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                        <div class="spacer-single"></div>
-                    </div>
-                    <div class="row align-items-center justify-content-center">
-                        {% for c in cm.members.all %}
-                            {% if c.status and c.public %}
-                            <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                                <!-- team member -->
-                                <div class="de-team-list">
-                                    <div class="team-pic">
-                                        {% if c.photo %}
-                                            <img src="{{ c.photo.url }}" class="img-responsive" alt="{{ cp.name }}">
-                                        {% else %}
-                                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="details text-center mt-2">
-                                    <h4>{{ c.name }} <a href="javascript:void(0)"
-                                                        class="btn btn-primary btn-rounded btn-mini"><i
-                                            class="fa fa-linkedin"></i></a></h4>
 
+                        <div class="clearfix"></div>
+                        {% for cp in committe_principal.members.all %}
+                            {% if cp.status and cp.public %}
+                                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
+                                    <!-- team member -->
+                                    <div class="de-team-list">
+                                        <div class="team-pic">
+                                            {% if cp.photo %}
+                                                <img src="{{ cp.photo.url }}" class="img-responsive"
+                                                     alt="{{ cp.name }}">
+                                            {% else %}
+                                                <img src="/static/images/women.jpeg" class="img-responsive" alt="">
+                                            {% endif %}
+                                        </div>
+                                        <div class="team-desc">
+                                            <h3>{{ cp.degree }} {{ cp.name }}</h3>
+                                            <p class="lead">{{ cp.rol }}</p>
+                                            <div class="small-border"></div>
+                                            <p>{{ cp.description_rol }}</p>
+
+                                            <div class="social">
+                                                {% if cp.facebook %}
+                                                    <a href="{{ cp.facebook }}"><i
+                                                            class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                                {% if cp.x %}
+                                                    <a href="{{ cp.x }}"><i
+                                                            class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                                {% if cp.linkedin %}
+                                                    <a href="{{ cp.linkedin }}"><i
+                                                            class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="details text-center mt-2">
+                                        <h4>{{ cp.degree }} {{ cp.name }} <a href="javascript:void(0)"
+                                                                             class="btn btn-primary btn-rounded btn-mini"><i
+                                                class="fa fa-linkedin"></i></a></h4>
+
+                                    </div>
+                                    <!-- team close -->
                                 </div>
-                                <!-- team close -->
-                            </div>
                             {% endif %}
                         {% endfor %}
-                    </div>
-                {% endfor %}
-            </div>
+                    {% endif %}
+                    {% for cm in committe_all %}
+                        <div class="col-md-12 text-center wow fadeInUp" id="org_comite_{{ cm.id }}">
+                            <h1>{{ cm.name }}</h1>
+                            <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                            <div class="spacer-single"></div>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            {% for c in cm.members.all %}
+                                {% if c.status and c.public %}
+                                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                                        <!-- team member -->
+                                        <div class="de-team-list">
+                                            <div class="team-pic">
+                                                {% if c.photo %}
+                                                    <img src="{{ c.photo.url }}" class="img-responsive"
+                                                         alt="{{ cp.name }}">
+                                                {% else %}
+                                                    <img src="/static/images/women.jpeg" class="img-responsive" alt="">
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="details text-center mt-2">
+                                            <h4>{{ c.name }} <a href="javascript:void(0)"
+                                                                class="btn btn-primary btn-rounded btn-mini"><i
+                                                    class="fa fa-linkedin"></i></a></h4>
+
+                                        </div>
+                                        <!-- team close -->
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h1>{{ summary.text_committe }}</h1>
+            {% endif %}
         </div>
     </section>
     <!-- section close -->
