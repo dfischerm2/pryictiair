@@ -2,7 +2,7 @@
 from django.urls import path, re_path
 
 from .acerade import acercade
-from .index import index
+from .index import index, index_copy
 from .view_changepass import changepass
 
 #from .view_pago import pagoView
@@ -15,6 +15,7 @@ from .view_perfil import perfil
 
 urlpatterns = [
     path('', index),
+    re_path(r'^test_landing/', index_copy),
     re_path(r'^acercade/', acercade),
     #path('pago/<str:pedido_id>/', pagoView),
     re_path(r'^perfil/', perfil),

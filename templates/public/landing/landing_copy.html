@@ -288,33 +288,26 @@
                                 </div>
                             </div>
                         </div>
+                        <ul class="list-group list-group-flush">
+                            {% for cfp in call_for_papers %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="file-info">
+                                        <img src="{{ cfp.get_image_by_type_document }}" class="file-icon"
+                                             alt="{{ cfp.get_type_document_display }} Icon">
+                                        <span>{{ cfp.name }}</span>
+                                    </div>
+                                    {% if cfp.file_example %}
+                                        <a href="{{ cfp.file_example.url }}"
+                                           class="btn btn-primary btn-lg" target="_blank">
+                                            <i class="fa fa-download"></i> Download
+                                        </a>
+                                    {% endif %}
+                                </li>
+                                {% empty %}
+                                <h1>Comming soon</h1>
+                            {% endfor %}
+                        </ul>
                     </div>
-
-                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="callforpapers">
-                        <h1>Call for papers</h1>
-                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                        <div class="spacer-single"></div>
-                    </div>
-
-                    <ul class="list-group list-group-flush">
-                        {% for cfp in call_for_papers %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="file-info">
-                                    <img src="{{ cfp.get_image_by_type_document }}" class="file-icon"
-                                         alt="{{ cfp.get_type_document_display }} Icon">
-                                    <span>{{ cfp.name }}</span>
-                                </div>
-                                {% if cfp.file_example %}
-                                    <a href="{{ cfp.file_example.url }}"
-                                       class="btn btn-primary btn-lg" target="_blank">
-                                        <i class="fa fa-download"></i> Download
-                                    </a>
-                                {% endif %}
-                            </li>
-                            {% empty %}
-                            <h1>Comming soon</h1>
-                        {% endfor %}
-                    </ul>
                 </div>
             </div>
         </div>
