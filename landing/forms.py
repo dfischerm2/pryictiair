@@ -9,7 +9,7 @@ from core.custom_models import ModelFormBase
 class SponsorCategoryForm(ModelFormBase):
     class Meta:
         model = SponsorCategory
-        fields = ('order','public', 'name',)
+        fields = ('order', 'public', 'name',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -114,7 +114,14 @@ class ImportantDateForm(ModelFormBase):
 class SummaryForm(ModelFormBase):
     class Meta:
         model = Summary
-        fields = ('title_principal', 'title', 'description', 'start_date', 'end_date', 'activo', 'public',)
+        fields = (
+            'title_principal', 'title',
+            'description', 'start_date',
+            'end_date', 'activo', 'public',
+            'view_committe', 'text_committe',
+            'view_topics', 'text_topics',
+            'view_sponsors', 'text_sponsors',
+            'view_call_for_papers', 'text_call_for_papers',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -123,6 +130,24 @@ class SummaryForm(ModelFormBase):
         for k, v in self.fields.items():
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
+
+        check_fields = ['view_committe', 'view_topics', 'view_sponsors', 'view_call_for_papers']
+        text_fields = ['text_committe', 'text_topics', 'text_sponsors', 'text_call_for_papers']
+
+        for field in check_fields:
+            self.fields[field].widget.attrs['col'] = '6'
+
+        for field in text_fields:
+            self.fields[field].widget.attrs['col'] = '6'
+
+        if self.instance.view_committe:
+            self.fields['text_committe'].widget.attrs['disabled'] = 'disabled'
+        if self.instance.view_topics:
+            self.fields['text_topics'].widget.attrs['disabled'] = 'disabled'
+        if self.instance.view_sponsors:
+            self.fields['text_sponsors'].widget.attrs['disabled'] = 'disabled'
+        if self.instance.view_call_for_papers:
+            self.fields['text_call_for_papers'].widget.attrs['disabled'] = 'disabled'
 
 
 class SummaryImageForm(ModelFormBase):
