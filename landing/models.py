@@ -283,6 +283,7 @@ class CallForPapers(ModeloBase):
     order = models.IntegerField(default=0)
     type_document = models.IntegerField(choices=TYPE_DOCUMENT)
     name = models.CharField(max_length=200)
+    url = models.CharField(max_length=500, null=True, blank=True)
     file_example = models.FileField(upload_to='callforpapers/', null=True, blank=True)
 
     def __str__(self):

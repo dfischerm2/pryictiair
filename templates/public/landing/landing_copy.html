@@ -314,6 +314,11 @@
                                            class="btn btn-primary btn-lg" target="_blank">
                                             <i class="fa fa-download"></i> Download
                                         </a>
+                                    {% elif cfp.url %}
+                                        <a href="{{ cfp.url }}"
+                                           class="btn btn-primary btn-lg" target="_blank">
+                                            <i class="fa fa-download"></i> Download
+                                        </a>
                                     {% endif %}
                                 </li>
                                 {% empty %}
