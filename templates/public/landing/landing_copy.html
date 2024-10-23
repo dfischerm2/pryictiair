@@ -383,92 +383,55 @@
             {% if summary.view_committe %}
                 <div class="row">
                     {% if committe_principal %}
-                        <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="speakers">
-                            <h1>{{ committe_principal.name }}</h1>
-                            <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                            <div class="spacer-single"></div>
-                        </div>
+                        {% if committe_principal.public %}
+                            <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="speakers">
+                                <h1>{{ committe_principal.name }}</h1>
+                                <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                                <div class="spacer-single"></div>
+                            </div>
 
-                        <div class="clearfix"></div>
-                        {% for cp in committe_principal.members.all %}
-                            {% if cp.status and cp.public %}
-                                <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
-                                    <!-- team member -->
-                                    <div class="de-team-list">
-                                        <div class="team-pic">
-                                            {% if cp.photo %}
-                                                <img src="{{ cp.photo.url }}" class="img-responsive"
-                                                     alt="{{ cp.name }}">
-                                            {% else %}
-                                                {% if cp.sexo == 'MASCULINO' %}
-                                                        <img src="/static/images/men.jpeg"
-                                                             class="img-responsive" alt="">
-                                                    {% else %}
-                                                        <img src="/static/images/women.jpeg"
-                                                             class="img-responsive" alt="">
-                                                    {% endif %}
-                                            {% endif %}
-                                        </div>
-                                        <div class="team-desc">
-                                            <h3>{{ cp.degree }} {{ cp.name }}</h3>
-                                            <p class="lead">{{ cp.rol }}</p>
-                                            <div class="small-border"></div>
-                                            <p>{{ cp.description_rol }}</p>
-
-                                            <div class="social">
-                                                {% if cp.facebook %}
-                                                    <a href="{{ cp.facebook }}"><i
-                                                            class="fa fa-facebook fa-lg"></i></a>{% endif %}
-                                                {% if cp.x %}
-                                                    <a href="{{ cp.x }}"><i
-                                                            class="fa fa-facebook fa-lg"></i></a>{% endif %}
-                                                {% if cp.linkedin %}
-                                                    <a href="{{ cp.linkedin }}"><i
-                                                            class="fa fa-facebook fa-lg"></i></a>{% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="details text-center mt-2">
-                                        <h4>{{ cp.degree }} {{ cp.name }} <a href="javascript:void(0)"
-                                                                             class="btn btn-primary btn-rounded btn-mini"><i
-                                                class="fa fa-linkedin"></i></a></h4>
-
-                                    </div>
-                                    <!-- team close -->
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    {% for cm in committe_all %}
-                        <div class="col-md-12 text-center wow fadeInUp" id="org_comite_{{ cm.id }}">
-                            <h1>{{ cm.name }}</h1>
-                            <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                            <div class="spacer-single"></div>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            {% for c in cm.members.all %}
-                                {% if c.status and c.public %}
-                                    <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                            <div class="clearfix"></div>
+                            {% for cp in committe_principal.members.all %}
+                                {% if cp.status and cp.public %}
+                                    <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
                                         <!-- team member -->
                                         <div class="de-team-list">
                                             <div class="team-pic">
-                                                {% if c.photo %}
-                                                    <img src="{{ c.photo.url }}" class="img-responsive img-circle"
+                                                {% if cp.photo %}
+                                                    <img src="{{ cp.photo.url }}" class="img-responsive"
                                                          alt="{{ cp.name }}">
                                                 {% else %}
-                                                    {% if c.sexo == 'MASCULINO' %}
+                                                    {% if cp.sexo == 'MASCULINO' %}
                                                         <img src="/static/images/men.jpeg"
-                                                             class="img-responsive img-circle" alt="">
+                                                             class="img-responsive" alt="">
                                                     {% else %}
                                                         <img src="/static/images/women.jpeg"
-                                                             class="img-responsive img-circle" alt="">
+                                                             class="img-responsive" alt="">
                                                     {% endif %}
                                                 {% endif %}
                                             </div>
+                                            <div class="team-desc">
+                                                <h3>{{ cp.degree }} {{ cp.name }}</h3>
+                                                <p class="lead">{{ cp.rol }}</p>
+                                                <div class="small-border"></div>
+                                                <p>{{ cp.description_rol }}</p>
+
+                                                <div class="social">
+                                                    {% if cp.facebook %}
+                                                        <a href="{{ cp.facebook }}"><i
+                                                                class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                                    {% if cp.x %}
+                                                        <a href="{{ cp.x }}"><i
+                                                                class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                                    {% if cp.linkedin %}
+                                                        <a href="{{ cp.linkedin }}"><i
+                                                                class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="details text-center mt-2">
-                                            <h4>{{ c.name }} <a href="javascript:void(0)"
-                                                                class="btn btn-primary btn-rounded btn-mini"><i
+                                            <h4>{{ cp.degree }} {{ cp.name }} <a href="javascript:void(0)"
+                                                                                 class="btn btn-primary btn-rounded btn-mini"><i
                                                     class="fa fa-linkedin"></i></a></h4>
 
                                         </div>
@@ -476,7 +439,48 @@
                                     </div>
                                 {% endif %}
                             {% endfor %}
-                        </div>
+                        {% endif %}
+                    {% endif %}
+                    {% for cm in committe_all %}
+                        {% if cm.public %}
+                            <div class="col-md-12 text-center wow fadeInUp" id="org_comite_{{ cm.id }}">
+                                <h1>{{ cm.name }}</h1>
+                                <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                                <div class="spacer-single"></div>
+                            </div>
+                            <div class="row align-items-center justify-content-center">
+                                {% for c in cm.members.all %}
+                                    {% if c.status and c.public %}
+                                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                                            <!-- team member -->
+                                            <div class="de-team-list">
+                                                <div class="team-pic">
+                                                    {% if c.photo %}
+                                                        <img src="{{ c.photo.url }}" class="img-responsive img-circle"
+                                                             alt="{{ cp.name }}">
+                                                    {% else %}
+                                                        {% if c.sexo == 'MASCULINO' %}
+                                                            <img src="/static/images/men.jpeg"
+                                                                 class="img-responsive img-circle" alt="">
+                                                        {% else %}
+                                                            <img src="/static/images/women.jpeg"
+                                                                 class="img-responsive img-circle" alt="">
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="details text-center mt-2">
+                                                <h4>{{ c.name }} <a href="javascript:void(0)"
+                                                                    class="btn btn-primary btn-rounded btn-mini"><i
+                                                        class="fa fa-linkedin"></i></a></h4>
+
+                                            </div>
+                                            <!-- team close -->
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             {% else %}
