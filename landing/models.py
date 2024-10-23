@@ -274,6 +274,7 @@ TYPE_DOCUMENT = (
     (1, 'DOCX'),
     (2, 'PDF'),
     (3, 'ZIP'),
+    (4, 'WEB'),
 )
 
 
@@ -282,7 +283,7 @@ class CallForPapers(ModeloBase):
     order = models.IntegerField(default=0)
     type_document = models.IntegerField(choices=TYPE_DOCUMENT)
     name = models.CharField(max_length=200)
-    file_example = models.FileField(upload_to='callforpapers/')
+    file_example = models.FileField(upload_to='callforpapers/', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -299,4 +300,6 @@ class CallForPapers(ModeloBase):
             return '/static/images/icons/pdf.png'
         if self.type_document == 3:
             return '/static/images/icons/latex.png'
+        if self.type_document == 4:
+            return '/static/images/icons/world-wide-web.png'
         return '/static/images/icons/pdf.png'
