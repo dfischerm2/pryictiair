@@ -1,0 +1,29 @@
+{% extends 'email/base_ictiair.html' %}
+
+{% block titulo %}{{ sucursal }}{% endblock %}
+{% block content %}
+    <div style="color:#555555; line-height:120%; font-family:Arial,'Helvetica Neue',Helvetica,sans-serif; padding-right:10px; padding-left:10px; padding-top:10px; padding-bottom:10px">
+        <div style="font-size:12px; line-height:14px; color:#555555; font-family:Arial,'Helvetica Neue',Helvetica,sans-serif; text-align:left">
+            <p style="margin:0; font-size:14px; line-height:17px">You have received a new message through the contact
+                form on the website. Below are the details of the person who has contacted you:</p>
+            <br>
+            <p style="margin:0; font-size:14px; line-height:17px"><b>Names:</b> {{ nombres }}</p>
+            <p style="margin:0; font-size:14px; line-height:17px"><b>Email:</b> {{ correo }}</p>
+            <p style="margin:0; font-size:14px; line-height:17px"><b>Phone:</b> {{ telefono }}</p>
+            <br>
+            <p style="margin:0; font-size:14px; line-height:17px"><b>Message:</b></p>
+            <p style="margin:0; font-size:14px; line-height:17px">"{{ mensaje }}"</p>
+            <br>
+            <p style="margin:0; font-size:14px; line-height:17px">Please contact this person as soon as possible to
+                address their request.</p>
+            <br>
+        </div>
+    </div>
+    <div style="padding-right:10px; padding-left:10px; padding-top:10px; padding-bottom:10px">
+        <div align="center">
+            <div style="border-top:1px solid #BBBBBB; width:100%; line-height:1px; height:1px; font-size:1px">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+{% endblock %}

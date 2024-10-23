@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import JsonResponse
@@ -16,16 +17,39 @@ from seguridad.models import *
 
 
 def index(request):
-    from landing.models import Summary, GuidelineType, TopicCategory, CommitteeCategory, SponsorCategory, ImportantDate, CallForPapers
+    from landing.models import Summary, GuidelineType, TopicCategory, CommitteeCategory, SponsorCategory, ImportantDate, \
+        CallForPapers
     data = {
         'titulo': 'Landing page',
         'ruta': request.path,
         'fecha': datetime.now(),
     }
     addData(request, data)
+    confi_ = Configuracion.get_instancia()
 
     if request.method == 'POST':
-        action = request.POST['action']
+        res_json = []
+        try:
+            action = request.POST['action']
+            if action == 'send_mail':
+                nombre, email, telefono, mensaje = request.POST['name'], request.POST['email'], request.POST['phone'], \
+                    request.POST['message']
+                datos = {
+                    'sucursal': request.config.nombre_empresa,
+                    'nombres': nombre,
+                    'correo': email,
+                    'telefono': telefono,
+                    'mensaje': mensaje
+                }
+                to = confi_.email_notificacion
+                subject = f"New Message Received from the 'Contact Us' Landing Page"
+                send_html_mail(subject, "email/email_contactanos.html", datos, [to], [], [])
+                messages.success(request, 'Your message has been sent successfully.')
+                res_json.append({'error': False, 'reload': True})
+
+        except Exception as ex:
+            res_json.append({'error': True, "message": f"Sorry, error occured this time sending your message. {ex}"})
+        return JsonResponse(res_json, safe=False)
     elif request.method == 'GET':
         if 'action' in request.GET:
             data["action"] = action = request.GET['action']
@@ -39,8 +63,10 @@ def index(request):
         call_for_papers = CallForPapers.objects.filter(status=True, public=True)
         guidelines_by_type = GuidelineType.objects.prefetch_related('guidelines').filter(status=True, public=True)
         topics_by_category = TopicCategory.objects.prefetch_related('topics').filter(status=True, public=True)
-        committe_principal = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True, order=0).first()
-        committe_all = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True).exclude(order=0)
+        committe_principal = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True,
+                                                                                          order=0).first()
+        committe_all = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True).exclude(
+            order=0)
         if not VisitaEntorno.objects.filter(fecha_visita=datetime.now().date(),
                                             ip=ipresult, dispositivo=dispositivo).exists():
             if not request.user.is_authenticated:
@@ -66,16 +92,39 @@ def index(request):
 
 
 def index_copy(request):
-    from landing.models import Summary, GuidelineType, TopicCategory, CommitteeCategory, SponsorCategory, ImportantDate, CallForPapers
+    from landing.models import Summary, GuidelineType, TopicCategory, CommitteeCategory, SponsorCategory, ImportantDate, \
+        CallForPapers
     data = {
         'titulo': 'Landing page',
         'ruta': request.path,
         'fecha': datetime.now(),
     }
     addData(request, data)
+    confi_ = Configuracion.get_instancia()
 
     if request.method == 'POST':
-        action = request.POST['action']
+        res_json = []
+        try:
+            action = request.POST['action']
+            if action == 'send_mail':
+                nombre, email, telefono, mensaje = request.POST['name'], request.POST['email'], request.POST['phone'], \
+                    request.POST['message']
+                datos = {
+                    'sucursal': request.config.nombre_empresa,
+                    'nombres': nombre,
+                    'correo': email,
+                    'telefono': telefono,
+                    'mensaje': mensaje
+                }
+                to = confi_.email_notificacion
+                subject = f"New Message Received from the 'Contact Us' Landing Page"
+                send_html_mail(subject, "email/email_contactanos.html", datos, [to], [], [])
+                messages.success(request, 'Your message has been sent successfully.')
+                res_json.append({'error': False, 'reload': True})
+
+        except Exception as ex:
+            res_json.append({'error': True, "message": f"Sorry, error occured this time sending your message. {ex}"})
+        return JsonResponse(res_json, safe=False)
     elif request.method == 'GET':
         if 'action' in request.GET:
             data["action"] = action = request.GET['action']
@@ -89,8 +138,10 @@ def index_copy(request):
         call_for_papers = CallForPapers.objects.filter(status=True, public=True)
         guidelines_by_type = GuidelineType.objects.prefetch_related('guidelines').filter(status=True, public=True)
         topics_by_category = TopicCategory.objects.prefetch_related('topics').filter(status=True, public=True)
-        committe_principal = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True, order=0).first()
-        committe_all = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True).exclude(order=0)
+        committe_principal = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True,
+                                                                                          order=0).first()
+        committe_all = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True).exclude(
+            order=0)
         if not VisitaEntorno.objects.filter(fecha_visita=datetime.now().date(),
                                             ip=ipresult, dispositivo=dispositivo).exists():
             if not request.user.is_authenticated:
@@ -113,4 +164,3 @@ def index_copy(request):
 
         # return render(request, 'public/landing/landing.html', data)
         return render(request, 'public/landing/landing_copy.html', data)
-

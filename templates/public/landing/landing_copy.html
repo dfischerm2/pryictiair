@@ -623,8 +623,9 @@
                 </div>
 
                 <div class="col-md-8 offset-md-2 wow fadeInUp">
-                    <form name="contactForm" id='contact_form' method="post"
-                          action='https://www.madebydesignesia.com/themes/exhibiz/email.php'>
+                    <form name="contactForm" id='contact_form' method="post">
+                        {% csrf_token %}
+                        <input type="hidden" value="send_mail" name="action" id="action">
                         <div class="row">
                             <div class="col-md-6">
                                 <div id='name_error' class='error'>Please enter your name.</div>
@@ -654,8 +655,8 @@
                             </div>
 
                             <div class="col-md-12 text-center">
-                                <p id='submit'>
-                                    <input type='submit' id='send_message' value='Send Email' class="btn btn-primary">
+                                <p>
+                                    <button type='submit' class="btn btn-primary">Send Email</button>
                                 </p>
                                 <div id='mail_success' class='success'>Your message has been sent successfully.</div>
                                 <div id='mail_fail' class='error'>Sorry, error occured this time sending your message.
@@ -680,7 +681,8 @@
     <!-- Popper.js -->
     <!-- Bootstrap 4 JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+    <script src="/static/jquery.blockUI.js"></script>
+    <script src="/static/js/forms.js"></script>
     <script>
         $(document).ready(function () {
             $(function () {
