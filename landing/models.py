@@ -7,6 +7,7 @@ from core.custom_models import ModeloBase
 class SponsorCategory(ModeloBase):
     order = models.IntegerField(default=0)
     public = models.BooleanField(default=True)
+    carrousel = models.BooleanField(default=False)
     name = models.CharField(max_length=300)
 
     def __str__(self):
@@ -19,7 +20,7 @@ class SponsorCategory(ModeloBase):
 
 
 class Sponsor(ModeloBase):
-    category = models.ForeignKey(SponsorCategory, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(SponsorCategory, related_name='sponsors', on_delete=models.CASCADE, null=True, blank=True)
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=500)
     image = models.ImageField(upload_to='sponsor/')
@@ -201,8 +202,14 @@ class CommitteeCategory(ModeloBase):
 
 
 class CommitteeMember(ModeloBase):
+    SEXO = (
+        ("MASCULINO", "Masculino"),
+        ("FEMENINO", "Femenino"),
+        ("NINGUNO", "Sin definir"),
+    )
     public = models.BooleanField(default=True)
     category = models.ForeignKey(CommitteeCategory, related_name='members', on_delete=models.CASCADE)
+    sexo = models.CharField(verbose_name="Sexo", max_length=50, choices=SEXO, default="NINGUNO",  null=True, blank=True)
     name = models.CharField(max_length=200)
     degree = models.CharField(max_length=100)
     rol = models.CharField(max_length=500, default='')

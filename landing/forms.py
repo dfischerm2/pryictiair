@@ -9,7 +9,7 @@ from core.custom_models import ModelFormBase
 class SponsorCategoryForm(ModelFormBase):
     class Meta:
         model = SponsorCategory
-        fields = ('order', 'public', 'name',)
+        fields = ('order', 'public', 'carrousel', 'name',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -183,7 +183,7 @@ class CommitteeMemberForm(ModelFormBase):
     class Meta:
         model = CommitteeMember
         fields = (
-            'category', 'name', 'degree', 'rol', 'description_rol', 'photo', 'linkedin', 'x', 'instagram', 'facebook',
+            'category', 'sexo', 'name', 'degree', 'rol', 'description_rol', 'photo', 'linkedin', 'x', 'instagram', 'facebook',
             'youtube', 'public',)
 
     def __init__(self, *args, **kwargs):

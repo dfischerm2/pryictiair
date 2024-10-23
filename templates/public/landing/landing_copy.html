@@ -171,16 +171,29 @@
                             <h2>{{ sp.name }}</h2>
                             <div class="separator"><span><i class="fa fa-square"></i></span></div>
                             <div class="spacer-single"></div>
-                            <div class="owl-carousel owl-theme vertical-carousel">
-                                {% for s in sp.sponsors.all %}
-                                    <div class="col-md-12 text-center">
+                            {% if sp.carrousel %}
+                                <!-- Si es un carrusel -->
+                                <div class="owl-carousel owl-theme vertical-carousel">
+                                    {% for s in sp.sponsors.all %}
                                         {% if s.image %}
-                                            <div class="item"><img src="{{ s.image.url }}" alt="s.name"
+                                            <div class="item"><img src="{{ s.image.url }}" alt="{{ s.name }}"
                                                                    class="grey-hover img-sponsor"></div>
                                         {% endif %}
-                                    </div>
-                                {% endfor %}
-                            </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <!-- Si NO es un carrusel -->
+                                <div class="row d-flex justify-content-center">
+                                    {% for s in sp.sponsors.all %}
+                                        {% if s.image %}
+                                            <div class="col-lg-4">
+                                                <img src="{{ s.image.url }}" alt="{{ s.name }}"
+                                                     class="grey-hover img-sponsor">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     {% else %}
                         <h1>{{ summary.text_sponsors }}</h1>
@@ -387,7 +400,13 @@
                                                 <img src="{{ cp.photo.url }}" class="img-responsive"
                                                      alt="{{ cp.name }}">
                                             {% else %}
-                                                <img src="/static/images/women.jpeg" class="img-responsive" alt="">
+                                                {% if cp.sexo == 'MASCULINO' %}
+                                                        <img src="/static/images/men.jpeg"
+                                                             class="img-responsive" alt="">
+                                                    {% else %}
+                                                        <img src="/static/images/women.jpeg"
+                                                             class="img-responsive" alt="">
+                                                    {% endif %}
                                             {% endif %}
                                         </div>
                                         <div class="team-desc">
@@ -434,10 +453,16 @@
                                         <div class="de-team-list">
                                             <div class="team-pic">
                                                 {% if c.photo %}
-                                                    <img src="{{ c.photo.url }}" class="img-responsive"
+                                                    <img src="{{ c.photo.url }}" class="img-responsive img-circle"
                                                          alt="{{ cp.name }}">
                                                 {% else %}
-                                                    <img src="/static/images/women.jpeg" class="img-responsive" alt="">
+                                                    {% if c.sexo == 'MASCULINO' %}
+                                                        <img src="/static/images/men.jpeg"
+                                                             class="img-responsive img-circle" alt="">
+                                                    {% else %}
+                                                        <img src="/static/images/women.jpeg"
+                                                             class="img-responsive img-circle" alt="">
+                                                    {% endif %}
                                                 {% endif %}
                                             </div>
                                         </div>
