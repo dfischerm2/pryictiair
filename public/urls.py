@@ -14,7 +14,7 @@ from .view_perfil import perfil
 
 
 urlpatterns = [
-    path('', index),
+    path('', index_copy),
     re_path(r'^test_landing/', index_copy),
     re_path(r'^acercade/', acercade),
     #path('pago/<str:pedido_id>/', pagoView),
