@@ -310,5 +310,5 @@ class CallForPapers(ModeloBase):
         if self.type_document == 3:
             return '/static/images/icons/latex.png'
         if self.type_document == 4:
-            return '/static/images/icons/world-wide-web.png'
-        return '/static/images/icons/pdf.png'
+            return '/static/images/icons/file.png'
+        return '/static/images/icons/file.png'
