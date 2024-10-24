@@ -173,10 +173,16 @@ class Summary(ModeloBase):
 
 
 class SummaryImage(ModeloBase):
+    TYPE_POSITION = (
+        (1, 'START'),
+        (2, 'MIDDLE'),
+        (3, 'END'),
+    )
     public = models.BooleanField(default=True, )
     summary = models.ForeignKey(Summary, related_name='images', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     image = models.ImageField(upload_to='summary_images/')
+    position = models.IntegerField(choices=TYPE_POSITION, default=1)
 
     def __str__(self):
         return self.name
@@ -185,6 +191,7 @@ class SummaryImage(ModeloBase):
         verbose_name = 'Summary Image'
         verbose_name_plural = 'Summary Images'
         ordering = ['name']
+        unique_together = ['summary', 'position']
 
 
 class CommitteeCategory(ModeloBase):
@@ -284,6 +291,7 @@ class CallForPapers(ModeloBase):
     type_document = models.IntegerField(choices=TYPE_DOCUMENT)
     name = models.CharField(max_length=200)
     url = models.CharField(max_length=500, null=True, blank=True)
+    name_button = models.CharField(max_length=100, null=True, blank=True)
     file_example = models.FileField(upload_to='callforpapers/', null=True, blank=True)
 
     def __str__(self):

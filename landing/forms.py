@@ -9,13 +9,14 @@ from core.custom_models import ModelFormBase
 class SponsorCategoryForm(ModelFormBase):
     class Meta:
         model = SponsorCategory
-        fields = ('order', 'public', 'carrousel', 'name',)
+        fields = ('order', 'name', 'public', 'carrousel', )
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
         self.editando = 'instance' in kwargs
         super(SponsorCategoryForm, self).__init__(*args, **kwargs)
         for k, v in self.fields.items():
+            if k in ['public', 'carrousel']: self.fields[k].widget.attrs['col'] = '6'
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
 
@@ -31,6 +32,8 @@ class SponsorForm(ModelFormBase):
         super(SponsorForm, self).__init__(*args, **kwargs)
         self.fields['category'].queryset = self.fields['category'].queryset.filter(status=True).order_by('-id')
         for k, v in self.fields.items():
+            if k == 'category':  # Aplica jselect2 solo al campo ForeignKey
+                self.fields[k].widget.attrs['class'] = "jselect2"
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
 
@@ -131,7 +134,7 @@ class SummaryForm(ModelFormBase):
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
 
-        check_fields = ['view_committe', 'view_topics', 'view_sponsors', 'view_call_for_papers']
+        check_fields = ['view_committe', 'view_topics', 'view_sponsors', 'view_call_for_papers', 'activo', 'public', 'start_date', 'end_date']
         text_fields = ['text_committe', 'text_topics', 'text_sponsors', 'text_call_for_papers']
 
         for field in check_fields:
@@ -153,7 +156,7 @@ class SummaryForm(ModelFormBase):
 class SummaryImageForm(ModelFormBase):
     class Meta:
         model = SummaryImage
-        fields = ('summary', 'name', 'image', 'public',)
+        fields = ('summary', 'name', 'public', 'position', 'image', )
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -161,6 +164,8 @@ class SummaryImageForm(ModelFormBase):
         super(SummaryImageForm, self).__init__(*args, **kwargs)
         self.fields['summary'].widget.attrs['readonly'] = "readonly"
         for k, v in self.fields.items():
+            if k in ['position', 'public']:
+                self.fields[k].widget.attrs['col'] = '6'
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
 
@@ -192,8 +197,10 @@ class CommitteeMemberForm(ModelFormBase):
         super(CommitteeMemberForm, self).__init__(*args, **kwargs)
         self.fields['category'].queryset = self.fields['category'].queryset.filter(status=True).order_by('-id')
         for k, v in self.fields.items():
-            if k == 'category':  # Aplica jselect2 solo al campo ForeignKey
+            if k in ['category', 'sexo']:  # Aplica jselect2 solo al campo ForeignKey
                 self.fields[k].widget.attrs['class'] = "jselect2"
+            if k in ['category', 'sexo', 'degree', 'rol', 'linkedin', 'x', 'instagram', 'facebook', 'youtube', 'public']:
+                self.fields[k].widget.attrs['col'] = "6"
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
 
@@ -208,6 +215,8 @@ class PrincipalCarrouselForm(ModelFormBase):
         self.editando = 'instance' in kwargs
         super(PrincipalCarrouselForm, self).__init__(*args, **kwargs)
         for k, v in self.fields.items():
+            if k in ['order', 'public']:
+                self.fields[k].widget.attrs['col'] = '6'
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
 
@@ -215,7 +224,7 @@ class PrincipalCarrouselForm(ModelFormBase):
 class CallForPapersForm(ModelFormBase):
     class Meta:
         model = CallForPapers
-        fields = ('name', 'type_document', 'order', 'public', 'url', 'file_example')
+        fields = ('name', 'type_document', 'order', 'name_button', 'public', 'url', 'file_example')
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
@@ -223,5 +232,7 @@ class CallForPapersForm(ModelFormBase):
         super(CallForPapersForm, self).__init__(*args, **kwargs)
         self.fields['type_document'].queryset = TYPE_DOCUMENT
         for k, v in self.fields.items():
+            if k in ['order', 'name_button', 'public', 'type_document', 'url',]:
+                self.fields[k].widget.attrs['col'] = '6'
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'

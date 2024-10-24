@@ -93,7 +93,7 @@ def index(request):
 
 def index_copy(request):
     from landing.models import Summary, GuidelineType, TopicCategory, CommitteeCategory, SponsorCategory, ImportantDate, \
-        CallForPapers
+        CallForPapers, PrincipalCarrousel
     data = {
         'titulo': 'Landing page',
         'ruta': request.path,
@@ -142,6 +142,7 @@ def index_copy(request):
                                                                                           order=0).first()
         committe_all = CommitteeCategory.objects.prefetch_related('members').filter(status=True, public=True).exclude(
             order=0)
+        carrousel = PrincipalCarrousel.objects.filter(status=True, public=True)
         if not VisitaEntorno.objects.filter(fecha_visita=datetime.now().date(),
                                             ip=ipresult, dispositivo=dispositivo).exists():
             if not request.user.is_authenticated:
@@ -161,6 +162,7 @@ def index_copy(request):
         data['committe_principal'] = committe_principal
         data['committe_all'] = committe_all
         data['call_for_papers'] = call_for_papers
+        data['carrousel'] = carrousel
 
         # return render(request, 'public/landing/landing.html', data)
         return render(request, 'public/landing/landing_copy.html', data)

@@ -10,16 +10,30 @@
              data-bgcolor="#101010">
         <div id="slider-revolution">
             <ul>
-                <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
-                    <!--  BACKGROUND IMAGE -->
-                    <img alt="" class="rev-slidebg" data-bgparallax="0"
-                         src="/static/images/landing/3d-rendering-dark-earth-space.jpg">
-                </li>
+                {% for ca in carrousel %}
 
-                <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
-                    <!--  BACKGROUND IMAGE -->
-                    <img alt="" class="rev-slidebg" data-bgparallax="0" src="/static/images/landing/9067755.jpg">
-                </li>
+                    <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
+                        <!--  BACKGROUND IMAGE -->
+                        {% if ca.image %}
+                            <img alt="{{ ca.name }}" class="rev-slidebg" data-bgparallax="0"
+                                 src="{{ ca.image.url }}">
+                        {% else %}
+                            <img alt="{{ ca.name }}" class="rev-slidebg" data-bgparallax="0"
+                                 src="/static/images/landing/3d-rendering-dark-earth-space.jpg">
+                        {% endif %}
+                    </li>
+                    {% empty %}
+                    <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
+                        <!--  BACKGROUND IMAGE -->
+                        <img alt="" class="rev-slidebg" data-bgparallax="0"
+                             src="/static/images/landing/3d-rendering-dark-earth-space.jpg">
+                    </li>
+
+                    <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
+                        <!--  BACKGROUND IMAGE -->
+                        <img alt="" class="rev-slidebg" data-bgparallax="0" src="/static/images/landing/9067755.jpg">
+                    </li>
+                {% endfor %}
 
             </ul>
 
@@ -105,32 +119,6 @@
                         {#                                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-map-marker id-color"></i><span class="text-white">Palo Alto, California</span></div>#}
                     </div>
                 </div>
-
-
-                {#                <div#}
-                {#                        class="tp-caption tp-static-layer"#}
-                {#                        data-x="['center','center','center','center']"#}
-                {#                        data-hoffset="['0']"#}
-                {#                        data-y="['top','top','top','top']"#}
-                {#                        data-voffset="['506']"#}
-                {#                        data-width="none"#}
-                {#                        data-height="none"#}
-                {#                        data-whitespace="nowrap"#}
-                {#                        data-type="button"#}
-                {##}
-                {#                        data-responsive_offset="on"#}
-                {#                        data-responsive="off"#}
-                {#                        data-startslide="0"#}
-                {#                        data-endslide="3"#}
-                {#                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255, 255, 255, 1.00);bg:rgba(255, 255, 255, 0.15);bw:2px 2px 2px 2px;"}]'#}
-                {#                        data-textAlign="['center','center','center','center']"#}
-                {#                        data-paddingtop="[12,12,12,12]"#}
-                {#                        data-paddingright="[20,20,20,20]"#}
-                {#                        data-paddingbottom="[12,12,12,12]"#}
-                {#                        data-paddingleft="[20,20,20,20]"#}
-                {#                >#}
-                {#                    <a href="#section-ticket" class="btn-custom text-white scroll-to">Get Ticket</a>#}
-                {#                </div>#}
 
                 <div
                         class="tp-caption tp-static-layer"
@@ -234,10 +222,21 @@
 
                 <div class="col-lg-6 mb-sm-30 text-center wow fadeInRight">
                     <div class="de-images">
-                        <img class="di-small wow fadeIn" src="/static/images/landing/6.jpg" alt="">
-                        <img class="di-small-2 wow fadeIn" src="/static/images/landing/5.jpg" alt="">
-                        <img class="di-big img-fluid wow fadeInRight" data-wow-delay=".25s"
-                             src="/static/images/landing/4.jpeg" alt="">
+                        {% for si in summary.images.all %}
+                            {% if si.status and si.public and si.position == 1 %}
+                                <img class="di-small wow fadeIn" src="{{ si.image.url }}" alt="">
+                            {% elif si.status and si.public and si.position == 2 %}
+                                <img class="di-big img-fluid wow fadeInRight" data-wow-delay=".25s"
+                                     src="{{ si.image.url }}" alt="">
+                            {% elif si.status and si.public and si.position == 3 %}
+                                <img class="di-small-2 wow fadeIn" src="{{ si.image.url }}" alt="">
+                            {% endif %}
+                            {% empty %}
+                            <img class="di-small wow fadeIn" src="/static/images/landing/6.jpg" alt="">
+                            <img class="di-small-2 wow fadeIn" src="/static/images/landing/5.jpg" alt="">
+                            <img class="di-big img-fluid wow fadeInRight" data-wow-delay=".25s"
+                                 src="/static/images/landing/4.jpeg" alt="">
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -312,12 +311,14 @@
                                     {% if cfp.file_example %}
                                         <a href="{{ cfp.file_example.url }}"
                                            class="btn btn-primary btn-lg" target="_blank">
-                                            <i class="fa fa-download"></i> Download
+                                            <i class="fa {% if cfp.type_document == 4 %}fa-external-link{% else %}fa-download{% endif %}"></i>
+                                            {% if cfp.name_button %}{{ cfp.name_button }}{% else %}Download{% endif %}
                                         </a>
                                     {% elif cfp.url %}
                                         <a href="{{ cfp.url }}"
                                            class="btn btn-primary btn-lg" target="_blank">
-                                            <i class="fa fa-download"></i> Download
+                                            <i class="fa {% if cfp.type_document == 4 %}fa-external-link{% else %}fa-download{% endif %}"></i>
+                                            {% if cfp.name_button %}{{ cfp.name_button }}{% else %}Download{% endif %}
                                         </a>
                                     {% endif %}
                                 </li>
@@ -435,7 +436,16 @@
                                             </div>
                                         </div>
                                         <div class="details text-center mt-2">
-                                            <h4>{{ cp.degree }} {{ cp.name }} <a href="javascript:void(0)"
+                                            <h4>{{ cp.degree }} {{ cp.name }} <a target="_blank" href="
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    {% if cp.linkedin %}{{ cp.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                                  class="btn btn-primary btn-rounded btn-mini"><i
                                                     class="fa fa-linkedin"></i></a></h4>
 
@@ -475,7 +485,16 @@
                                                 </div>
                                             </div>
                                             <div class="details text-center mt-2">
-                                                <h4>{{ c.name }} <a href="javascript:void(0)"
+                                                <h4>{{ c.name }} <a target="_blank" href="
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        {% if c.linkedin %}{{ c.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                     class="btn btn-primary btn-rounded btn-mini"><i
                                                         class="fa fa-linkedin"></i></a></h4>
 

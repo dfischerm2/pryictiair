@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import JsonResponse
 from django.db.models import Q
+from django.template.loader import get_template
 from django.utils.dateformat import DateFormat
 from django.utils.decorators import method_decorator
 from landing.models import TopicCategory
@@ -78,21 +79,24 @@ def topicCategoryView(request):
             data["action"] = action = request.GET['action']
             if action == 'add':
                 data["form"] = Formulario()
-                return render(request, 'conference/topic_category/form.html', data)
+                template = get_template("autenticacion/usuario/formmodal.html")
+                return JsonResponse({"result": True, 'data': template.render(data)})
 
             elif action == 'change':
-                pk = int(request.GET['pk'])
+                pk = int(request.GET['id'])
                 topic_category = model.objects.get(pk=pk)
-                data["pk"] = pk
+                data["id"] = pk
                 data["form"] = Formulario(instance=topic_category)
-                return render(request, 'conference/topic_category/form.html', data)
+                template = get_template("autenticacion/usuario/formmodal.html")
+                return JsonResponse({"result": True, 'data': template.render(data)})
 
             elif action == 'ver':
-                pk = int(request.GET['pk'])
+                pk = int(request.GET['id'])
                 topic_category = model.objects.get(pk=pk)
-                data["pk"] = pk
+                data["id"] = pk
                 data["form"] = Formulario(instance=topic_category, ver=True)
-                return render(request, 'conference/topic_category/form.html', data)
+                template = get_template("autenticacion/usuario/formmodal.html")
+                return JsonResponse({"result": True, 'data': template.render(data)})
 
         # Filtrado y listado
         criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(), ''
