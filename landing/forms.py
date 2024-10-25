@@ -224,7 +224,7 @@ class PrincipalCarrouselForm(ModelFormBase):
 class CallForPapersForm(ModelFormBase):
     class Meta:
         model = CallForPapers
-        fields = ('name', 'type_document', 'order', 'name_button', 'public', 'url', 'file_example')
+        fields = ('name', 'type_document', 'order', 'name_button', 'public', 'url', 'icon','file_example')
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)

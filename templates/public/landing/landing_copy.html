@@ -311,8 +311,13 @@
                             {% for cfp in call_for_papers %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div class="file-info">
+                                        {% if cfp.icon %}
+                                            <img src="{{ cfp.icon.url }}" class="file-icon"
+                                             alt="{{ cfp.get_type_document_display }} Icon">
+                                        {% else %}
                                         <img src="{{ cfp.get_image_by_type_document }}" class="file-icon"
                                              alt="{{ cfp.get_type_document_display }} Icon">
+                                        {% endif %}
                                         <span>{{ cfp.name }}</span>
                                     </div>
                                     {% if cfp.file_example %}

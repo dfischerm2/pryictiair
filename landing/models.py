@@ -288,6 +288,7 @@ TYPE_DOCUMENT = (
 class CallForPapers(ModeloBase):
     public = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
+    icon = models.FileField(upload_to='icon_callforpapers/', null=True, blank=True)
     type_document = models.IntegerField(choices=TYPE_DOCUMENT)
     name = models.CharField(max_length=200)
     url = models.CharField(max_length=500, null=True, blank=True)
