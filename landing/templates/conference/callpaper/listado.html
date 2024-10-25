@@ -46,6 +46,9 @@
                             Nombre
                         </th>
                         <th class="text-center">
+                            Icon
+                        </th>
+                        <th class="text-center">
                             Archivo Ejemplo
                         </th>
                         <th class="text-center">
@@ -67,6 +70,19 @@
                             </td>
                             <td style="text-align: center">
                                 {{ l.name }}
+                            </td>
+                            <td style="text-align: center">
+                                {% if not l.icon %}
+                                    S/A
+                                {% else %}
+                                    <a href="{{ l.icon.url }}" data-lightbox="roadtrip"
+                                       title="{{ l.name }}">
+                                        <img id="presentaimg2" src="{{ l.icon.url }}"
+                                             class="img-thumbnail"
+                                             width="50px" align="middle"
+                                             alt="...">
+                                    </a>
+                                {% endif %}
                             </td>
                             <td style="text-align: center">
                                 {% if l.file_example == '' %}
