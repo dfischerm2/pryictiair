@@ -313,3 +313,34 @@ class CallForPapers(ModeloBase):
         if self.type_document == 4:
             return '/static/images/icons/file.png'
         return '/static/images/icons/file.png'
+
+
+class FeesConference(ModeloBase):
+    public = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
+    name = models.CharField(max_length=200)
+    price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    tax = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    total_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    applied_tax = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Fees Conference'
+        verbose_name_plural = 'Fees Conference'
+        ordering = ['order']
+
+class FeesConferenceDetail(ModeloBase):
+    public = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Fees Conference Detail'
+        verbose_name_plural = 'Fees Conference Detail'
+        ordering = ['order']
