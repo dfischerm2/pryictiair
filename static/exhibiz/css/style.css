@@ -172,7 +172,8 @@ overflow:visible;
 	}
 	
 	header.transparent{
-	background:rgba(0,0,0,0.0);
+	/*background:rgba(0,0,0,0.0);*/
+		background: rgb(14 14 14);
 	}
 	
 	header.autoshow{
