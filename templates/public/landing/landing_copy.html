@@ -10,16 +10,30 @@
              data-bgcolor="#101010">
         <div id="slider-revolution">
             <ul>
-                <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
-                    <!--  BACKGROUND IMAGE -->
-                    <img alt="" class="rev-slidebg" data-bgparallax="0"
-                         src="/static/images/landing/3d-rendering-dark-earth-space.jpg">
-                </li>
+                {% for ca in carrousel %}
 
-                <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
-                    <!--  BACKGROUND IMAGE -->
-                    <img alt="" class="rev-slidebg" data-bgparallax="0" src="/static/images/landing/9067755.jpg">
-                </li>
+                    <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
+                        <!--  BACKGROUND IMAGE -->
+                        {% if ca.image %}
+                            <img alt="{{ ca.name }}" class="rev-slidebg" data-bgparallax="0"
+                                 src="{{ ca.image.url }}">
+                        {% else %}
+                            <img alt="{{ ca.name }}" class="rev-slidebg" data-bgparallax="0"
+                                 src="/static/images/landing/3d-rendering-dark-earth-space.jpg">
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
+                        <!--  BACKGROUND IMAGE -->
+                        <img alt="" class="rev-slidebg" data-bgparallax="0"
+                             src="/static/images/landing/3d-rendering-dark-earth-space.jpg">
+                    </li>
+
+                    <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">
+                        <!--  BACKGROUND IMAGE -->
+                        <img alt="" class="rev-slidebg" data-bgparallax="0" src="/static/images/landing/9067755.jpg">
+                    </li>
+                {% endfor %}
 
             </ul>
 
@@ -67,8 +81,9 @@
                         data-paddingbottom="[0,0,0,0]"
                         data-paddingleft="[0,0,0,0]"
                 >
-                    International Conference <br>on Technological Innovation <br>
-                    & AI Research
+                    {% if summary %}
+                        {{ summary.title_principal|safe }}
+                    {% endif %}
                 </div>
 
 
@@ -95,39 +110,22 @@
                 >
 
                     <div class="spacer-single"></div>
-                    <div class="d-lg-flex justify-content-center sm-hide">
-                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-calendar-check-o id-color"></i><span
-                                class="text-white">March 19th to 21th 2025</span></div>
+                    <div class="d-lg-flex justify-content-center !mt-4" style="padding-top: 0.75rem!important">
+                        <div class="h4 padding10"><i class="i_h3 fa fa-calendar-check-o id-color"></i><span
+                                class="text-white">{% if summary %}
+                            {{ summary.get_formatted_date_range }}
+                        {% endif %}</span></div>
                         {#                                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-user id-color"></i><span class="text-white">12 Speakers</span></div>#}
                         {#                                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-map-marker id-color"></i><span class="text-white">Palo Alto, California</span></div>#}
                     </div>
+                    <div class="d-lg-flex justify-content-center">
+                        <div>
+                            <a class="btn btn-primary rounded" href="#guidelines">
+                                View More
+                            </a>
+                        </div>
+                    </div>
                 </div>
-
-
-                {#                <div#}
-                {#                        class="tp-caption tp-static-layer"#}
-                {#                        data-x="['center','center','center','center']"#}
-                {#                        data-hoffset="['0']"#}
-                {#                        data-y="['top','top','top','top']"#}
-                {#                        data-voffset="['506']"#}
-                {#                        data-width="none"#}
-                {#                        data-height="none"#}
-                {#                        data-whitespace="nowrap"#}
-                {#                        data-type="button"#}
-                {##}
-                {#                        data-responsive_offset="on"#}
-                {#                        data-responsive="off"#}
-                {#                        data-startslide="0"#}
-                {#                        data-endslide="3"#}
-                {#                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255, 255, 255, 1.00);bg:rgba(255, 255, 255, 0.15);bw:2px 2px 2px 2px;"}]'#}
-                {#                        data-textAlign="['center','center','center','center']"#}
-                {#                        data-paddingtop="[12,12,12,12]"#}
-                {#                        data-paddingright="[20,20,20,20]"#}
-                {#                        data-paddingbottom="[12,12,12,12]"#}
-                {#                        data-paddingleft="[20,20,20,20]"#}
-                {#                >#}
-                {#                    <a href="#section-ticket" class="btn-custom text-white scroll-to">Get Ticket</a>#}
-                {#                </div>#}
 
                 <div
                         class="tp-caption tp-static-layer"
@@ -162,43 +160,39 @@
         <div class="wm wm-border wow fadeInDown"></div>
         <div class="container">
             <div class="row">
-                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
-                    <h1>Published by</h1>
-                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                </div>
-
                 <div class="col-md-12 text-center wow fadeInUp">
-                    <div class="spacer-single"></div>
-                    <img src="/static/images/iet.png" alt="" style="width:300px" class="grey-hover img-sponsor"><br>
-
-                    <h2>Indexed by</h2>
-                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                    <div class="spacer-single"></div>
-
-                    <div class="col-md-12 text-center">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <img src="/static/images/sponsor/Scopus.jpeg" alt="" class="grey-hover img-sponsor">
-                            </div>
-                            <div class="col-lg-4">
-                                <img src="/static/images/sponsor/SJR.jpeg" alt="" class="grey-hover img-sponsor"></div>
-                            <div class="col-lg-4">
-                                <img src="/static/images/sponsor/Compendex.png" class="grey-hover img-sponsor"></div>
-                        </div>
-                    </div>
-
-                    <h2>Sponsors</h2>
-                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                    <div class="spacer-single"></div>
-
-                    <div class="owl-carousel owl-theme vertical-carousel">
-                        {% for s in sponsor %}
-                            {% if s.image %}
-                                <div class="item"><img src="{{ s.image.url }}" alt="s.name"
-                                                       class="grey-hover img-sponsor"></div>
+                    {% if summary.view_sponsors %}
+                        {% for sp in sponsor %}
+                            <h2>{{ sp.name }}</h2>
+                            <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                            <div class="spacer-single"></div>
+                            {% if sp.carrousel %}
+                                <!-- Si es un carrusel -->
+                                <div class="owl-carousel owl-theme vertical-carousel">
+                                    {% for s in sp.sponsors.all %}
+                                        {% if s.image %}
+                                            <div class="item"><img src="{{ s.image.url }}" alt="{{ s.name }}"
+                                                                   class="grey-hover img-sponsor"></div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <!-- Si NO es un carrusel -->
+                                <div class="row d-flex justify-content-center">
+                                    {% for s in sp.sponsors.all %}
+                                        {% if s.image %}
+                                            <div class="col-lg-4">
+                                                <img src="{{ s.image.url }}" alt="{{ s.name }}"
+                                                     class="grey-hover img-sponsor">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                             {% endif %}
                         {% endfor %}
-                    </div>
+                    {% else %}
+                        <h1>{{ summary.text_sponsors }}</h1>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -235,10 +229,21 @@
 
                 <div class="col-lg-6 mb-sm-30 text-center wow fadeInRight">
                     <div class="de-images">
-                        <img class="di-small wow fadeIn" src="/static/images/landing/6.jpg" alt="">
-                        <img class="di-small-2 wow fadeIn" src="/static/images/landing/5.jpg" alt="">
-                        <img class="di-big img-fluid wow fadeInRight" data-wow-delay=".25s"
-                             src="/static/images/landing/4.jpeg" alt="">
+                        {% for si in summary.images.all %}
+                            {% if si.status and si.public and si.position == 1 %}
+                                <img class="di-small wow fadeIn" src="{{ si.image.url }}" alt="">
+                            {% elif si.status and si.public and si.position == 2 %}
+                                <img class="di-big img-fluid wow fadeInRight" data-wow-delay=".25s"
+                                     src="{{ si.image.url }}" alt="">
+                            {% elif si.status and si.public and si.position == 3 %}
+                                <img class="di-small-2 wow fadeIn" src="{{ si.image.url }}" alt="">
+                            {% endif %}
+                        {% empty %}
+                            <img class="di-small wow fadeIn" src="/static/images/landing/6.jpg" alt="">
+                            <img class="di-small-2 wow fadeIn" src="/static/images/landing/5.jpg" alt="">
+                            <img class="di-big img-fluid wow fadeInRight" data-wow-delay=".25s"
+                                 src="/static/images/landing/4.jpeg" alt="">
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -260,22 +265,12 @@
                 <div class="col-md-12 wow fadeInUp">
                     <div class="de_tab tab_style_4 text-center">
                         <ul class="de_nav">
-                            <li class="active" data-link="#tab1">
-                                <h3>Paper Submission <span>Deadline</span></h3>
-                                <h4>Dec 1, 2024</h4>
-                            </li>
-                            <li data-link="#tab1">
-                                <h3>Notification of <span>Acceptance</span></h3>
-                                <h4>Jan 27, 2025</h4>
-                            </li>
-                            <li data-link="#tab1">
-                                <h3>Camera <span>Ready</span></h3>
-                                <h4>Feb 16, 2025</h4>
-                            </li>
-                            <li data-link="#tab1">
-                                <h3>Conference <span>Dates</span></h3>
-                                <h4>March 19-21, 2025</h4>
-                            </li>
+                            {% for imd in importan_dates %}
+                                <li {% if forloop.first %}class="active"{% endif %} data-link="#tab{{ imd.id }}">
+                                    <h3>{{ imd.title }}</h3>
+                                    <h4>{{ imd.get_formatted_date_range }}</h4>
+                                </li>
+                            {% endfor %}
                         </ul>
 
                     </div>
@@ -290,68 +285,102 @@
                         <div id="tab1" class="tab_single_content">
                             <div class="row">
                                 <div class="col-md-12">
-                                    {% for gl in guidelines_by_type %}
-                                        <div class="schedule-listing">
-                                            <div class="schedule-item">
-                                                <div class="sc-info">
-                                                    <h3>{{ gl.name }}</h3>
-                                                    <p>
-                                                    <ul>
-                                                        {% for g in gl.guidelines.all %}
-                                                            {% if g.status and g.public %}
-                                                                <li>{{ g.content }}.</li>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </ul>
-                                                    </p>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
+                                    <p>The papers must be prepared according to the IET Conference Paper Format. The
+                                        papers must present scientifically sound research that is relevant to the scope
+                                        of the conference, and written in clear, concise English. </p>
+                                    <p>You must adhere to the following guidelines:</p>
+                                    <ul>
+                                        <li><b>Page Formatting:</b> Authors must use the given Manuscript Template to
+                                            prepare the paper.
+                                        </li>
+                                        <li><b>Page Length:</b> The paper should be between <b>4 and 6</b> double-column
+                                            pages. Beyond this length, a charge per additional page will be applied. The
+                                            maximum number of pages allowed is <b>8</b>.
+                                        </li>
+                                        <li><b>Language, Spelling and Grammar:</b>Papers must be written in English.
+                                            Ensure that the paper is spell checked.
+                                        </li>
+                                        <li><b>Originality:</b>Is the work scientifically rigorous, accurate, and novel?
+                                            Does the work contain significant additional material to that already
+                                            published? Has its value been demonstrated?
+                                        </li>
+                                        <li><b>Plagiarism:</b>All conference papers submitted to the IET for publication
+                                            must record original work which has not been published previously. Any
+                                            alleged cases of plagiarism will be dealt with according to the ‘IET Policy
+                                            in Relation to Plagiarism, Infringement of Copyright and Infringement of
+                                            Moral Rights and Submission to Multiple Publications’
+                                        </li>
+                                        <li><b>Multiple submissions:</b> The IET does not permit manuscripts included in
+                                            its conference proceedings to be simultaneously under review for another
+                                            conference or publication. Once a case of multiple submissions has been
+                                            established, the paper/s in question will be immediately declined for
+                                            publication by the IET.
+                                        </li>
+                                        <li><b>Relevance:</b> Is the material appropriate to the scope of the conference
+                                            to which it is submitted?
+                                        </li>
+                                        <li><b>Clarity:</b> Is the English clear and well written? Poorly written
+                                            English may obscure the scientific merit of your paper. Are the ideas
+                                            expressed clearly and concisely? Are the concepts understandable?
+                                        </li>
+                                    </ul>
+                                    <p>For any issues related to the submission process, please, feel free to contact
+                                        us:
+                                        <a class="btn-link" href="mailto:{{ email_notificacion }}">{{ email_notificacion }}</a>
+                                    </p>
+                                    <h4>Proceeding Publication</h4>
+                                    <p>All accepted papers from the conference will be published in the IET Conference
+                                        Proceedings. Furthermore, the proceedings will be indexed by <b>IET Inspec, EI
+                                        Compendex and Scopus.</b> All papers must be formatted according to the IET
+                                        Proceedings format.</p>
+                                    <h4>Review Process</h4>
+                                    <ul>
+                                        <li>All submitted papers will be reviewed by at least 2 independent reviewers. Additional reviewers will be consulted if required.</li>
+                                        <li>All papers will go through plagiarism checker. Plagiarism report must not exceed 15%</li>
+                                        <li>All papers must be formatted according to the given template.</li>
+                                        <li>Paper acceptance will be based on originality, significance, technical soundness, and clarity of presentation.</li>
+                                        <li>Authors must make sure that they submit previously unpublished papers to this conference.</li>
+                                    </ul>
+                                    <h4>Awards & Participation</h4>
+                                    <ul>
+                                        <li>All accepted papers that are presented will be awarded a presentation certificate.</li>
+                                        <li>The Best Paper certificate will be awarded to the author(s) of the best paper. The selection will be based on reviewers' comments and recommendations of the session chair.</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
+                        <ul class="list-group list-group-flush" id="callforpapers">
+                            {% for cfp in call_for_papers %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="file-info">
+                                        {% if cfp.icon %}
+                                            <img src="{{ cfp.icon.url }}" class="file-icon"
+                                                 alt="{{ cfp.get_type_document_display }} Icon">
+                                        {% else %}
+                                            <img src="{{ cfp.get_image_by_type_document }}" class="file-icon"
+                                                 alt="{{ cfp.get_type_document_display }} Icon">
+                                        {% endif %}
+                                        <span>{{ cfp.name }}</span>
+                                    </div>
+                                    {% if cfp.file_example %}
+                                        <a href="{{ cfp.file_example.url }}"
+                                           class="btn btn-primary btn-lg" target="_blank">
+                                            <i class="fa {% if cfp.type_document == 4 %}fa-external-link{% else %}fa-download{% endif %}"></i>
+                                            {% if cfp.name_button %}{{ cfp.name_button }}{% else %}Download{% endif %}
+                                        </a>
+                                    {% elif cfp.url %}
+                                        <a href="{{ cfp.url }}"
+                                           class="btn btn-primary btn-lg" target="_blank">
+                                            <i class="fa {% if cfp.type_document == 4 %}fa-external-link{% else %}fa-download{% endif %}"></i>
+                                            {% if cfp.name_button %}{{ cfp.name_button }}{% else %}Download{% endif %}
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            {% empty %}
+                                <h1>Comming soon</h1>
+                            {% endfor %}
+                        </ul>
                     </div>
-
-                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="callforpapers">
-                        <h1>Call for papers</h1>
-                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                        <div class="spacer-single"></div>
-                    </div>
-
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="file-info">
-                                <img src="/static/images/icons/pdf.png" class="file-icon" alt="PDF Icon">
-                                <span>Call for Papers (PDF)</span>
-                            </div>
-                            <a href="https://ictiair.tiacon.org/_files/ugd/1ffe67_436b7f6e802d4ef9bda9762a6e2e39f1.pdf?index=true"
-                               class="btn btn-primary btn-lg" target="_blank">
-                                <i class="fa fa-download"></i> Download
-                            </a>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="file-info">
-                                <img src="/static/images/icons/doc.png" class="file-icon" alt="Word Icon">
-                                <span>Word Template (DOCX)</span>
-                            </div>
-                            <a href="https://ictiair.tiacon.org/_files/ugd/1ffe67_8ef967ab10714f8aaa9f5b9f4a64bb5f.docx?dn=ICTIAIR%20-%20Full%20Paper%20Template.docx"
-                               class="btn btn-primary btn-lg" target="_blank">
-                                <i class="fa fa-download"></i> Download
-                            </a>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="file-info">
-                                <img src="/static/images/icons/latex.png" class="file-icon" alt="LaTeX Icon">
-                                <span>LaTeX Template (ZIP)</span>
-                            </div>
-                            <a href="https://ictiair.tiacon.org/_files/archives/1ffe67_0bfb1bbae033431dae2909119d0bed0b.zip?dn=IET%20LaTeX%20Template.zip"
-                               class="btn btn-primary btn-lg" target="_blank">
-                                <i class="fa fa-download"></i> Download
-                            </a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -391,7 +420,7 @@
                                             <ul class="custom-list">
                                                 {% for t in tc.topics.all %}
                                                     {% if t.status and t.public %}
-                                                    <li>{{ t.name }}</li>
+                                                        <li>{{ t.name }}</li>
                                                     {% endif %}
                                                 {% endfor %}
                                             </ul>
@@ -411,92 +440,302 @@
         <img src="/static/images/landing/3333.jpg" class="jarallax-img" alt="">
         <div class="wm wm-border wow fadeInDown">Committee</div>
         <div class="container">
-            <div class="row">
-                {% if committe_principal %}
-                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="speakers">
-                        <h1>{{ committe_principal.name }}</h1>
-                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                        <div class="spacer-single"></div>
-                    </div>
+            {% if summary.view_committe %}
+                <div class="row">
+                    {% if committe_principal %}
+                        {% if committe_principal.public %}
+                            <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="speakers">
+                                <h1>{{ committe_principal.name }}</h1>
+                                <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                                <div class="spacer-single"></div>
+                            </div>
 
-                    <div class="clearfix"></div>
-                    {% for cp in committe_principal.members.all %}
-                        {% if cp.status and cp.public %}
-                        <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
-                            <!-- team member -->
-                            <div class="de-team-list">
-                                <div class="team-pic">
-                                    {% if cp.photo %}
-                                        <img src="{{ cp.photo.url }}" class="img-responsive" alt="{{ cp.name }}">
-                                    {% else %}
-                                        <img src="/static/images/women.jpeg" class="img-responsive" alt="">
-                                    {% endif %}
-                                </div>
-                                <div class="team-desc">
-                                    <h3>{{ cp.degree }} {{ cp.name }}</h3>
-                                    <p class="lead">{{ cp.rol }}</p>
-                                    <div class="small-border"></div>
-                                    <p>{{ cp.description_rol }}</p>
+                            <div class="clearfix"></div>
+                            {% for cp in committe_principal.members.all %}
+                                {% if cp.status and cp.public %}
+                                    <div class="col-lg-3 col-sm-6 mb30 wow fadeInUp">
+                                        <!-- team member -->
+                                        <div class="de-team-list">
+                                            <div class="team-pic">
+                                                {% if cp.photo %}
+                                                    <img src="{{ cp.photo.url }}" class="img-responsive"
+                                                         alt="{{ cp.name }}">
+                                                {% else %}
+                                                    {% if cp.sexo == 'MASCULINO' %}
+                                                        <img src="/static/images/men.jpeg"
+                                                             class="img-responsive" alt="">
+                                                    {% else %}
+                                                        <img src="/static/images/women.jpeg"
+                                                             class="img-responsive" alt="">
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                            <div class="team-desc">
+                                                <h3>{{ cp.degree }} {{ cp.name }}</h3>
+                                                <p class="lead">{{ cp.rol }}</p>
+                                                <div class="small-border"></div>
+                                                <p>{{ cp.description_rol }}</p>
 
-                                    <div class="social">
-                                        {% if cp.facebook %}
-                                            <a href="{{ cp.facebook }}"><i
-                                                    class="fa fa-facebook fa-lg"></i></a>{% endif %}
-                                        {% if cp.x %}
-                                            <a href="{{ cp.x }}"><i class="fa fa-facebook fa-lg"></i></a>{% endif %}
-                                        {% if cp.linkedin %}
-                                            <a href="{{ cp.linkedin }}"><i
-                                                    class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                                <div class="social">
+                                                    {% if cp.facebook %}
+                                                        <a href="{{ cp.facebook }}"><i
+                                                                class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                                    {% if cp.x %}
+                                                        <a href="{{ cp.x }}"><i
+                                                                class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                                    {% if cp.linkedin %}
+                                                        <a href="{{ cp.linkedin }}"><i
+                                                                class="fa fa-facebook fa-lg"></i></a>{% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="details text-center mt-2">
+                                            <h4>{{ cp.degree }} {{ cp.name }} <a target="_blank" href="
+
+
+
+
+
+
+
+
+                                                    
+
+
+                                                    {% if cp.linkedin %}{{ cp.linkedin }}{% else %}javascript:void(0){% endif %}"
+                                                                                 class="btn btn-primary btn-rounded btn-mini"><i
+                                                    class="fa fa-linkedin"></i></a></h4>
+
+                                        </div>
+                                        <!-- team close -->
                                     </div>
-                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    {% for cm in committe_all %}
+                        {% if cm.public %}
+                            <div class="col-md-12 text-center wow fadeInUp" id="org_comite_{{ cm.id }}">
+                                <h1>{{ cm.name }}</h1>
+                                <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                                <div class="spacer-single"></div>
                             </div>
-                            <div class="details text-center mt-2">
-                                <h4>{{ cp.degree }} {{ cp.name }} <a href="javascript:void(0)"
-                                                                     class="btn btn-primary btn-rounded btn-mini"><i
-                                        class="fa fa-linkedin"></i></a></h4>
+                            <div class="row align-items-center justify-content-center">
+                                {% for c in cm.members.all %}
+                                    {% if c.status and c.public %}
+                                        <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
+                                            <!-- team member -->
+                                            <div class="de-team-list">
+                                                <div class="team-pic">
+                                                    {% if c.photo %}
+                                                        <img src="{{ c.photo.url }}" class="img-responsive img-circle"
+                                                             alt="{{ cp.name }}">
+                                                    {% else %}
+                                                        {% if c.sexo == 'MASCULINO' %}
+                                                            <img src="/static/images/men.jpeg"
+                                                                 class="img-responsive img-circle" alt="">
+                                                        {% else %}
+                                                            <img src="/static/images/women.jpeg"
+                                                                 class="img-responsive img-circle" alt="">
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="details text-center mt-2">
+                                                <h4>{{ c.name }} <a target="_blank" href="
 
+
+
+
+
+
+
+
+                                                        
+
+
+                                                        {% if c.linkedin %}{{ c.linkedin }}{% else %}javascript:void(0){% endif %}"
+                                                                    class="btn btn-primary btn-rounded btn-mini"><i
+                                                        class="fa fa-linkedin"></i></a></h4>
+
+                                            </div>
+                                            <!-- team close -->
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
-                            <!-- team close -->
-                        </div>
                         {% endif %}
                     {% endfor %}
-                {% endif %}
-                {% for cm in committe_all %}
-                    <div class="col-md-12 text-center wow fadeInUp" id="org_comite_{{ cm.id }}">
-                        <h1>{{ cm.name }}</h1>
-                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
-                        <div class="spacer-single"></div>
-                    </div>
-                    <div class="row align-items-center justify-content-center">
-                        {% for c in cm.members.all %}
-                            {% if c.status and c.public %}
-                            <div class="col-lg-2 col-sm-6 mb30 wow fadeInUp">
-                                <!-- team member -->
-                                <div class="de-team-list">
-                                    <div class="team-pic">
-                                        {% if c.photo %}
-                                            <img src="{{ c.photo.url }}" class="img-responsive" alt="{{ cp.name }}">
-                                        {% else %}
-                                            <img src="/static/images/women.jpeg" class="img-responsive" alt="">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="details text-center mt-2">
-                                    <h4>{{ c.name }} <a href="javascript:void(0)"
-                                                        class="btn btn-primary btn-rounded btn-mini"><i
-                                            class="fa fa-linkedin"></i></a></h4>
-
-                                </div>
-                                <!-- team close -->
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% else %}
+                <h1>{{ summary.text_committe }}</h1>
+            {% endif %}
         </div>
     </section>
     <!-- section close -->
+    <section id="section-ticket" aria-label="section-services-tab"
+             data-bgimage="url(static/images/bg/2.jpg) fixed center no-repeat">
+        <div class="wm wm-border wow fadeInDown">fees</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Conference Fees</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+                <div class="container text-light">
+                    <div class="row d-flex justify-content-center align-items-stretch">
+                        <div class="col-lg-4 col-md-6 mb-4 d-flex">
+                            <div style="background: #101010!important;"
+                                 class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
+                                <div class="top">
+                                    <h2>Authors</h2>
+                                    <p class="price"><span class="currency id-color">$</span> <b>300.00</b></p>
+                                </div>
+                                <div class="bottom">
+                                    <ul>
+                                        <li><i class="icon_check_alt2"></i>1 Paper</li>
+                                        <li><i class="icon_check_alt2"></i>Additional page: +$50 per page (max 2 pages)
+                                        </li>
+                                        <li><i class="icon_check_alt2"></i>Additional paper: +$200 each</li>
+                                    </ul>
+                                </div>
+                                {#                                <div class="ps1-deco"></div>#}
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 mb-4 d-flex">
+                            <div style="background: #101010!important;"
+                                 class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
+                                <div class="top">
+                                    <h2>Attendees</h2>
+                                    <p class="price"><span class="currency id-color">$</span> <b>150.00</b></p>
+                                </div>
+                                <div class="bottom">
+                                    <!-- Empty content as per original -->
+                                </div>
+                                {#                                <div class="ps1-deco"></div>#}
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 mb-4 d-flex">
+                            <div style="background: #101010!important;"
+                                 class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
+                                <div class="top">
+                                    <h2>Student Attendees</h2>
+                                    <p class="price"><span class="currency id-color">$</span> <b>50.00</b></p>
+                                </div>
+                                <div class="bottom">
+                                    <ul>
+                                        <li><i class="icon_check_alt2"></i>Registration must be with institutional email
+                                        </li>
+                                    </ul>
+                                </div>
+                                {#                                <div class="ps1-deco"></div>#}
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 mb-4 d-flex">
+                            <div style="background: #101010!important;"
+                                 class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
+                                <div class="top">
+                                    <h2>Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)</h2>
+                                    <p class="price"><span class="currency id-color">$</span> <b>50.00</b></p>
+                                </div>
+                                <div class="bottom">
+                                    <ul>
+                                        <li><i class="icon_check_alt2"></i>Must register using institutional email</li>
+                                        <li><i class="icon_check_alt2"></i>Attendee: $50</li>
+                                        <li><i class="icon_check_alt2"></i>Student Attendee: Free</li>
+                                    </ul>
+                                </div>
+                                {#                                <div class="ps1-deco"></div>#}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                {#                <div class="h-100 text-light col-lg-4 col-md-6">#}
+                {#                    <div class="pricing-s1 mb30 wow fadeInUp">#}
+                {#                        <div class="top">#}
+                {#                            <h2>Authors</h2>#}
+                {#                            <p class="price"><span class="currency id-color">$</span> <b>300.00</b></p>#}
+                {#                        </div>#}
+                {#                        <div class="bottom">#}
+                {#                            <ul>#}
+                {#                                <li><i class="icon_check_alt2"></i>1 Paper</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Additional page: +$50 per page (max 2 pages)</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Additional paper: +$200 each</li>#}
+                {#                            </ul>#}
+                {#                            <a href="#" class="btn btn-custom text-white">Buy Ticket</a>#}
+                {#                        </div>#}
+                {#                        <div class="ps1-deco"></div>#}
+                {#                    </div>#}
+                {#                </div>#}
+                {#                <div class="h-100 text-light col-lg-4 col-md-6">#}
+                {#                    <div class="h-100 pricing-s1 mb30 wow fadeInUp">#}
+                {#                        <div class="ribbon color-2 text-white">Recommend</div>#}
+                {#                        <div class="top">#}
+                {#                            <h2>Attendees</h2>#}
+                {#                            <p class="price"><span class="currency id-color">$</span> <b>150.00</b></p>#}
+                {#                        </div>#}
+                {#                        <div class="bottom">#}
+                {#                            <ul>#}
+                {#                                <li><i class="icon_check_alt2"></i>Conference Tickets</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Free Lunch Nad Coffee</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Certificates</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Private Access</li>#}
+                {#                                <li><i class="icon_close_alt2"></i>Experts Contacts</li>#}
+                {#                            </ul>#}
+                {#                            <a href="#" class="btn btn-custom text-white">Buy Ticket</a>#}
+                {#                        </div>#}
+                {#                        <div class="ps1-deco"></div>#}
+                {#                    </div>#}
+                {#                </div>#}
+                {#                <div class="h-100 text-light col-lg-4 col-md-6">#}
+                {#                    <div class="pricing-s1 mb30 wow fadeInUp">#}
+                {#                        <div class="top">#}
+                {#                            <h2>Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)</h2>#}
+                {#                            <p class="price"><span class="currency id-color">*$</span> <b>50.00</b></p>#}
+                {#                        </div>#}
+                {#                        <div class="bottom">#}
+                {#                            <ul>#}
+                {#                                <li><i class="icon_check_alt2"></i>Must register using institutional email</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Attendee: $50</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Student Attendee: Free</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Free Lunch Nad Coffee</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Certificates</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Private Access</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Experts Contacts</li>#}
+                {#                            </ul>#}
+                {#                            <a href="#" class="btn btn-custom text-white">Buy Ticket</a>#}
+                {#                        </div>#}
+                {#                        <div class="ps1-deco"></div>#}
+                {#                    </div>#}
+                {#                </div>#}
+                {#                <div class="h-100 text-light col-lg-4 col-md-6">#}
+                {#                    <div class="pricing-s1 mb30 wow fadeInUp">#}
+                {#                        <div class="top">#}
+                {#                            <h2>Student Attendees</h2>#}
+                {#                            <p class="price"><span class="currency id-color">$</span> <b>50.00</b></p>#}
+                {#                        </div>#}
+                {#                        <div class="bottom">#}
+                {#                            <ul>#}
+                {#                                <li><i class="icon_check_alt2"></i>Registration must be with institutional email#}
+                {#                                </li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Private Access</li>#}
+                {#                                <li><i class="icon_check_alt2"></i>Experts Contacts</li>#}
+                {#                            </ul>#}
+                {#                            <a href="#" class="btn btn-custom text-white">Buy Ticket</a>#}
+                {#                        </div>#}
+                {#                        <div class="ps1-deco"></div>#}
+                {#                    </div>#}
+                {#                </div>#}
+            </div>
+        </div>
+    </section>
 
     <section id="section-features">
         <div class="wm wm-border wow fadeInDown ">features</div>
@@ -626,39 +865,40 @@
                 </div>
 
                 <div class="col-md-8 offset-md-2 wow fadeInUp">
-                    <form name="contactForm" id='contact_form' method="post"
-                          action='https://www.madebydesignesia.com/themes/exhibiz/email.php'>
+                    <form name="contactForm" id='contact_form' method="post">
+                        {% csrf_token %}
+                        <input type="hidden" value="send_mail" name="action" id="action">
                         <div class="row">
                             <div class="col-md-6">
                                 <div id='name_error' class='error'>Please enter your name.</div>
                                 <div>
-                                    <input type='text' name='name' id='name' class="form-control"
+                                    <input required type='text' name='name' id='name' class="form-control"
                                            placeholder="Your Name">
                                 </div>
 
                                 <div id='email_error' class='error'>Please enter your valid E-mail ID.</div>
                                 <div>
-                                    <input type='text' name='email' id='email' class="form-control"
+                                    <input required type='email' name='email' id='email' class="form-control"
                                            placeholder="Your Email">
                                 </div>
 
                                 <div id='phone_error' class='error'>Please enter your phone number.</div>
                                 <div>
-                                    <input type='text' name='phone' id='phone' class="form-control"
+                                    <input required type='text' name='phone' id='phone' class="form-control"
                                            placeholder="Your Phone">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div id='message_error' class='error'>Please enter your message.</div>
                                 <div>
-                                    <textarea name='message' id='message' class="form-control"
+                                    <textarea required name='message' id='message' class="form-control"
                                               placeholder="Additional Message"></textarea>
                                 </div>
                             </div>
 
                             <div class="col-md-12 text-center">
-                                <p id='submit'>
-                                    <input type='submit' id='send_message' value='Send Email' class="btn btn-primary">
+                                <p>
+                                    <button type='submit' class="btn btn-primary">Send Email</button>
                                 </p>
                                 <div id='mail_success' class='success'>Your message has been sent successfully.</div>
                                 <div id='mail_fail' class='error'>Sorry, error occured this time sending your message.
@@ -683,7 +923,8 @@
     <!-- Popper.js -->
     <!-- Bootstrap 4 JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+    <script src="/static/jquery.blockUI.js"></script>
+    <script src="/static/js/forms.js"></script>
     <script>
         $(document).ready(function () {
             $(function () {

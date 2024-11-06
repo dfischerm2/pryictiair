@@ -7,6 +7,7 @@ from core.custom_models import ModeloBase
 class SponsorCategory(ModeloBase):
     order = models.IntegerField(default=0)
     public = models.BooleanField(default=True)
+    carrousel = models.BooleanField(default=False)
     name = models.CharField(max_length=300)
 
     def __str__(self):
@@ -19,7 +20,7 @@ class SponsorCategory(ModeloBase):
 
 
 class Sponsor(ModeloBase):
-    category = models.ForeignKey(SponsorCategory, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(SponsorCategory, related_name='sponsors', on_delete=models.CASCADE, null=True, blank=True)
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=500)
     image = models.ImageField(upload_to='sponsor/')
@@ -130,6 +131,14 @@ class Summary(ModeloBase):
     title = models.CharField(max_length=200)
     description = models.TextField()
     activo = models.BooleanField(default=True)
+    view_committe = models.BooleanField(default=False)
+    text_committe = models.CharField(max_length=200, default='', null=True, blank=True)
+    view_topics = models.BooleanField(default=False)
+    text_topics = models.CharField(max_length=200, default='', null=True, blank=True)
+    view_sponsors = models.BooleanField(default=False)
+    text_sponsors = models.CharField(max_length=200, default='', null=True, blank=True)
+    view_call_for_papers = models.BooleanField(default=False)
+    text_call_for_papers = models.CharField(max_length=200, default='', null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -164,10 +173,16 @@ class Summary(ModeloBase):
 
 
 class SummaryImage(ModeloBase):
+    TYPE_POSITION = (
+        (1, 'START'),
+        (2, 'MIDDLE'),
+        (3, 'END'),
+    )
     public = models.BooleanField(default=True, )
     summary = models.ForeignKey(Summary, related_name='images', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     image = models.ImageField(upload_to='summary_images/')
+    position = models.IntegerField(choices=TYPE_POSITION, default=1)
 
     def __str__(self):
         return self.name
@@ -176,6 +191,7 @@ class SummaryImage(ModeloBase):
         verbose_name = 'Summary Image'
         verbose_name_plural = 'Summary Images'
         ordering = ['name']
+        unique_together = ['summary', 'position']
 
 
 class CommitteeCategory(ModeloBase):
@@ -193,8 +209,14 @@ class CommitteeCategory(ModeloBase):
 
 
 class CommitteeMember(ModeloBase):
+    SEXO = (
+        ("MASCULINO", "Masculino"),
+        ("FEMENINO", "Femenino"),
+        ("NINGUNO", "Sin definir"),
+    )
     public = models.BooleanField(default=True)
     category = models.ForeignKey(CommitteeCategory, related_name='members', on_delete=models.CASCADE)
+    sexo = models.CharField(verbose_name="Sexo", max_length=50, choices=SEXO, default="NINGUNO",  null=True, blank=True)
     name = models.CharField(max_length=200)
     degree = models.CharField(max_length=100)
     rol = models.CharField(max_length=500, default='')
@@ -259,15 +281,19 @@ TYPE_DOCUMENT = (
     (1, 'DOCX'),
     (2, 'PDF'),
     (3, 'ZIP'),
+    (4, 'WEB'),
 )
 
 
 class CallForPapers(ModeloBase):
     public = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
+    icon = models.FileField(upload_to='icon_callforpapers/', null=True, blank=True)
     type_document = models.IntegerField(choices=TYPE_DOCUMENT)
     name = models.CharField(max_length=200)
-    file_example = models.FileField(upload_to='callforpapers/')
+    url = models.CharField(max_length=500, null=True, blank=True)
+    name_button = models.CharField(max_length=100, null=True, blank=True)
+    file_example = models.FileField(upload_to='callforpapers/', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -284,4 +310,37 @@ class CallForPapers(ModeloBase):
             return '/static/images/icons/pdf.png'
         if self.type_document == 3:
             return '/static/images/icons/latex.png'
-        return '/static/images/icons/pdf.png'
+        if self.type_document == 4:
+            return '/static/images/icons/file.png'
+        return '/static/images/icons/file.png'
+
+
+class FeesConference(ModeloBase):
+    public = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
+    name = models.CharField(max_length=200)
+    price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    tax = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    total_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    applied_tax = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Fees Conference'
+        verbose_name_plural = 'Fees Conference'
+        ordering = ['order']
+
+class FeesConferenceDetail(ModeloBase):
+    public = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Fees Conference Detail'
+        verbose_name_plural = 'Fees Conference Detail'
+        ordering = ['order']

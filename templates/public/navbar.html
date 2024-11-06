@@ -5,7 +5,7 @@
                 <!-- logo begin -->
                 <div id="logo">
                     <a href="/">
-                        <img class="logo" src="/static/images/ictiair_logo.png" alt="" style="width:160px;height: 90px">
+                        <img class="logo" src="{{ logo_white }}" alt="" style="width:160px;height: 40px">
                     </a>
                 </div>
                 <!-- logo close -->
@@ -18,7 +18,7 @@
                     <li><a href="/">Home<span></span></a></li>
 
                     <li>
-                        <a href="{% if request.path == '/' %}/#section-hero{% else %}/{% endif %}">Sponsors<span></span></a>
+                        <a href="{% if request.path == '/' %}/#section-sponsors{% else %}/{% endif %}">Sponsors<span></span></a>
                     </li>
 
                     <li>
@@ -44,13 +44,13 @@
 
                     <li><a href="{% if request.path == '/' %}/#section-speakers{% else %}/{% endif %}">Committees<span></span></a>
                         <ul>
-                            <li>
-                                <a href="{% if request.path == '/' %}/#speakers{% else %}/{% endif %}">Speakers</a>
-                            </li>
-                            <li><a href="{% if request.path == '/' %}/#org_comite{% else %}/{% endif %}">Organizing
+{#                            <li>#}
+{#                                <a href="{% if request.path == '/' %}/#speakers{% else %}/{% endif %}">Speakers</a>#}
+{#                            </li>#}
+                            <li><a href="{% if request.path == '/' %}/#section-speakers{% else %}/{% endif %}">Organizing
                                 Committee</a></li>
-                            <li><a href="{% if request.path == '/' %}/#gen_chairs{% else %}/{% endif %}">General
-                                Chairs</a></li>
+{#                            <li><a href="{% if request.path == '/' %}/#gen_chairs{% else %}/{% endif %}">General#}
+{#                                Chairs</a></li>#}
                         </ul>
                     </li>
 

@@ -418,8 +418,10 @@ def addData(request, data):
     data['confi'] = confi
     data['favicon'] = confi.ico.url if confi.ico else ""
     data['logo'] = confi.logo_sistema.url if confi.logo_sistema else ""
+    data['logo_white'] = confi.logo_sistema_white.url if confi.logo_sistema_white else ""
     data['fondo_perfil'] = confi.fondo_perfil.url if confi.fondo_perfil else ""
     data['bannerlog'] = confi.banner_login.url if confi.banner_login else ""
+    data['email_notificacion'] = confi.email_notificacion if confi.email_notificacion else ""
     data['nombreempresa'] = confi.nombre_empresa
     data['telefonoempresa'] = confi.telefono if confi.telefono else ''
     # data['mensajeempresa'] = confi.mensaje if confi.mensaje else ''

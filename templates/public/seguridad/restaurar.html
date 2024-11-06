@@ -1,42 +1,81 @@
 {% extends 'public/base.html' %}
 {% block link %}{% endblock %}
+{% block head %}
+    <style>#slider-revolution .tp-bullets, /* Ocultar los botones de navegación */
+    #slider-revolution .tp-leftarrow, /* Ocultar la flecha izquierda */
+    #slider-revolution .tp-rightarrow { /* Ocultar la flecha derecha */
+        display: none !important;
+    }
+
+    .tp-fullwidth-forcer {
+        height: 300px !important;
+    }
+
+    .mb-100 {
+        margin-bottom: 500px;
+    }
+
+    .btn-primary {
+        color: #fff;
+    }
+
+    body {
+        background-color: #000000;
+    }
+
+    .mt-100 {
+        margin-top: 100px;
+    }
+
+    .mt-125 {
+        margin-top: 125px;
+    }
+
+    </style>
+{% endblock %}
 {% block content %}
 
-    <div class="d-flex flex-column align-items-center position-relative mt-100" style="margin-top: 125px; padding: 25px">
-        <div class="mt-auto" style="max-width: 700px">
-            <h1 class="pt-3 pb-2 pb-lg-3">¿Forgot your password?</h1>
-            <p class="pb-2">Change your password in three easy steps. This helps keep your new password secure.</p>
-            <ul class="list-unstyled pb-2 pb-lg-0 mb-4 mb-lg-5">
-                <li class="d-flex mb-2">
-                    <span class="text-primary fw-semibold me-2">1.</span>Complete your email address.
-                </li>
-                <li class="d-flex mb-2">
-                    <span class="text-primary fw-semibold me-2">2.</span> We will send you a temporary email code.
-                </li>
-                <li class="d-flex mb-2">
-                    <span class="text-primary fw-semibold me-2">3.</span>Use the code to change your password on our secure website.
-                </li>
-            </ul>
-            <div class="card border-black">
-                <form method="post" class="card-body" id="frm-restaurar" style="padding: 22px 25px !important;">{% csrf_token %}
-                    <div class="mb-4">
-                        <div class="position-relative"><i
-                                class="ai-key fs-lg position-absolute top-50 start-0 translate-middle-y text-black opacity-80 ms-3"></i>
-                            <input class="form-control form-control-lg ps-5 input-record" type="email"  style="background-color: #ffffff;   color: black;"
-                                   placeholder="Email address" name="email" id="recoverEmail" required>
+    <div class="d-flex flex-column justify-content-center align-items-center position-relative  mt-100">
+        <div class="d-flex flex-column align-items-center w-lg-100 px-3 px-lg-5 pt-2">
+            <div class="w-100 mt-125" style="max-width: 526px">
+                <h1 class="pt-3 pb-2 pb-lg-3">¿Forgot your password?</h1>
+                <p class="pb-2">Change your password in three easy steps. This helps keep your new password secure.</p>
+                <ul class="list-unstyled pb-2 pb-lg-0 mb-4 mb-lg-5">
+                    <li class="d-flex mb-2">
+                        <span class="text-primary fw-semibold me-2">1.</span>Complete your email address.
+                    </li>
+                    <li class="d-flex mb-2">
+                        <span class="text-primary fw-semibold me-2">2.</span> We will send you a temporary email code.
+                    </li>
+                    <li class="d-flex mb-2">
+                        <span class="text-primary fw-semibold me-2">3.</span>Use the code to change your password on our
+                        secure website.
+                    </li>
+                </ul>
+                <div class="card border-black">
+                    <form method="post" class="card-body" id="frm-restaurar"
+                          style="padding: 22px 25px !important;">{% csrf_token %}
+                        <div class="mb-4">
+                            <div class="position-relative"><i
+                                    class="ai-key fs-lg position-absolute top-50 start-0 translate-middle-y text-black opacity-80 ms-3"></i>
+                                <input class="form-control form-control-lg ps-5 input-record" type="email"
+                                       style="background-color: #ffffff;   color: black;"
+                                       placeholder="Email address" name="email" id="recoverEmail" required>
+                            </div>
                         </div>
-                    </div>
-                    <center>
-                    <button type="submit" class="btn btn-success transition-3d-hover">
-                        <i class="fa fa-sync"></i>&nbsp; Recover Password
-                    </button>
-                    </center>
-                </form>
-            </div>
-            <div class="mt-4">
+                        <center>
+                            <button type="submit" class="btn btn-success transition-3d-hover">
+                                <i class="fa fa-sync"></i>&nbsp; Recover Password
+                            </button>
+                        </center>
+                    </form>
+                </div>
+                <div class="mt-4">
+                </div>
             </div>
         </div>
     </div>
+    <div class="mb-100"></div>
 
 {% endblock %}
 {% block jscript %}
