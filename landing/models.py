@@ -316,13 +316,23 @@ class CallForPapers(ModeloBase):
 
 
 class FeesConference(ModeloBase):
-    public = models.BooleanField(default=True)
-    order = models.IntegerField(default=0)
-    name = models.CharField(max_length=200)
-    price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    tax = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    total_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    public = models.BooleanField(default=True, verbose_name='¿Public?')
+    order = models.IntegerField(default=0, verbose_name='Order', blank=True, null=True)
+    name = models.CharField(max_length=200, verbose_name='Name', blank=True, null=True)
+    price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Price')
     applied_tax = models.BooleanField(default=False)
+    tax = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Tax')
+    total_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Total Price')
+
+    def get_applied_tax(self):
+        return 'text-success fa fa-check-circle' if self.applied_tax else 'text-danger fa fa-times-circle'
+
+    def get_public(self):
+        return 'text-success fa fa-check-circle' if self.order else 'text-danger fa fa-times-circle'
+
+
+    def list_details(self):
+        return self.feesconferencedetail_set.filter(status=True).order_by('order')
 
     def __str__(self):
         return self.name
@@ -333,9 +343,13 @@ class FeesConference(ModeloBase):
         ordering = ['order']
 
 class FeesConferenceDetail(ModeloBase):
-    public = models.BooleanField(default=True)
-    order = models.IntegerField(default=0)
-    name = models.CharField(max_length=200)
+    fee = models.ForeignKey(FeesConference, on_delete=models.CASCADE, verbose_name='Conference Fee', blank=True, null=True)
+    public = models.BooleanField(default=True, verbose_name='¿Public?')
+    order = models.IntegerField(default=0, verbose_name='Order', blank=True, null=True)
+    name = models.CharField(max_length=200, verbose_name='Name', blank=True, null=True)
+
+    def get_public(self):
+        return 'text-success fa fa-check-circle' if self.order else 'text-danger fa fa-times-circle'
 
     def __str__(self):
         return self.name
