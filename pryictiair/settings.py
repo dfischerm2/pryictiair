@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from django.conf.global_settings import CACHES
+# from django.conf.global_settings import CACHES
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
@@ -312,7 +312,7 @@ WEBPUSH_SETTINGS = {
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'  # If you wish to delay updates to your test suite
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-SITE_STORAGE = os.path.dirname(os.path.realpath("manage.py"))
+SITE_STORAGE = Path(BASE_DIR)
 LOGIN_URL = '/login/'
 
 FILE_CHARSET = 'utf-8'
