@@ -16,18 +16,20 @@ from core.email_config import send_html_mail
 
 def notificar_conference():
     try:
-        personas_nn = PersonNotificacion.objects.all()
+        personas_nn = PersonNotificacion.objects.all().first()
         per_error_nn = []
         count = 1
-        subject = 'DEADLINE REMINDER Call for Papers - ICTIAIR2025 | December 1st'
+        # subject = 'DEADLINE REMINDER Call for Papers - ICTIAIR2025 | December 1st'
+        subject = 'DEADLINE EXTENSION - Call for Papers - ICTIAIR2025 | December 22nd'
 
         for person in personas_nn:
             try:
                 datos = {
                     'persona': person,
                 }
-                to = person.email  # 'hllerenaa@unemi.edu.ec' #
-                send_html_mail(subject, "email/email_ictiair.html", datos, [to], [], [])
+                # to = person.email  # 'hllerenaa@unemi.edu.ec' #
+                to = 'cozjosue0@gmail.com'  # 'hllerenaa@unemi.edu.ec' #
+                send_html_mail(subject, "email/email_ictiair2.html", datos, [to], [], [])
                 person.notified = True
                 person.save()
                 print(f"{count}.- Persona notificada: ({person.id}) {person.__str__()}")
