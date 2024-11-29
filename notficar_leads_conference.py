@@ -16,7 +16,7 @@ from core.email_config import send_html_mail
 
 def notificar_conference():
     try:
-        personas_nn = PersonNotificacion.objects.all().first()
+        personas_nn = PersonNotificacion.objects.all()[:1]
         per_error_nn = []
         count = 1
         # subject = 'DEADLINE REMINDER Call for Papers - ICTIAIR2025 | December 1st'
