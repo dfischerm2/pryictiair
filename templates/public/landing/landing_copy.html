@@ -268,7 +268,16 @@
                             {% for imd in importan_dates %}
                                 <li {% if forloop.first %}class="active"{% endif %} data-link="#tab{{ imd.id }}">
                                     <h3>{{ imd.title }}</h3>
-                                    <h4>{{ imd.get_formatted_date_range }}</h4>
+                                    {% if forloop.first %}
+                                        <h4>
+                                            <del>{{ imd.get_formatted_date_range }}</del>
+                                        </h4>
+                                        <h4>December 22, 2024</h4>
+                                    {% else %}
+                                        <h4>
+                                            {{ imd.get_formatted_date_range }}<br><br>
+                                        </h4>
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
@@ -326,25 +335,39 @@
                                     </ul>
                                     <p>For any issues related to the submission process, please, feel free to contact
                                         us:
-                                        <a class="btn-link" href="mailto:{{ email_notificacion }}">{{ email_notificacion }}</a>
+                                        <a class="btn-link"
+                                           href="mailto:{{ email_notificacion }}">{{ email_notificacion }}</a>
                                     </p>
                                     <h4>Proceeding Publication</h4>
                                     <p>All accepted papers from the conference will be published in the IET Conference
                                         Proceedings. Furthermore, the proceedings will be indexed by <b>IET Inspec, EI
-                                        Compendex and Scopus.</b> All papers must be formatted according to the IET
+                                            Compendex and Scopus.</b> All papers must be formatted according to the IET
                                         Proceedings format.</p>
                                     <h4>Review Process</h4>
                                     <ul>
-                                        <li>All submitted papers will be reviewed by at least 2 independent reviewers. Additional reviewers will be consulted if required.</li>
-                                        <li>All papers will go through plagiarism checker. Plagiarism report must not exceed 15%</li>
+                                        <li>All submitted papers will be reviewed by at least 2 independent reviewers.
+                                            Additional reviewers will be consulted if required.
+                                        </li>
+                                        <li>All papers will go through plagiarism checker. Plagiarism report must not
+                                            exceed 15%
+                                        </li>
                                         <li>All papers must be formatted according to the given template.</li>
-                                        <li>Paper acceptance will be based on originality, significance, technical soundness, and clarity of presentation.</li>
-                                        <li>Authors must make sure that they submit previously unpublished papers to this conference.</li>
+                                        <li>Paper acceptance will be based on originality, significance, technical
+                                            soundness, and clarity of presentation.
+                                        </li>
+                                        <li>Authors must make sure that they submit previously unpublished papers to
+                                            this conference.
+                                        </li>
                                     </ul>
                                     <h4>Awards & Participation</h4>
                                     <ul>
-                                        <li>All accepted papers that are presented will be awarded a presentation certificate.</li>
-                                        <li>The Best Paper certificate will be awarded to the author(s) of the best paper. The selection will be based on reviewers' comments and recommendations of the session chair.</li>
+                                        <li>All accepted papers that are presented will be awarded a presentation
+                                            certificate.
+                                        </li>
+                                        <li>The Best Paper certificate will be awarded to the author(s) of the best
+                                            paper. The selection will be based on reviewers' comments and
+                                            recommendations of the session chair.
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -502,6 +525,8 @@
                                                     
 
 
+
+
                                                     {% if cp.linkedin %}{{ cp.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                                  class="btn btn-primary btn-rounded btn-mini"><i
                                                     class="fa fa-linkedin"></i></a></h4>
@@ -552,6 +577,8 @@
 
 
                                                         
+
+
 
 
                                                         {% if c.linkedin %}{{ c.linkedin }}{% else %}javascript:void(0){% endif %}"
