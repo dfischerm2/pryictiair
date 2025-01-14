@@ -3,6 +3,11 @@
 
 {% block head %}
     <link rel="stylesheet" href="/static/landing.css">
+    <style>
+        #section-register {
+            scroll-margin-top: 100px; /* Ajusta este valor según necesites */
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -535,6 +540,13 @@
 
 
 
+
+
+
+
+
+
+
                                                     {% if cp.linkedin %}{{ cp.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                                  class="btn btn-primary btn-rounded btn-mini"><i
                                                     class="fa fa-linkedin"></i></a></h4>
@@ -597,6 +609,13 @@
 
 
 
+
+
+
+
+
+
+
                                                         {% if c.linkedin %}{{ c.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                     class="btn btn-primary btn-rounded btn-mini"><i
                                                         class="fa fa-linkedin"></i></a></h4>
@@ -618,6 +637,7 @@
     <!-- section close -->
     <section id="section-register" aria-label="section-services-tab"
              data-bgimage="url(static/images/bg/2.jpg) fixed center no-repeat">
+        <div id="register-anchor" style="position: absolute; top: 0;"></div>
         <div class="wm wm-border wow fadeInDown">fees</div>
         <div class="container">
             <div class="row">
@@ -951,6 +971,14 @@
 
 
         })
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#section-register') {
+                setTimeout(() => {
+                    document.getElementById('section-register').scrollIntoView({behavior: 'smooth'});
+                }, 1000);
+            }
+        });
     </script>
 {% endblock %}
 
