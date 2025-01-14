@@ -33,6 +33,8 @@ class Usuario(AbstractUser, ModeloBase):
     tipo_documento = models.CharField(verbose_name="Tipo Documento", max_length=50, choices=TIPO_DOCUMENTO, default="NINGUNO")
     documento = models.CharField(max_length=20, null=True, blank=True, verbose_name='Cédula/RUC/Pasaporte', validators=[solo_numeros])
     ciudad = models.ForeignKey('area_geografica.Ciudad', on_delete=models.PROTECT, blank=True, null=True, verbose_name='Ciudad')
+    pais = models.ForeignKey('area_geografica.Pais', on_delete=models.PROTECT, blank=True, null=True, verbose_name='País')
+    institucion = models.CharField(max_length=100, default='', blank=True, null=True, verbose_name='Institución')
     direccion = models.TextField(verbose_name='Dirección')
     telcelular = models.CharField(max_length=30, verbose_name='# Teléfono Móvil', null=True, blank=True)
     telfijo = models.CharField(max_length=30, verbose_name='# Teléfono Fijo', null=True, blank=True)

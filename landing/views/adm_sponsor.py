@@ -27,7 +27,6 @@ def sponsorView(request):
             }
     model = Sponsor
     Formulario = SponsorForm
-
     if request.method == 'POST':
         res_json = []
         action = request.POST['action']
@@ -36,9 +35,9 @@ def sponsorView(request):
                 if action == 'add':
                     form = Formulario(request.POST, request.FILES, request=request)
                     if form.is_valid():
+                        form.instance.conference = conference
                         form.save()
-                        log(f"Registro un nuevo sponsor {form.instance.__str__()}", request, "add",
-                            obj=form.instance.id)
+                        log(f"Registro un nuevo sponsor {form.instance.__str__()}", request, "add",obj=form.instance.id)
                         messages.success(request, "Sponsor agregado exitosamente")
                         res_json.append({'error': False, "to": redirectAfterPostGet(request)})
                     else:
@@ -100,7 +99,7 @@ def sponsorView(request):
                 return JsonResponse({"result": True, 'data': template.render(data)})
 
         # Filtrado y listado
-        criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(), ''
+        criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(status=True), ''
         if criterio:
             filtros = filtros & Q(name__icontains=criterio)
             data["criterio"] = criterio

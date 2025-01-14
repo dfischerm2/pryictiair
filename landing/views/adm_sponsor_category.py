@@ -26,6 +26,7 @@ def sponsorCategoryView(request):
             }
     model = SponsorCategory
     Formulario = SponsorCategoryForm
+    conference = request.session['conference']
 
     if request.method == 'POST':
         res_json = []
@@ -99,7 +100,7 @@ def sponsorCategoryView(request):
                 return JsonResponse({"result": True, 'data': template.render(data)})
 
         # Filtrado y listado
-        criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(), ''
+        criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(status=True, conference=conference), ''
         if criterio:
             filtros = filtros & Q(name__icontains=criterio)
             data["criterio"] = criterio

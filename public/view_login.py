@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.timezone import activate
+
+from landing.models import Conference
 from pryictiair import settings
 from pryictiair.settings import EMAIL_HOST_USER, URL_GENERAL
 from autenticacion.models import Usuario
@@ -34,13 +36,12 @@ def login_tienda(request):
                 user = authenticate(username=usuario_, password=password)
                 if user is not None:
                     if user.is_active:
-                        # if user.es_persona():
-                        #     if not user.get_perfil_per().validado:
-                        #         datos['error'] = 'Cuenta pendiente de validación, contactar con los administradores del public.'
-                        #         return JsonResponse(datos)
                         login(request, user)
-                        if user.get_perfil_per():
-                            request.session['perfilprincipal'] = user.get_perfil_per()
+                        if user.get_perfil_adm():
+                            request.session['listConferences'] = listConferences = Conference.objects.filter(status=True).order_by('-active', '-end_date')
+                            if listConferences:
+                                conferences_actives = listConferences.filter(active=True).order_by('-id')
+                                request.session['conference'] = conferences_actives.first() if conferences_actives else listConferences.first()
                         datos['resp'] = True
                         if request.POST.get('next'):
                             datos['redirect'] = request.POST.get('next')

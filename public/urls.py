@@ -6,7 +6,7 @@ from .index import index, index_copy
 from .view_changepass import changepass
 
 #from .view_pago import pagoView
-from .view_registro import registro
+from .view_registro import registerView
 from .view_restaurar import restaurar
 from .view_login import login_tienda, logout_tienda
 from .view_recordarusername import recordarusername
@@ -25,5 +25,6 @@ urlpatterns = [
     re_path(r'^restorepass/', restaurar),
     re_path(r'^restoreusername/', recordarusername),
     re_path(r'^changepass/', changepass),
+    re_path(r'^register/', registerView),
 
 ]

@@ -258,9 +258,10 @@ def solo_caracteres(texto):
     return resultado
 
 
-register.filter("solo_caracteres", solo_caracteres)
-
-
 @register.filter(name='comma_to_dot')
 def comma_to_dot(value):
     return str(value).replace(',', '.')
+
+
+register.filter("solo_caracteres", solo_caracteres)
+register.filter("encrypt", encrypt)

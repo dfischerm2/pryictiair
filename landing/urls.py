@@ -13,7 +13,9 @@ from landing.views.adm_summary import summaryView
 from landing.views.adm_summary_image import summaryImageView
 from landing.views.adm_topic import topicView
 from landing.views.adm_topic_categories import topicCategoryView
+from landing.views.view_conference import conferenceView
 from landing.views.view_notificacions import personNotificacionView
+from landing.views.view_feesconference import conferenceFeesView
 
 landing_urls = (
     {
@@ -85,6 +87,16 @@ landing_urls = (
         "nombre": "Notifications",
         "url": 'notified/',
         "vista": personNotificacionView,
+    },
+    {
+        "nombre": "Conference",
+        "url": 'conference/',
+        "vista": conferenceView,
+    },
+    {
+        "nombre": "Conference Fees",
+        "url": 'conference_fees/',
+        "vista": conferenceFeesView,
     },
 )
 

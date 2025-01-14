@@ -26,7 +26,7 @@ def summaryView(request):
             }
     model = Summary
     Formulario = SummaryForm
-
+    conference = request.session['conference']
     if request.method == 'POST':
         res_json = []
         action = request.POST['action']
@@ -35,6 +35,7 @@ def summaryView(request):
                 if action == 'add':
                     form = Formulario(request.POST, request=request)
                     if form.is_valid():
+                        form.instance.conference = conference
                         if form.cleaned_data['activo']:
                             model.objects.filter(activo=True).update(activo=False)
                         form.save()
@@ -103,7 +104,7 @@ def summaryView(request):
                 return JsonResponse({"result": True, 'data': template.render(data)})
 
         # Filtrado y listado
-        criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(), ''
+        criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(conference=conference), ''
         if criterio:
             filtros = filtros & Q(title__icontains=criterio)
             data["criterio"] = criterio

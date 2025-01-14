@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="GET">
+        <div class="container-fluid">
+            <div class="form-row">
+                <div class="col-md-6 col-sm-12 offset-md-6">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                               aria-describedby="button-addon2" name="criterio" value="{{ criterio }}">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="button-addon2"><i
+                                    class="fa fa-search"></i></button>
+                            {% if url_vars %}
+                                <a title="Ver todo" href="{{ ruta }}" class="btn btn-primary">
+                                    <i class="fas fa-sync-alt"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="mb-3">
+        <a href="?action=add" class="btn btn-success"><i class="fas fa-plus-circle mr-2"></i> Registrar {{ titulo }}</a>
+    </div>
+
+    <div class="panel panel-inverse">
+
+
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table id="tabla" class="table table-striped table-td-valign-middle table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            Logo
+                        </th>
+                        <th>
+                            Tipo
+                        </th>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Abreviatura
+                        </th>
+                        <th>
+                            Cod Datafast
+                        </th>
+                        <th class="text-center">
+                            Acción
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for l in listado %}
+                        <tr>
+                            <td>
+                                {% if l.logo == '' %}
+                                    <img src="/media/foto_defaultd.png" width="50px" class="img-thumbnail">
+                                {% else %}
+                                    <a href="{{ l.logo.url }}" data-lightbox="roadtrip"
+                                       title="{{ l.nombre }}">
+                                        <img id="presentaimg2" src="{{ l.logo.url }}"
+                                             class="img-thumbnail"
+                                             width="50px" align="middle"
+                                             alt="{{ l.nombre }}">
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ l.get_tipo_display }}
+                            </td>
+                            <td>
+                                {{ l.nombre }}
+                            </td>
+                            <td>
+                                {{ l.abreviatura }}
+                            </td>
+                            <td>
+                                {{ l.cod_datafast|default:'NO ASIGNADO' }}
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-mini btn-secondary" title="Ver {{ modulo }}"
+                                   href="{{ ruta }}?pk={{ l.pk }}&action=ver">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a class="btn btn-mini btn-info" title="Editar {{ modulo }}"
+                                   href="?pk={{ l.pk }}&action=change">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-mini btn-danger" title="Eliminar {{ modulo }}"
+                                   onclick="eliminar({{ l.pk }}, '{{ l.nombre }}', 'delete')"
+                                   href="javascript:void(0);">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <!-- paginacion  -->
+                {% include 'paginacion.html' %}
+                <!-- final de la paginacion  -->
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="/static/lightbox/css/lightbox.min.css">
+    <script src="/static/lightbox/js/lightbox-plus-jquery.min.js"></script>
+{% endblock %}
+
+{% block jscript %}
+{% endblock %}

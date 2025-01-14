@@ -1,0 +1,72 @@
+{% load templatefunctions %}
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>
+                Fecha
+            </th>
+            <th>
+                Observación
+            </th>
+            <th>
+                Estado
+            </th>
+            <th>
+                Archivo
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for h in historial %}
+            <tr>
+                <td>
+                    {{ h.fecha_hora_registro|date:'d/M/Y H:i' }}
+                </td>
+                <td>
+                    {{ h.detalle|default:''|upper|linebreaksbr }}
+                </td>
+                <td>
+                    {{ h.estado_pedido }}
+                </td>
+                <td>
+                    {% if h.archivo %}
+                        <a target="_blank" class="custom-btn-link p-0"
+                           href="/media/{{ h.archivo }}">
+                            {{ h.archivo_icon }} Clic para descargar el archivo enviado
+                        </a>
+                    {% else %}
+                        NINGUNO
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{#{% with resp_metodo_pago=pedido.get_resp_metodo_pago %}#}
+{#    {% if resp_metodo_pago %}#}
+{#        <div class="table-responsive">#}
+{#            <table class="table table-bordered table-striped">#}
+{#                <tbody>#}
+{#                <tr>#}
+{#                    <th class="text-left">IP</th>#}
+{#                    <td class="text-left">{{ pedido.session_user.ip }}</td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <th class="text-left">Dispositivo</th>#}
+{#                    <td class="text-left">{{ pedido.session_user.dispositivo }}</td>#}
+{#                </tr>#}
+{#                {% for r in resp_metodo_pago %}#}
+{#                    <tr>#}
+{#                        <th class="text-left">{{ r.nombre }}</th>#}
+{#                        <td class="text-left">{{ r.valor }}</td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#                </tbody>#}
+{#            </table>#}
+{#        </div>#}
+{#    {% endif %}#}
+{#{% endwith %}#}

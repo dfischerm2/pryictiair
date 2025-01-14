@@ -1,4 +1,5 @@
 {% extends 'public/base.html' %}
+{% load templatefunctions %}
 
 {% block head %}
     <link rel="stylesheet" href="/static/landing.css">
@@ -422,7 +423,6 @@
                 <div class="de_tab_content text-left">
                     <div id="tab1" class="tab_single_content">
                         <div class="accordion" id="accordionTopics">
-
                             {% for tc in topics_by_category %}
                                 <div class="card custom-card">
                                     <div class="card-header" id="headingOne_{{ tc.id }}">
@@ -441,7 +441,7 @@
                                          data-parent="#accordionTopics">
                                         <div class="card-body custom-card-body">
                                             <ul class="custom-list">
-                                                {% for t in tc.topics.all %}
+                                                {% for t in tc.get_topics %}
                                                     {% if t.status and t.public %}
                                                         <li>{{ t.name }}</li>
                                                     {% endif %}
@@ -527,6 +527,14 @@
 
 
 
+
+
+
+
+
+
+
+
                                                     {% if cp.linkedin %}{{ cp.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                                  class="btn btn-primary btn-rounded btn-mini"><i
                                                     class="fa fa-linkedin"></i></a></h4>
@@ -581,6 +589,14 @@
 
 
 
+
+
+
+
+
+
+
+
                                                         {% if c.linkedin %}{{ c.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                     class="btn btn-primary btn-rounded btn-mini"><i
                                                         class="fa fa-linkedin"></i></a></h4>
@@ -612,74 +628,29 @@
                 </div>
                 <div class="container text-light">
                     <div class="row d-flex justify-content-center align-items-stretch">
-                        <div class="col-lg-4 col-md-6 mb-4 d-flex">
-                            <div style="background: #101010!important;"
-                                 class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
-                                <div class="top">
-                                    <h2>Authors</h2>
-                                    <p class="price"><span class="currency id-color">$</span> <b>300.00</b></p>
-                                </div>
-                                <div class="bottom">
-                                    <ul>
-                                        <li><i class="icon_check_alt2"></i>1 Paper</li>
-                                        <li><i class="icon_check_alt2"></i>Additional page: +$50 per page (max 2 pages)
-                                        </li>
-                                        <li><i class="icon_check_alt2"></i>Additional paper: +$200 each</li>
-                                    </ul>
-                                </div>
-                                {#                                <div class="ps1-deco"></div>#}
-                            </div>
-                        </div>
+                        {% for item in fees %}
+                            <div class="col-lg-4 col-md-6 mb-4 d-flex">
+                                <div style="background: #101010!important;"
+                                     class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
+                                    <div class="top">
+                                        <h2>{{ item.get_role_display }}</h2>
+                                        <p class="price"><span class="currency id-color">$</span>
+                                            <b>{{ item.get_value }}</b></p>
+                                    </div>
+                                    <div class="bottom">
+                                        <ul>
+                                            {% for detail in item.get_details %}
+                                                <li><i class="icon_check_alt2"></i>{{ detail.description }}</li>
+                                            {% endfor %}
+                                        </ul>
 
-                        <div class="col-lg-4 col-md-6 mb-4 d-flex">
-                            <div style="background: #101010!important;"
-                                 class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
-                                <div class="top">
-                                    <h2>Attendees</h2>
-                                    <p class="price"><span class="currency id-color">$</span> <b>150.00</b></p>
+                                        <a href="/register/?id={{ item.pk|encrypt }}" class="btn btn-custom text-white">Sign
+                                            up now</a>
+                                    </div>
+                                    <div class="ps1-deco" style="background-size: cover;"></div>
                                 </div>
-                                <div class="bottom">
-                                    <!-- Empty content as per original -->
-                                </div>
-                                {#                                <div class="ps1-deco"></div>#}
                             </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 mb-4 d-flex">
-                            <div style="background: #101010!important;"
-                                 class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
-                                <div class="top">
-                                    <h2>Student Attendees</h2>
-                                    <p class="price"><span class="currency id-color">$</span> <b>50.00</b></p>
-                                </div>
-                                <div class="bottom">
-                                    <ul>
-                                        <li><i class="icon_check_alt2"></i>Registration must be with institutional email
-                                        </li>
-                                    </ul>
-                                </div>
-                                {#                                <div class="ps1-deco"></div>#}
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 mb-4 d-flex">
-                            <div style="background: #101010!important;"
-                                 class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
-                                <div class="top">
-                                    <h2>Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)</h2>
-                                    <p class="price"><span class="currency id-color">Free</span></p>
-                                </div>
-                                <div class="bottom">
-                                    <ul>
-                                        <li><i class="icon_check_alt2"></i>Must register using institutional email</li>
-                                        <li><i class="icon_check_alt2"></i>Attendee: $50</li>
-                                        <li><i class="icon_check_alt2"></i>Student Attendee: Free</li>
-                                    </ul>
-                                </div>
-                                {#                                <div class="ps1-deco"></div>#}
-                            </div>
-                        </div>
-
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -943,14 +914,6 @@
 {% endblock %}
 
 {% block jscript %}
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous"
-            src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v16.0&appId=5465147420185697&autoLogAppEvents=1"
-            nonce="GutKLHL1"></script>
-    <!-- Popper.js -->
-    <!-- Bootstrap 4 JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="/static/jquery.blockUI.js"></script>
     <script src="/static/js/forms.js"></script>
     <script>
         $(document).ready(function () {

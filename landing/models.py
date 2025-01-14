@@ -4,7 +4,36 @@ from core.custom_models import ModeloBase
 
 # Create your models here.
 
+class Conference(ModeloBase):
+    title = models.CharField(max_length=200, verbose_name='Título')
+    subtitle = models.CharField(max_length=200, verbose_name='Subtítulo')
+    start_date = models.DateField(verbose_name='Fecha de Inicio')
+    end_date = models.DateField(verbose_name='Fecha de Fin')
+    max_papers = models.IntegerField(default=0, verbose_name='Cantidad máxima de Papers')
+    value_adittional_paper = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Valor por Paper adicional', default=0)
+    max_sheets = models.IntegerField(default=0, verbose_name='Cantidad máxima de Hojas por paper')
+    value_adittional_sheet = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Valor por Hoja adicional', default=0)
+    active = models.BooleanField(default=True, verbose_name='Activo')
+
+    def get_summary(self):
+        return self.summary_set.filter(status=True, activo=True, public=True).order_by('-id').first()
+
+    def get_topics(self):
+        return self.topiccategory_set.filter(public=True, status=True)
+
+    def get_active(self):
+        return 'text-success fa fa-check-circle' if self.active else 'text-danger fa fa-times-circle'
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Conference'
+        verbose_name_plural = 'Conferences'
+
+
 class SponsorCategory(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     order = models.IntegerField(default=0)
     public = models.BooleanField(default=True)
     carrousel = models.BooleanField(default=False)
@@ -35,8 +64,12 @@ class Sponsor(ModeloBase):
 
 
 class TopicCategory(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=200)
+
+    def get_topics(self):
+        return self.topics.filter(status=True, public=True)
 
     def __str__(self):
         return self.name
@@ -62,6 +95,7 @@ class Topic(ModeloBase):
 
 
 class GuidelineType(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
 
@@ -89,6 +123,7 @@ class Guideline(ModeloBase):
 
 
 class ImportantDate(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     public = models.BooleanField(default=True)
     title = models.CharField(max_length=200)
     start_date = models.DateField(null=True, blank=True)
@@ -124,6 +159,7 @@ class ImportantDate(ModeloBase):
 
 
 class Summary(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     public = models.BooleanField(default=True)
     title_principal = models.CharField(max_length=200, default='')
     start_date = models.DateField(null=True, blank=True)
@@ -195,6 +231,7 @@ class SummaryImage(ModeloBase):
 
 
 class CommitteeCategory(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=200)
     order = models.IntegerField(default=0, null=True, blank=True)
@@ -286,6 +323,7 @@ TYPE_DOCUMENT = (
 
 
 class CallForPapers(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     public = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
     icon = models.FileField(upload_to='icon_callforpapers/', null=True, blank=True)
@@ -315,46 +353,78 @@ class CallForPapers(ModeloBase):
         return '/static/images/icons/file.png'
 
 
-class FeesConference(ModeloBase):
-    public = models.BooleanField(default=True, verbose_name='¿Public?')
-    order = models.IntegerField(default=0, verbose_name='Order', blank=True, null=True)
-    name = models.CharField(max_length=200, verbose_name='Name', blank=True, null=True)
-    price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Price')
-    applied_tax = models.BooleanField(default=False)
-    tax = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Tax')
-    total_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Total Price')
+ROLES_FEE_CHOICE = (
+    (1, 'Authors'),
+    (2, 'Attendees'),
+    (3, 'Student Attendees'),
+    (4, 'Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)')
+)
 
-    def get_applied_tax(self):
-        return 'text-success fa fa-check-circle' if self.applied_tax else 'text-danger fa fa-times-circle'
+
+class ConferenceFee(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
+    order = models.IntegerField(default=0, verbose_name='Orden')
+    role = models.IntegerField(choices=ROLES_FEE_CHOICE, verbose_name='Rol')
+    value = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Valor')
+    published = models.BooleanField(default=True, verbose_name='Publicado')
 
     def get_public(self):
-        return 'text-success fa fa-check-circle' if self.order else 'text-danger fa fa-times-circle'
+        return 'text-success fa fa-check-circle' if self.published else 'text-danger fa fa-times-circle'
 
+    def get_details(self):
+        return self.details.filter(status=True).order_by('order')
 
-    def list_details(self):
-        return self.feesconferencedetail_set.filter(status=True).order_by('order')
+    def get_value(self):
+        return 'Free' if self.value == 0 else f"{self.value}"
 
     def __str__(self):
-        return self.name
+        return f'{self.get_role_display()} - {self.conference.__str__()}'
 
     class Meta:
-        verbose_name = 'Fees Conference'
-        verbose_name_plural = 'Fees Conference'
+        verbose_name = 'Conference Fee'
+        verbose_name_plural = 'Conference Fees'
         ordering = ['order']
 
-class FeesConferenceDetail(ModeloBase):
-    fee = models.ForeignKey(FeesConference, on_delete=models.CASCADE, verbose_name='Conference Fee', blank=True, null=True)
-    public = models.BooleanField(default=True, verbose_name='¿Public?')
-    order = models.IntegerField(default=0, verbose_name='Order', blank=True, null=True)
-    name = models.CharField(max_length=200, verbose_name='Name', blank=True, null=True)
 
-    def get_public(self):
-        return 'text-success fa fa-check-circle' if self.order else 'text-danger fa fa-times-circle'
+class DetailConferenceFee(ModeloBase):
+    cab = models.ForeignKey(ConferenceFee, related_name='details', on_delete=models.CASCADE, verbose_name='Cabecera')
+    order = models.IntegerField(default=0, verbose_name='Orden')
+    description = models.CharField(max_length=200, verbose_name='Descripción')
 
     def __str__(self):
-        return self.name
+        return self.description
 
     class Meta:
-        verbose_name = 'Fees Conference Detail'
-        verbose_name_plural = 'Fees Conference Detail'
+        verbose_name = 'Detail Conference Fee'
+        verbose_name_plural = 'Detail Conference Fees'
+        ordering = ['order']
+
+
+class ScheduleConference(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200, verbose_name='Título')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Schedule Conference'
+        verbose_name_plural = 'Schedule Conferences'
+
+
+class DetailScheduleConference(ModeloBase):
+    cab = models.ForeignKey(ScheduleConference, related_name='details', on_delete=models.CASCADE, verbose_name='Cabecera')
+    order = models.IntegerField(default=0, verbose_name='Orden')
+    description = models.CharField(max_length=200, verbose_name='Descripción')
+    date = models.DateField(verbose_name='Fecha')
+    start_time = models.TimeField(verbose_name='Hora Inicio')
+    end_time = models.TimeField(verbose_name='Hora Fin')
+    link = models.URLField(verbose_name='Enlace')
+
+    def __str__(self):
+        return self.description
+
+    class Meta:
+        verbose_name = 'Detail Schedule Conference'
+        verbose_name_plural = 'Detail Schedule Conferences'
         ordering = ['order']

@@ -292,6 +292,22 @@ ul.custom-list li:last-child {
     }
 }
 
-.img-sponsor{
+.img-sponsor {
     width: 300px !important;
+}
+
+.pricing-s1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.pricing-s1 .bottom {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-s1 .btn-custom {
+    margin-top: auto;
 }

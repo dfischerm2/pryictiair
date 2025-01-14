@@ -8,6 +8,8 @@ from django.core import signing
 from django.db.models import Value, F
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
+
+from landing.models import Conference
 from seguridad.models import *
 from datetime import date
 from django.db import transaction

@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load templatefunctions %}
+{% block atras %}{{ request.path }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="/static/fancybox/css/core.css"/>
+{% endblock %}
+{% block content %}
+
+    <div class="panel panel-inverse" data-sortable-id="form-stuff-2">
+
+        <div class="panel-heading ui-sortable-handle">
+            <h4 class="panel-title">{{ titulo }} Formulario</h4>
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i
+                        class="fa fa-expand"></i></a>
+            </div>
+        </div>
+
+
+        <div class="panel-body">
+            <div class='row'>
+                <div class="col-lg-6">
+                    <span class="pull-right hidden-print">
+                            {% if compra.user.telefono %}
+                                <a class="btn btn-success"
+                                   onclick="contactarcliente('{{ compra.get_telefono }}', '{{ compra.get_nombres }}')"
+                                   href="javascript:void(0);">
+                                <i class="fa fa-whatsapp"></i> Contactar Cliente
+                            </a>
+                            {% endif %}
+                    </span>
+                    <span>
+                            <h3><i class="fa fa-money-bill"></i> Detalle del Pago</h3>
+                        </span>
+                    <hr>
+                    <div class="form-group">
+                        <h5 class="h5">Comprobante</h5>
+                        <div>
+                            <input data-show-remove="false" class="form-control" type="file"
+                                   id="id_archivo_pago" data-max-file-size="3M"
+                                   data-default-file="{{ obj.archivo_pago.url }}"
+                                   data-allowed-file-extensions="jpg jpeg png tiff jfif pdf">
+                            {% with urlarchivo='https://docs.google.com/gview?url='|add:URL_GENERAL|add:obj.archivo_pago.url|add:'&embedded=true' %}
+                                <a {% if obj.archivo_pago_is_image %}data-fancybox="image"
+                                   href="{{ obj.archivo_pago.url }}" {% else %} data-fancybox
+                                   data-type="iframe"
+                                   href="{{ urlarchivo }}" {% endif %} class="btn btn-link px-0">
+                                    Ver comprobante en otra ventana
+                                </a>
+                            {% endwith %}
+                            o
+                            <a class="btn btn-link pl-0"
+                               href="{{ obj.archivo_pago.url }}" target="_blank">
+                                Descargar
+                            </a>
+                        </div>
+                    </div>
+                    {% with resp_metodo_pago=compra.get_resp_metodo_pago %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th colspan="2">
+                                        <h3 class="modal-title">{{ compra.get_icon }} Pago
+                                            por {{ compra.get_metodo_pago_display }}</h3>
+                                    </th>
+                                </tr>
+                                </thead>
+{#                                <tbody>#}
+{#                                <tr>#}
+{#                                    <th class="text-left">IP</th>#}
+{#                                    <td class="text-left">{{ compra.session_user.ip }}</td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <th class="text-left">Dispositivo</th>#}
+{#                                    <td class="text-left">{{ compra.session_user.dispositivo }}</td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <th class="text-left">Localidad</th>#}
+{#                                    <td class="text-left">{{ compra.session_user.areageografica }}</td>#}
+{#                                </tr>#}
+                                {% for r in resp_metodo_pago %}
+                                    <tr>
+                                        <th class="text-left">{{ r.nombre }}</th>
+                                        <td class="text-left">{{ r.valor }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endwith %}
+                </div>
+                <div class="col-lg-6">
+                    <form method="post" enctype="multipart/form-data" action="{{ ruta }}"
+                          class="form-horizontal form-label-left">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk" value="{{ pk|default:0 }}"/>
+                        <input type="hidden" name="action" value="{{ action }}"/>
+                        <fieldset>
+                            <span>
+                                <h3><i class="fa fa-search"></i> Validación</h3>
+                            </span>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <tr>
+                                            <td>Cliente</td>
+                                            <td>{{ obj.user.username }} - {{ obj.user.get_full_name }}
+                                                - {{ obj.user.documento|default:'' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>{{ obj.user.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cuenta</td>
+                                            <td>
+                                                {% if obj.entidad_fin %}
+                                                    {{ obj.entidad_fin.num_cuenta }} -
+                                                    {{ obj.entidad_fin.ent_fin.nombre }}
+                                                {% else %}
+                                                    Ninguna
+                                                {% endif %}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th class="text-center" width="10%">Precio</th>
+                                            {#                                    <th class="text-right" width="20%">SUBTOTAL</th>#}
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for l in detallepedido %}
+                                            <tr>
+                                                <td>
+                                                    <span class="text-inverse">{{ l.item.nombre }}</span>
+                                                </td>
+                                                <td style="vertical-align : middle" class="text-center">
+                                                    {{ SIMBOLO_MONEDA }}{{ l.precio|intcomma }}
+                                                </td>
+                                                {#                                        <td style="vertical-align : middle" class="text-right">#}
+                                                {#                                            {{ SIMBOLO_MONEDA }}{{ l.total|intcomma }}</td>#}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <span>
+                                <h3><i class="fa fa-check-double"></i> Respuesta</h3>
+                            </span>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <h5 class="h5">Estado de la transacción</h5>
+                                        <select required="" class="form-control" name="estado" id="id_estado">
+                                            <option value="COMPLETADO">
+                                                Aprobar
+                                            </option>
+                                            <option value="ANULADO">
+                                                Rechazar
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback" id="errorMessageestado"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <h5 class="h5">Observación</h5>
+                                        <textarea placeholder="Sea claro y específico" rows="4" required=""
+                                                  class="form-control"
+                                                  id="id_observacion"
+                                                  name="observacion"></textarea>
+                                        <div class="invalid-feedback" id="errorMessageobservacion"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="form-group">
+                            <a class="btn btn-danger" style="color: #ffffff;" href="{{ ruta }}">
+                                <i class="fa fa-window-close"></i> Cancelar
+                            </a>
+                            <button {% if action != 'ver' %}type="submit" id="submit"{% else %}disabled{% endif %}
+                                    class="btn btn-success">
+                                <i class="fa fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block jscript %}
+    <link rel="stylesheet" href="/static/fancybox/css/core.css"/>
+    <script src="/static/fancybox/js/core.js"></script>
+    <script src="/static/js/forms.js?version=11"></script>
+    {% verbatim %}
+    <script>
+        var imagen1 = $('#id_archivo_pago').dropify({
+            messages: {
+                default: 'Arrastre y suelte el archivo del depósito o haga clic aquí.',
+                replace: 'Arrastre y suelte el archivo del depósito o haga clic aquí.',
+                remove: 'Eliminar',
+                error: 'Ocurrió un error!'
+            },
+            error: {
+                fileSize: "El tamaño del archivo debe ser máximo ({{ value }}).",
+                fileExtension: "Sólo puede subir los archivos con las extensiones ({{ value }})."
+            },
+            imgFileExtensions: ["jpg", "jpeg", "png", "tiff", "jfif"]
+        });
+    </script>
+    {% endverbatim %}
+{% endblock %}

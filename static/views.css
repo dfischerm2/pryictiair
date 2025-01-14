@@ -1,0 +1,30 @@
+
+#slider-revolution .tp-bullets,
+#slider-revolution .tp-leftarrow,
+#slider-revolution .tp-rightarrow {
+    display: none !important;
+}
+
+.tp-fullwidth-forcer {
+    height: 300px !important;
+}
+
+.mb-100 {
+    margin-bottom: 500px;
+}
+
+.btn-primary {
+    color: #fff;
+}
+
+body {
+    background-color: #000000;
+}
+
+.mt-100 {
+    margin-top: 100px;
+}
+
+.mt-125 {
+    margin-top: 125px;
+}

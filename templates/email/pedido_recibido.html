@@ -1,0 +1,18 @@
+{% extends 'email/base_ictiair.html' %}
+{% block content %}
+    <div style="color:#555555; line-height:1.5; font-family:Arial,'Helvetica Neue',Helvetica,sans-serif; padding:10px;">
+        <div style="font-size:14px; color:#555555; text-align:left;">
+            <p style="margin:0;">Hello {{ user.datos }},</p>
+            <p style="margin:0;">We are pleased to inform you that your order has been successfully received and is
+                currently under validation.</p>
+            <p style="margin:0;">As soon as an administrator validates your order, you will receive a notification along
+                with a payment link to complete your purchase.</p>
+
+            <p style="margin:0; text-align:center; padding-top:20px;">
+                <a href="{{ url }}" target="_blank"
+                   style="font-weight:bold; text-decoration:none; color:#007BFF; background-color:#f8f9fa; padding:10px 20px; border-radius:5px; border:1px solid #ddd;">View
+                    Your Order</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

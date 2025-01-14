@@ -14,7 +14,9 @@ from django.views.static import serve
 from autenticacion.urls import autenticacion_urls
 from autenticacion.view_perfil import perfilView
 from core.ajax import ConsultasAjax
+from financiero.urls import financiero_urls
 from landing.urls import landing_urls
+from pedidos.urls import pedidos_urls
 from pryictiair.view_clearsitedata import clearSiteDataView
 from pryictiair import settings
 from pryictiair.view_redirect import redirectView, redirectToUrlView
@@ -58,6 +60,22 @@ urls_sistema = (
         "url": 'landing/',
         "sub_urls": landing_urls,
         "include": include('landing.urls'),
+        "name": None,
+        "vista": None
+    },
+    {
+        "nombre": "Financiero",
+        "url": "financiero/",
+        "sub_urls": financiero_urls,
+        "include": include('financiero.urls'),
+        "name": None,
+        "vista": None
+    },
+    {
+        "nombre": "Pedidos",
+        "url": "pedidos/",
+        "sub_urls": pedidos_urls,
+        "include": include('pedidos.urls'),
         "name": None,
         "vista": None
     },

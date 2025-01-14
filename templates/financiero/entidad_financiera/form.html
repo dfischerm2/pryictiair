@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="panel panel-inverse" data-sortable-id="form-stuff-2">
+
+        <div class="panel-heading ui-sortable-handle">
+            <h4 class="panel-title">{{ titulo }} Formulario</h4>
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i
+                        class="fa fa-expand"></i></a>
+            </div>
+        </div>
+
+        <div class="panel-body">
+
+            <form method="post" enctype="multipart/form-data" action="{{ ruta }}"
+                  class="form-horizontal form-label-left">
+                {% csrf_token %}
+                <input type="hidden" name="pk" value="{{ pk|default:0 }}"/>
+                <input type="hidden" name="action" value="{{ action }}"/>
+                {% for field in form %}
+                    {% if field.is_hidden %}
+                        {{ field }}
+                    {% else %}
+                        <div class="form-group">
+                            {% if field.name == 'logo' %}
+                                <div class="media align-items-center">
+                                    <input type="file"
+                                           name="{{ field.name }}"
+                                           data-default-file="{{ field.field.widget.attrs.data_default_file }}"
+                                            {#                                                                                   data-min-width="{{ field.field.widget.attrs.data_min_width }}"#}
+                                           class="form-control"
+                                           id="id_{{ field.name }}"
+                                            {% if field.name == 'foto' and not field.field.widget.attrs.data_default_file %}
+                                           required
+                                            {% endif %}
+                                            {#                                                                                   data-min-height="{{ field.field.widget.attrs.data_min_height }}"#}
+                                           data-allowed-file-extensions="jpg png jpeg tiff svg jfif">
+                                </div>
+                                <small class="text-muted">{{ field.help_text }}</small>
+                                <div class="text-danger" id="errorMessage{{ field.name }}"></div>
+                            {% else %}
+                                <label class="form-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                                {{ field }}
+                                <div class="invalid-feedback" id="errorMessage{{ field.name }}"></div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <div class="form-group">
+                    <a class="btn btn-danger" style="color: #ffffff;" href="{{ ruta }}">
+                        <i class="fa fa-window-close"></i> Cancelar
+                    </a>
+                    <button {% if action != 'ver' %}type="submit" id="submit"{% else %}disabled{% endif %}
+                            class="btn btn-success">
+                        <i class="fa fa-save"></i> Guardar
+                    </button>
+                    {% if action != 'ver' %}
+                        <button type="submit" id="submitAndAdd"
+                                class="btn btn-success">
+                            <i class="fa fa-save"></i> Guardar y añadir otro
+                        </button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block jscript %}
+    <script src="/static/js/forms.js?version=11"></script>
+    <script>
+        $(function () {
+            var foto = $('#id_logo').dropify({
+                messages: {
+                    default: 'Arrastre y suelte un archivo o haga clic aquí.',
+                    replace: 'Arrastre y suelte un archivo o haga clic aquí.',
+                    remove: 'Eliminar',
+                },
+                imgFileExtensions:["png","jpg","jpeg","gif","bmp", "svg", "tiff", "jfif"]
+            });
+            foto.on('dropify.beforeClear', function (event, element) {
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

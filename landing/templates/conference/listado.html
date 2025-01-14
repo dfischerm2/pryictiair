@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="GET">
+        <div class="form-row">
+            <div class="col-md-6 col-sm-12 offset-md-6">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                           aria-describedby="button-addon2" name="criterio" value="{{ criterio }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="button-addon2"><i
+                                class="fa fa-search"></i></button>
+                        {% if url_vars %}
+                            <a title="Ver todo" href="{{ request.path }}" class="btn btn-default">
+                                <i class="fas fa-sync-alt"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="mb-3">
+        <a href="javascript:void(0)" onclick="formModal(0, 'Add {{ titulo }}', 'add')" class="btn btn-success"><i
+                class="fas fa-plus-circle mr-2"></i> New {{ titulo }}</a>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <span class="label label-primary">Total: {{ list_count }}</span>
+                <table id="tabla" class="table table-bordered table-hover table-td-valign-middle table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-left">
+                            Title
+                        </th>
+                        <th class="text-left">
+                            Subtitle
+                        </th>
+                        <th class="text-center" width="10%">
+                            Papers
+                        </th>
+                        <th class="text-center"  width="10%">
+                            Sheets
+                        </th>
+                        <th class="text-center">
+                            Start Date
+                        </th>
+                        <th class="text-center">
+                            End Date
+                        </th>
+                        <th class="text-center">
+                            ¿Active?
+                        </th>
+                        <th class="text-center">
+                            Acción
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for l in listado %}
+                        <tr>
+                            <td class="text-left">
+                                {{ l.title }}
+                            </td>
+                            <td class="text-left">
+                                {{ l.subtitle }}
+                            </td>
+                            <td class="text-left">
+                                <b>Max: </b>{{ l.max_papers }}<br>
+                                <b>Value per adittional paper: </b>{{ l.value_per_paper|default:'0.00'|floatformat:2 }}
+                            </td>
+                            <td class="text-left">
+                                <b>Max: </b> {{ l.max_sheets }}<br>
+                                <b> Value per adittional sheet:</b> {{ l.value_adittional_sheet|default:'0.00'|floatformat:2 }}
+                            </td>
+                            <td class="text-center">
+                                {{ l.start_date|date:"d/m/Y" }}
+                            </td>
+                            <td class="text-center">
+                                {{ l.end_date|date:"d/m/Y" }}
+                            </td>
+                            <td class="text-center">
+                                <i class="{{ l.get_active }}"></i>
+                            </td>
+                            <td class="with-btn-group text-center" nowrap>
+                                <div class="btn-group dropleft">
+                                    <button type="button" class="btn btn-white btn-sm width-100 dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-angle-left mr-1"></i> Acciones
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item"
+                                           onclick="formModal({{ l.pk }}, 'Change {{ l.title }}', 'change')"
+                                           href="javascript:void(0);">
+                                            <i class="fas fa-edit"></i> Change
+                                        </a>
+                                        <a class="dropdown-item"
+                                           onclick="eliminarajax({{ l.pk }}, '{{ l.title }}', 'delete')"
+                                           href="javascript:void(0);">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% include "paginacion.html" %}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalle">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}"
+                      class="form-horizontal form-label-left">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title"><b id="modalNombre"></b></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body detalleProd">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block jscript %}
+    <script src="/static/js/forms.js?version=13"></script>
+    <script>
+        function formModal(id, text, action,) {
+            pantallaespera()
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                data: {
+                    'action': action,
+                    'id': id,
+                },
+                success: function (data) {
+                    setTimeout($.unblockUI, 1);
+                    if (data.result === true) {
+                        $('#modalNombre').html(text);
+                        $('.detalleProd').html(data.data);
+                        $('#modalDetalle').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeWarning(data.message);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    mensajeWarning("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+    </script>
+{% endblock %}

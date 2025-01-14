@@ -132,28 +132,49 @@
         <ul id="navbarPanel" class="navbar-nav d-flex flex-grow-1">
             <li class="navbar-form flex-grow-1">
             </li>
-{#            <li class="navbar-form flex-grow-1">#}
-{#                <form action="" method="POST" name="search">#}
-{#                    <div class="form-group">#}
-{#                        {% if request.user.is_authenticated %}#}
-{#                            <input type="search" class="form-control" id="searchGroups" placeholder='Buscar Modulo'/>#}
-{#                        {% endif %}#}
-{#                    </div>#}
-{#                </form>#}
-{#            </li>#}
-{#            {% if request.user.is_superuser %}#}
-{#                <li class="dropdown">#}
-{#                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" id="contenedorOnlineClick">#}
-{#                        <i class="fa fa-users"></i>#}
-{#                    </a>#}
-{#                    <div class="dropdown-menu media-list dropdown-menu-right">#}
-{#                        <div class="dropdown-header">Lista de Conexión de Usuarios <i class="fa fa-plug"></i></div>#}
-{#                        <div class="height-md" data-scrollbar="true">#}
-{#                            <div id="contenedorOnline"></div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </li>#}
-{#            {% endif %}#}
+             <li class="dropdown ms-2">
+                <a href="javascript:void(0);" id="panelConference" class="dropdown-toggle"
+                   data-toggle="dropdown">
+                    <span class="d-md-inline tl" title="Conference" style="font-size: 15px"><i
+                            class="fa fa-book"></i> {{ request.session.conference.title }}</span>
+                </a>
+                {% if request.user.es_administrativo %}
+                    {% if request.session.listConferences|length > 0 %}
+                    <div class="navdrop dropdown-menu dropdown-menu-right" style="width: 400px"
+                         aria-labelledby="panelConference">
+                        <div class="mx-2 mb-3">
+                            <input type="search" id="buscarConference" autocomplete="off"
+                                   class="form-control px-3 rounded-pill"
+                                   style="font-family:Arial, FontAwesome;"
+                                   placeholder=" &#xF002 Buscar titulo de Conferencia">
+                        </div>
+                        <ul class="listaConferenceMenu list-group list-group-flush">
+                            {% for emp in request.session.listConferences %}
+                                <li class="list-group-item items-conference_lista p-0 px-3 m-0">
+                                    <div class="row my-2">
+                                        <div class="col">
+                                            <a class="text-body conferenceSelector dropdown-item"
+                                               href='javascript:void(0);' data-id='{{ emp.id|encrypt }}'>
+                                                <div class="ms-3" style="">
+                                                    <span class="text-body">
+                                                        {% if emp.id == request.session.conference.id %}
+                                                            <i class="fa fa-book text-warning tr"
+                                                               title="Conference Actual"></i> {{ emp.title }}
+                                                        {% else %}
+                                                            <i class="fa fa-book"></i> {{ emp.title }}
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                {% endif %}
+            </li>
             {% if request.user.is_authenticated %}
                 <li class="dropdown navbar-user">
                     <a style="position: relative;" href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
@@ -1377,6 +1398,51 @@
         document.body.appendChild(form);
         form.submit();
     };
+
+</script>
+
+<script>
+$(function() {
+     $('#buscarConference').keyup(function () {
+            _this = this;
+            $.each($(".listaConferenceMenu li"), function () {
+                if (converToAscii($(this).text().toLowerCase()).indexOf(converToAscii($(_this).val().toLowerCase())) === -1)
+                    $(this).hide();
+                else
+                    $(this).show();
+            });
+        });
+
+
+    $(".conferenceSelector").click(function () {
+        var option = $(this).attr('data-id');
+        if (option) {
+            Swal.fire({
+                title: '¿Esta seguro que deseas cambiar de conferencia?',
+                text: "acción involucra cambios que requieren atención",
+                type: 'warning',
+                showCancelButton: true,
+                allowOutsideClick: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Cambiar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    pantallaespera();
+                    $.post("/panel/", {'action': 'changeconference', 'id': option,}, function (data) {
+                        $.unblockUI();
+                        if (data.resp) {
+                            window.location.href = "{{ request.path }}";
+                        } else {
+                            mensajeWarning(data.mensaje)
+                        }
+                    }, "json");
+                }
+            })
+        }
+    });
+})
 
 </script>
 <script src="/static/assets/plugins/moment/moment.js"></script>

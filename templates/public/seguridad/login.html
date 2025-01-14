@@ -1,37 +1,7 @@
 {% extends 'public/base.html' %}
 {% block link %}{% endblock %}
 {% block head %}
-    <style>#slider-revolution .tp-bullets, /* Ocultar los botones de navegación */
-    #slider-revolution .tp-leftarrow, /* Ocultar la flecha izquierda */
-    #slider-revolution .tp-rightarrow { /* Ocultar la flecha derecha */
-        display: none !important;
-    }
-
-    .tp-fullwidth-forcer{
-        height: 300px!important;
-    }
-
-    .mb-100{
-        margin-bottom: 500px;
-    }
-
-    .btn-primary{
-        color: #fff;
-    }
-
-    body{
-        background-color: #000000;
-    }
-
-    .mt-100{
-        margin-top: 100px;
-    }
-
-    .mt-125{
-        margin-top: 125px;
-    }
-
-    </style>
+    <link rel="stylesheet" href="/static/views.css">
 {% endblock %}
 {% block content %}
     <div class="d-flex flex-column justify-content-center align-items-center position-relative  mt-100">

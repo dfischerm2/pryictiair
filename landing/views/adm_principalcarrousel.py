@@ -99,9 +99,7 @@ def carrouselImageView(request):
                 return JsonResponse({"result": True, 'data': template.render(data)})
 
         # Filtrado y listado
-        criterio, filtros, url_vars = request.GET.get('criterio',
-                                                                                        '').strip(), Q(
-            status=True), ''
+        criterio, filtros, url_vars = request.GET.get('criterio','').strip(), Q(status=True), ''
         if criterio:
             filtros = filtros & Q(title__icontains=criterio)
             data["criterio"] = criterio

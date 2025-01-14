@@ -8,6 +8,7 @@ from django.db.models import Q
 
 from area_geografica.models import Pais, Ciudad, Provincia
 from autenticacion.models import Usuario, PerfilPersona
+from core.custom_forms import FormModeloBase, ExtFileField
 from core.custom_models import ModelFormBase
 
 
@@ -69,3 +70,17 @@ class RegistroPersonaForm(ModelFormBase):
         PerfilPersona.objects.get_or_create(usuario_id=user.id)
         return user
 
+
+class RegisterUserForm(FormModeloBase):
+    first_name = forms.CharField(label=u'Fist Name', max_length=500,widget=forms.TextInput(attrs={'col': '6', 'data-parsley-group': 'step-0', 'placeholder': 'John'}), required=True)
+    last_name = forms.CharField(label=u'Last Name', max_length=500,  widget=forms.TextInput(attrs={'col': '6', 'data-parsley-group': 'step-0', 'placeholder': 'Doe'}), required=True)
+    email = forms.EmailField(label=u'Email', max_length=500, widget=forms.EmailInput(attrs={'col': '6', 'data-parsley-group': 'step-0', 'placeholder': 'jonhdoe@example.com'}), required=True)
+    country = forms.ModelChoiceField(label=u'Country', queryset=Pais.objects.filter(status=True), widget=forms.Select(attrs={'col': '6', 'data-parsley-group': 'step-0', 'class':'select2'}), required=True)
+    institution = forms.CharField(label=u'Institution', max_length=500, widget=forms.TextInput(attrs={'col': '12', 'data-parsley-group': 'step-0', 'placeholder': 'exm: Universidad Estatal de Milagro'}), required=False)
+
+
+class StudentAttendeeForm(FormModeloBase):
+    archive = ExtFileField(label=u'Academic record', required=True,
+                           help_text=u'We kindly request verification of your student status. To complete this process, please upload an official document as proof of your academic record.',
+                           ext_whitelist=(".pdf", ".jpg", ".jpeg", ".png",), max_upload_size=4194304,
+                           widget=forms.FileInput(attrs={'col': '12', 'class': 'dropify'}))

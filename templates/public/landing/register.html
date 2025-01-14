@@ -1,0 +1,379 @@
+{% extends 'public/base.html' %}
+{% load templatefunctions %}
+{% block head %}
+    <link rel="stylesheet" href="/static/views.css">
+    <link rel="stylesheet" href="/static/register.css">
+{% endblock %}
+{% block content %}
+    <div class="mt-125 p-3">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="wm wm-border wow fadeInDown">Register</div>
+                    <h1>Register for {{ filtro.get_role_display }}</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+                <!-- Columna Principal -->
+                <div class="col-lg-8">
+                    <div class="registration-card">
+                        <div class="card-body">
+                            <form enctype="multipart/form-data" action="{{ request.path }}" id="frmInscripcion"
+                                  method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ filtro.id|encrypt }}" name="pk">
+                                <input type="hidden" name="action" value="create_order"/>
+                                <div class="row">
+                                    {% for field in form %}
+                                        {% if field.is_hidden %}
+                                            {{ field }}
+                                        {% else %}
+                                            <div class="col-lg-{{ field.field.widget.attrs.col }}"
+                                                 id="input_{{ field.name }}">
+                                                <div class="form-group p-1">
+                                                    <label class="form-label"
+                                                           for="id_{{ field.name }}">{{ field.label }}
+                                                        <span id="extra_{{ field.name }}"></span>:</label><br>
+                                                    {{ field }}
+                                                    <div class="additional_message"
+                                                         id="additionalMessage_{{ field.name }}"></div>
+                                                    <div class="invalid-feedback"
+                                                         id="errorMessage{{ field.name }}"></div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if filtro.role == 4 %}
+                                        <div class="col-lg-12">
+                                            <div class="form-group p-1">
+                                                <label for="id_es_estudiante">
+                                                    <span style="padding-right: 10px">Are you a student at any of <b>UNEMI, VIU, or UCLM?</b>:</span>
+                                                    <input type="checkbox" class="js-switch" id="id_es_estudiante"
+                                                           name="es_estudiante">
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if filtro.role == 3 or filtro.role == 4 %}
+                                        <p class="upload-description mt-2">
+                                        </p>
+                                        <div class="form-group">
+                                            <input type="file"
+                                                   class="form-control"
+                                                   id="id_archivo_evidencia"
+                                                   name="archivo_evidencia"
+                                                   accept=".pdf,.jpg,.jpeg,.png"
+                                                   required>
+                                        </div>
+                                    {% endif %}
+                                    {% if filtro.role == 1 %}
+                                        <hr class="mt-2">
+                                        <h3><i class="fa fa-book mr-2"></i> Register your papers</h3>
+                                        <div class="mb-2">
+                                            <a href="javascript:void(0)" id="addPapers"
+                                               class="btn btn-success btn-sm text-white"><i
+                                                    class="fa fa-plus-circle"></i> Add new paper</a>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table" id="tablePapers" width="100%">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center">Short description</th>
+                                                    <th class="text-center" width="30%">Num .Sheets</th>
+                                                    <th class="text-center"><i class="fa fa-cogs"></i></th>
+                                                </thead>
+                                                <tbody id="tbPapers">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <hr class="mt-4">
+                                        <h3 class="mb-4"><i class="fa fa-list-alt mr-2"></i> Select topics of interest
+                                        </h3>
+                                        <p style="font-size: 13px" class="text-muted"><i class="fa fa-info-circle"></i>
+                                            You're close to completing your registration! This step is optional, but
+                                            we'd love to hear about the topics that interest you the most for the
+                                            event. Your input will help us make the experience even better for
+                                            you. Please note that adding this information will not affect the final
+                                            amount to be paid. </p>
+                                        <div class="accordion" id="accordionTopics">
+                                            {% for tc in conference.get_topics %}
+                                                <div class="card custom-card mb-3">
+                                                    <div class="card-header position-relative" id="heading_{{ tc.id }}">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="form-check mb-0">
+                                                                <input type="checkbox"
+                                                                       class="form-check-input topic-checkbox"
+                                                                       id="topic_{{ tc.id }}"
+                                                                       value="{{ tc.id }}">
+                                                                <label class="form-check-label topic-label"
+                                                                       for="topic_{{ tc.id }}">
+                                                                    {{ tc.name }}
+                                                                </label>
+                                                            </div>
+                                                            <button class="btn btn-link custom-accordion-btn p-0"
+                                                                    type="button"
+                                                                    data-toggle="collapse"
+                                                                    data-target="#collapse_{{ tc.id }}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapse_{{ tc.id }}">
+                                                                <i class="fa fa-chevron-down"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="collapse_{{ tc.id }}"
+                                                         class="collapse"
+                                                         aria-labelledby="heading_{{ tc.id }}"
+                                                         data-parent="#accordionTopics">
+                                                        <div class="card-body">
+                                                            <div class="topic-description">
+                                                                <ul class="custom-list">
+                                                                    {% for t in tc.get_topics %}
+                                                                        {% if t.status and t.public %}
+                                                                            <li>{{ t.name }}</li>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+                                    {% endif %}
+                                    <div class="text-right mb-2">
+                                        <div class="price-highlight">
+                                            <i class="fa fa-money mr-2"></i> $ <span id="value-counter"
+                                                                                     data-base-price="{{ filtro.value }}">{{ filtro.value }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-register btn-lg mt-3">
+                                    Complete Registration
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Columna Lateral -->
+                <div class="col-lg-4">
+                    <div class="registration-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-calendar-alt mr-2"></i> {{ conference.title }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <img src="/static/images/landing/4.jpeg" alt="{{ conference.title }}"
+                                 class="conference-image">
+                            <p class="mb-4" style="font-size: 12px">{{ conference.get_summary.description }}</p>
+                            <div class="date-info">
+                                <i class="fa fa-calendar"></i>
+                                <span>Start: {{ conference.start_date|date:'d/m/Y' }}</span>
+                            </div>
+                            <div class="date-info">
+                                <i class="fa fa-calendar"></i>
+                                <span>End: {{ conference.end_date|date:'d/m/Y' }}</span>
+                            </div>
+                            <hr>
+                            <h3><i class="fa fa-list mr-2"></i> Fee details</h3>
+                            <ul class="features-list">
+                                {% for detail in filtro.get_details %}
+                                    <li>
+                                        <i class="fa fa-check-circle"></i>
+                                        {{ detail.description }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <h3 class="mt-1"><i class="fa fa-money"></i> Base price: $ {{ filtro.get_value }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+{% block jscript %}
+    <script src="/static/js/forms.js?version=13"></script>
+    <script>
+        $(document).ready(function () {
+
+            {% if request.user.is_authenticated %}
+                $('#id_email').prop('readonly', true);
+                $('#id_first_name').prop('readonly', true);
+                $('#id_last_name').prop('readonly', true);
+            {% endif %}
+
+            $('#id_archivo_evidencia').makeDropzone({
+                icon: 'cloud-upload',
+                maxSize: 4,
+                acceptedFormats: '.pdf,.jpg,.jpeg,.png'
+            });
+
+            const config = {
+                ADDITIONAL_PAPER_PRICE: parseFloat('{{ conference.value_adittional_paper|default:0 }}'.replace(',', '.')),
+                EXTRA_SHEET_PRICE: parseFloat('{{ conference.value_adittional_sheet|default:0 }}'.replace(',', '.')),
+                BASE_SHEETS: parseInt('{{ conference.max_sheets|default:0 }}'),
+                BASE_PAPERS: parseInt('{{ conference.max_papers|default:0 }}'),
+                ROLE: parseInt({{ filtro.role }}),
+                ROLES_EVIDENCIA: [3, 4]
+            };
+
+            let initialPrice = $('#value-counter').text();
+
+            $('#id_es_estudiante').on('change', function () {
+                if ($(this).is(':checked')) {
+                    $('#value-counter').text('0')
+                } else {
+                    $('#value-counter').text(initialPrice);
+                }
+            });
+
+            if (config.ROLES_EVIDENCIA.includes(config.ROLE)) {
+                $('#additionalMessage_email').html('*Registration must be with institutional email');
+                if (config.ROLE === 3) {
+                    $('.upload-description').html(`We kindly request verification of your student status. To complete this process, please upload an official document as proof of your academic record.`);
+                } else {
+                    $('.upload-description').html(`We need to verify that you are affiliated with one of the following institutions: UNEMI, VIU, or UCLM. Please upload a document that confirms your affiliation.`);
+                }
+            }
+
+            $('#value-counter').data('base-price', parseInt(initialPrice));
+            checkEmptyTable();
+
+            $("#addPapers").on("click", function () {
+                addNewRow();
+                setTimeout(updatePrice, 100);
+            });
+
+            $("#tbPapers").on("click", ".delete-paper", function () {
+                $(this).closest("tr").remove();
+                checkEmptyTable();
+                setTimeout(updatePrice, 100);
+            });
+
+            $("#tbPapers").on("change", "input[type='number']", function () {
+                updatePrice();
+            });
+
+            function addNewRow() {
+                const newRow = `
+                    <tr>
+                        <td class="text-center">
+                            <input type="text" class="form-control" placeholder="Enter description">
+                        </td>
+                        <td class="text-center">
+                            <input type="number" class="form-control" min="1" value="1">
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-danger btn-sm delete-paper">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+
+                $("#tbPapers").append(newRow);
+                checkEmptyTable();
+            }
+
+            function checkEmptyTable() {
+                const rowCount = $("#tbPapers tr").length;
+                if (rowCount === 0) {
+                    $("#tbPapers").html(`
+                <tr id="emptyMessage">
+                    <td colspan="3" class="text-center text-muted">
+                        No papers have been registered yet
+                    </td>
+                </tr>
+            `);
+                } else {
+                    $("#emptyMessage").remove();
+                }
+            }
+
+            function calculatePrice(basePrice) {
+                let totalPrice = basePrice;
+                let papers = [];
+
+                $('#tbPapers tr').each(function () {
+                    let sheets = parseInt($(this).find('input[type="number"]').val()) || 0;
+                    if (sheets > 0) {
+                        papers.push(sheets);
+                    }
+                });
+
+                if (papers.length === 0) return totalPrice;
+
+                if (papers.length > config.BASE_PAPERS) {
+                    totalPrice += config.ADDITIONAL_PAPER_PRICE * (papers.length - config.BASE_PAPERS);
+                }
+
+                papers.forEach(sheets => {
+                    if (sheets > config.BASE_SHEETS) {
+                        totalPrice += config.EXTRA_SHEET_PRICE * (sheets - config.BASE_SHEETS);
+                    }
+                });
+
+                return totalPrice;
+            }
+
+            function updatePrice() {
+                let basePrice = parseInt($('#value-counter').data('base-price'));
+                let newPrice = calculatePrice(basePrice);
+                $('#value-counter').text(newPrice.toLocaleString());
+            }
+        });
+
+        function funcionAntesDeGuardar() {
+            let detalles = [];
+
+            $('#tbPapers tr').each(function () {
+                let descripcion = $(this).find('input[type="text"]').val();
+                let hojas = $(this).find('input[type="number"]').val();
+
+                if (descripcion && hojas) {
+                    detalles.push({
+                        description: descripcion,
+                        sheets: parseInt(hojas)
+                    });
+                }
+            });
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'papers',
+                value: JSON.stringify(detalles)
+            }).appendTo('#frmInscripcion');
+
+            let topics = [];
+            $('.topic-checkbox:checked').each(function () {
+                topics.push({
+                    id: $(this).val(),
+                });
+            });
+            if (topics.length > 0) {
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'topics',
+                    value: JSON.stringify(topics)
+                }).appendTo('#frmInscripcion');
+            }
+
+            let totalValue = $('#value-counter').text().replace(/\./g, '').replace(',', '.');
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'total_value',
+                value: totalValue
+            }).appendTo('#frmInscripcion');
+
+            return true;
+        }
+    </script>
+{% endblock %}

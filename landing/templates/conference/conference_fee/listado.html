@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load templatefunctions %}
+{% block head %}
+    <style>
+        .flex-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .flex-container h3 {
+            margin: 0;
+        }
+
+        .texto-right {
+            flex-grow: 1;
+            text-align: right;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="mb-3">
+        <div class="btn-group">
+            <a href="javascript:void(0)"
+               onclick="formModal(0, 'Add Conference Fee', 'add')"
+               class="btn btn-success"><i class="fas fa-plus-circle mr-2"></i> Add Conference Fee</a>
+        </div>
+    </div>
+
+    {% if listado %}
+        <div class="container-fluid">
+            <div class='row'>
+                {% for l in listado %}
+                    <div class="col-lg-6">
+                        <div class="panel panel-inverse">
+                            <div class="panel-body">
+                                <div class="flex-container">
+                                    <h3><i class="fa fa-list-ol"></i> {{ l.get_role_display }} <i class="{{ l.get_public }}"></i>
+                                    </h3>
+                                    <div class="text-texto">
+                                        <div class="btn-group mb-3">
+                                            <a href="javascript:void(0)"
+                                               onclick="formModal({{ l.id }}, 'Add Detail', 'adddetail')"
+                                               class="btn btn-success btn-mini"><i class="fas fa-plus-circle"></i></a>
+                                        </div>
+                                        <div class="btn-group mb-3">
+                                            <a href="javascript:void(0)"
+                                               onclick="formModal({{ l.id }}, 'Change Conference Fee', 'change')"
+                                               class="btn btn-primary btn-mini"><i class="fas fa-edit"></i></a>
+                                        </div>
+                                        <div class="btn-group mb-3">
+                                            <a class="btn btn-danger btn-mini"
+                                               onclick="eliminarajax({{ l.pk }}, '{{ l.nombre }}', 'delete')"
+                                               href="javascript:void(0);">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <span><b>Total Price:</b> $ {{ l.value }}</span>
+                                </div>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Order</th>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-center" style="width: 125px">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in l.get_details %}
+                                        <tr>
+                                            <td class="text-center">
+                                                {{ item.order }}
+                                            </td>
+                                            <td class="text-left">
+                                                {{ item.description }}
+                                            </td>
+                                            <td class="with-btn-group text-center" nowrap>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-primary btn-mini"
+                                                       onclick="formModal({{ item.pk }}, 'Change {{ item.description }}', 'changedetail')"
+                                                       href="javascript:void(0);">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+
+                                                </div>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-danger btn-mini"
+                                                       onclick="eliminarajax({{ item.pk }}, '{{ item.description }}', 'deletedetail')"
+                                                       href="javascript:void(0);">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td class="text-center" colspan="4">
+                                                <div class="alert alert-danger">
+                                                    No se han agregado detalles
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center">
+            <h4>Sin registros</h4>
+        </div>
+    {% endif %}
+    <div class="modal fade" id="modalDetalle">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}"
+                      class="form-horizontal form-label-left">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title"><b id="modalNombre"></b></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body detalleProd">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block jscript %}
+
+    <script src="/static/js/forms.js?version=13"></script>
+    <script>
+        function formModal(id, text, action,) {
+            pantallaespera()
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                data: {
+                    'action': action,
+                    'id': id,
+                },
+                success: function (data) {
+                    setTimeout($.unblockUI, 1);
+                    if (data.result === true) {
+                        $('#modalNombre').html(text);
+                        $('.detalleProd').html(data.data);
+                        $('#modalDetalle').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeWarning(data.message);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    mensajeWarning("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+    </script>
+{% endblock %}

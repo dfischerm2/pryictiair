@@ -10,9 +10,10 @@ from django.db.models import Value, Count, Sum, F, FloatField
 from django.db.models.functions import Coalesce
 from autenticacion.models import PerfilPersona
 from core.funciones import addData, secure_module
+from landing.models import Conference
 from public.models import VisitaEntorno
 from seguridad.models import *
-
+from seguridad.templatetags.templatefunctions import encrypt
 
 
 @login_required
@@ -27,7 +28,15 @@ def index(request):
     addData(request, data)
 
     if request.method == 'POST':
-        pass
+        action = request.POST['action']
+        if action == 'changeconference':
+            try:
+                id_ = encrypt(request.POST['id'])
+                request.session['conference'] = Conference.objects.filter(pk=id_, status=True).order_by('-id').first()
+                response = JsonResponse({'resp': True}, safe=False)
+            except Exception as ex:
+                response = JsonResponse({'resp': False, 'mensaje': ex}, safe=False)
+            return response
     elif request.method == 'GET':
         if 'action' in request.GET:
             data["action"] = action = request.GET['action']

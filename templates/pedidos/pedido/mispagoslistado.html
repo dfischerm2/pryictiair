@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load templatefunctions %}
+{% block atras %}{{ request.path }}{% endblock %}
+{% block content %}
+    <form method="GET">
+        <div class="form-row">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="input-group mb-3" style="flex-wrap: nowrap">
+                    <select data-placeholder="Filtrar por Estado"
+                            class="form-control select2" name="estado" id="estado">
+                        <option value="">Todos</option>
+                        {% for est in ESTADO_PEDIDO %}
+                            <option value="{{ est.0 }}" {% if estado == est.0 %}
+                                    selected {% endif %}>{{ est.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="button-addon2"><i
+                                class="fa fa-search"></i></button>
+                        {% if url_vars %}
+                            <a title="Ver todo" href="{{ ruta }}?{{ dict_url_vars }}" class="btn btn-default">
+                                <i class="fas fa-sync-alt"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-td-valign-middle table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            Curso
+                        </th>
+                        <th class="text-center">
+                            Fecha
+                        </th>
+                        <th width="20%" class="text-center">
+                            Metodo de Pago
+                        </th>
+                        <th style="text-align: center">
+                            Subtotal
+                        </th>
+                        <th style="text-align: center">
+                            Total
+                        </th>
+                        <th style="text-align: center">
+                            Estado
+                        </th>
+                        <th class="text-center">
+                            Acción
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for l in listado %}
+                        <tr>
+                            <td class="text-center">
+                                {{ l.get_detalle.first.item.nombre }}
+                            </td>
+                            <td class="text-center">
+                                {{ l.fecha_registro|date:'M d, Y H:i' }}
+                            </td>
+                            <td class="text-center">
+                                {{ l.get_metodo_pago_display }}
+                            </td>
+                            <td class="text-center">
+                                $ {{ l.subtotal }}
+                            </td>
+                            <td class="text-center">
+                                $ {{ l.total }}
+                            </td>
+                            <td class="text-center">
+                                <span {% if l.estado == 'COMPLETADO' %}
+                                    class="text-success"
+                                {% elif l.estado == 'EN_ESPERA' %}
+                                    class=text-warning"
+                                {% elif l.estado == 'ANULADO' %}
+                                    class="text-danger"
+                                {% elif l.estado == 'ERROR_METODO_PAGO' %}
+                                    class="text-danger"
+                                    {% else %}class="text-info"{% endif %}>
+                                    {{ l.estado_pedido }}</span>
+                            </td>
+                            <td class="with-btn-group text-center" nowrap>
+                                <div class="btn-group dropleft">
+                                    <button type="button" class="btn btn-white btn-sm width-100 dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-angle-left mr-1"></i> Acciones
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="javascript:void(0)"
+                                           onclick="formModal('{{ l.pk|encrypt }}', 'Detalle de Pago', 'detalle','fa fa-ticket')">
+                                            <i class="fa fa-ticket"></i> Ver Detalle
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:void(0)"
+                                           onclick="formModal('{{ l.pk|encrypt }}', 'Historial de Pago', 'historial_pedido','fa fa-history', 'modal-xl')">
+                                            <i class="fa fa-history"></i> Ver Historial
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td class="text-center" colspan="7">
+                                <div class="alert alert-danger">
+                                    No hay pagos registrados
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% include "paginacion.html" %}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalle">
+        <div id='modalSize' class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}"
+                      class="form-horizontal form-label-left">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title"><i id="modalIcon"></i> <b id="modalNombre"></b></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body detalleProd">
+                    </div>
+                    {#                    <div class="modal-footer" id="footerModalView">#}
+                    {#                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal"><i#}
+                    {#                                class="fa fa-window-close"></i>#}
+                    {#                            Cerrar</a>#}
+                    {#                    </div>#}
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block jscript %}
+
+    <script src="/static/js/forms.js?version=13"></script>
+    <script>
+        function formModal(id, text, action,icon='', size='') {
+            pantallaespera()
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                data: {
+                    'action': action,
+                    'id': id,
+                },
+                success: function (data) {
+                    setTimeout($.unblockUI, 1);
+                    if (data.result === true) {
+                        $('#modalNombre').html(text);
+                        $('#modalSize').removeClass('modal-xl');
+                        $('#modalSize').addClass(size);
+                        $('#modalIcon').addClass(icon);
+                        $('.detalleProd').html(data.data);
+                        $('#modalDetalle').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeWarning(data.message);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    mensajeWarning("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+    </script>
+{% endblock %}

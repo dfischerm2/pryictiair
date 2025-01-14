@@ -1,8 +1,10 @@
 from django import forms
 from django.forms import ModelForm
+from django.utils.safestring import mark_safe
 
 from .models import Sponsor, TopicCategory, Topic, GuidelineType, Guideline, ImportantDate, Summary, CommitteeCategory, \
-    CommitteeMember, SponsorCategory, SummaryImage, PrincipalCarrousel, CallForPapers, TYPE_DOCUMENT
+    CommitteeMember, SponsorCategory, SummaryImage, PrincipalCarrousel, CallForPapers, TYPE_DOCUMENT, Conference, \
+    ConferenceFee, DetailConferenceFee
 from core.custom_models import ModelFormBase
 
 
@@ -236,3 +238,70 @@ class CallForPapersForm(ModelFormBase):
                 self.fields[k].widget.attrs['col'] = '6'
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
+
+
+class ConferenceForm(ModelFormBase):
+    class Meta:
+        model = Conference
+        exclude = ('usuario_creacion', 'fecha_registro', 'hora_registro', 'status', 'usuario_modificacion',)
+
+    def __init__(self, *args, **kwargs):
+        ver = kwargs.pop('ver') if 'ver' in kwargs else False
+        instancia = kwargs["instance"] if 'instance' in kwargs else None
+        super(ConferenceForm, self).__init__(*args, **kwargs)
+        for k, v in self.fields.items():
+            self.fields[k].widget.attrs['class'] = "form-control"
+
+            if k in ('start_date','end_date','max_papers', 'value_adittional_paper','max_sheets', 'value_adittional_sheet',):
+                self.fields[k].widget.attrs['col'] = "6"
+
+            if k in ('active',):
+                self.fields[k].widget.attrs['class'] = "js-switch"
+                self.fields[k].widget.attrs['data-render'] = "switchery"
+                self.fields[k].widget.attrs['data-theme'] = "default"
+
+
+class ConferenceFeeForm(ModelFormBase):
+    class Meta:
+        model = ConferenceFee
+        exclude = ('usuario_creacion', 'fecha_registro', 'hora_registro', 'status', 'usuario_modificacion','conference',)
+
+    def __init__(self, *args, **kwargs):
+        ver = kwargs.pop('ver') if 'ver' in kwargs else False
+        instancia = kwargs["instance"] if 'instance' in kwargs else None
+        super(ConferenceFeeForm, self).__init__(*args, **kwargs)
+        for k, v in self.fields.items():
+            self.fields[k].widget.attrs['class'] = "form-control"
+            self.fields[k].widget.attrs['col'] = "6"
+
+            if k in ('role',):
+                self.fields[k].widget.attrs['class'] = "jselect2"
+
+            if k in ('published',):
+                self.fields[k].widget.attrs['class'] = "js-switch"
+                self.fields[k].widget.attrs['data-render'] = "switchery"
+                self.fields[k].widget.attrs['data-theme'] = "default"
+
+
+class DetailConferenceFeeForm(ModelFormBase):
+    class Meta:
+        model = DetailConferenceFee
+        exclude = ('usuario_creacion', 'fecha_registro', 'hora_registro', 'status', 'usuario_modificacion','cab',)
+
+    def __init__(self, *args, **kwargs):
+        ver = kwargs.pop('ver') if 'ver' in kwargs else False
+        instancia = kwargs["instance"] if 'instance' in kwargs else None
+        super(DetailConferenceFeeForm, self).__init__(*args, **kwargs)
+        for k, v in self.fields.items():
+            self.fields[k].widget.attrs['class'] = "form-control"
+            self.fields[k].widget.attrs['col'] = "6"
+
+            if k in ('published',):
+                self.fields[k].widget.attrs['class'] = "js-switch"
+                self.fields[k].widget.attrs['data-render'] = "switchery"
+                self.fields[k].widget.attrs['data-theme'] = "default"
+
+
+
+
+

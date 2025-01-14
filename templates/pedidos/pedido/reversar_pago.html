@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block atras %}{{ request.path }}{% endblock %}
+{% block content %}
+    <div class="panel panel-inverse" data-sortable-id="form-stuff-2">
+
+        <div class="panel-heading ui-sortable-handle">
+            <h4 class="panel-title">Detalle Pedido # {{ compra.pk }}</h4>
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i
+                        class="fa fa-expand"></i></a>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <section class="bg-light">
+                <div class="invoice border">
+                    <div class="invoice-header">
+                        <div class="invoice-from">
+                            <small>de</small>
+                            <address class="m-t-5 m-b-5">
+                                <strong class="text-inverse">{{ compra.user.get_full_name }}</strong><br/>
+                                <div class="row">
+                                    <div class="col-auto pr-0"><i class="far fa-id-card mr-1"></i></div>
+                                    <div class="col p-0">{{ compra.user.documento|default:'Sin especificar'|upper }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-auto pr-0"><i class="fas fa-map-marked-alt mr-1"></i></div>
+                                    <div class="col p-0">{{ compra.user.ciudad }}, {{ compra.user.ciudad.provincia }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-auto pr-0"><i class="fas fa-phone-alt mr-1"></i></div>
+                                    <div class="col p-0">{{ compra.user.telefono|default:'' }}</div>
+                                </div>
+{#                                <div class="row">#}
+{#                                    <div class="col-auto pr-0"><i class="fas fa-qrcode mr-1"></i></div>#}
+{#                                    <div class="col p-0">{{ compra.session_user.ip }}#}
+{#                                        - {{ compra.session_user.dispositivo }}#}
+{#                                        ({{ compra.session_user.areageografica }})#}
+{#                                    </div>#}
+{#                                </div>#}
+                            </address>
+                        </div>
+                        <div class="invoice-to">
+                            {% if compra.entregado %}
+                                <div style="font-size: 13px;!important;">
+                                    <h5><i class="fa fa-gift"></i> Detalle Entrega</h5>
+                                    {% if l.couriers %}
+                                        <b><i class="fa fa-truck"></i>
+                                            Couriers:</b> {{ compra.couriers.nombre }}<br>
+                                    {% endif %}
+                                    <b><i class="fa fa-calendar"></i> Fecha
+                                        Entrega:</b> {{ compra.fecha_entrega|date:'d/M/Y' }}<br>
+                                    <b><i class="fa fa-tag"></i> Detalle:</b> {{ compra.detalle_entrega }}<br>
+                                    {% if not compra.retirarenlocal %}
+                                        <b><i class="fa fa-file"></i> Archivo (Guía):</b>
+                                        {% if not l.typefile == 'pdf' %}
+                                            <a data-fancybox data-type="iframe"
+                                               href="/media/{{ compra.archivo_entrega }}"
+                                               class="btn btn-primary btn-mini">
+                                                <i class="far fa-window-restore"></i> Ver Comprobante
+                                            </a>
+                                        {% else %}
+                                            <a data-fancybox data-type="iframe"
+                                               class="btn btn-primary btn-mini"
+                                               href="/media/{{ compra.archivo_entrega }}"><i
+                                                    class="fa fa-eye"></i> Ver
+                                                Comprobante</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <b><i class="fa fa-file"></i> Archivo (Guía):</b>
+                                        {% if not l.typefile == 'pdf' %}
+                                            <a data-fancybox data-type="iframe"
+                                               href="/media/{{ compra.archivo_entrega }}"
+                                               class="btn btn-primary btn-mini">
+                                                <i class="far fa-window-restore"></i> Ver Comprobante
+                                            </a>
+                                        {% else %}
+                                            <a data-fancybox data-type="iframe"
+                                               class="btn btn-primary btn-mini"
+                                               href="/media/{{ compra.archivo_entrega }}"><i
+                                                    class="fa fa-eye"></i> Ver
+                                                Comprobante</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="invoice-date">
+                            <small>Compra #{{ compra.pk }}</small>
+                            <div class="date text-inverse m-t-5">{{ compra.fecha_registro|date:'E d, Y' }}</div>
+                            <div class="invoice-detail">
+                                <div>Método de pago:</div>
+                                <div>{{ compra.get_icon }}
+                                    <strong>{{ compra.get_metodo_pago_display }}</strong></div>
+                            </div>
+                            <div class="invoice-detail">
+                                <div>Comprobante:</div>
+                                {% if compra.metodo_pago == "TRANSFERENCIA_BANCARIA" %}
+                                    <div>
+                                        {% with urlarchivo='https://docs.google.com/gview?url='|add:URL_GENERAL|add:compra.archivo_pago.url|add:'&embedded=true' %}
+                                            <a {% if compra.archivo_pago_is_image %}data-fancybox="image"
+                                               href="{{ compra.archivo_pago.url }}" {% else %} data-fancybox
+                                               data-type="iframe"
+                                               href="{{ urlarchivo }}" {% endif %} class="btn btn-primary btn-mini">
+                                                <i class="far fa-window-restore"></i> Ver Comprobante
+                                            </a>
+                                        {% endwith %}
+                                        o
+                                        <a class="btn btn-danger btn-mini"
+                                           href="{{ compra.archivo_pago.url }}" target="_blank">
+                                            <i class="fas fa-download"></i> Descargar
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <div><strong>{{ compra.comprobante|default_if_none:"" }}</strong></div>
+                                {% endif %}
+                            </div>
+                            <div class="invoice-detail">
+                                {{ compra.estado_pedido }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="invoice-content">
+                        <div class="table-responsive d-none d-md-block d-lg-none d-none d-lg-block d-xl-none d-none d-xl-block">
+                            <table class="table table-invoice">
+                                <thead>
+                                <tr>
+                                    <th>DESCRIPCIÓN</th>
+                                    <th class="text-center" width="10%">PRECIO</th>
+                                    {#                                    <th class="text-right" width="20%">SUBTOTAL</th>#}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for l in compra.get_detalle %}
+                                    <tr>
+                                        <td>
+                                            <span class="text-inverse">{{ l.item.nombre }}</span>
+                                        </td>
+                                        <td style="vertical-align : middle" class="text-center">
+                                            {{ SIMBOLO_MONEDA }}{{ l.precio|intcomma }}
+                                        </td>
+                                        {#                                        <td style="vertical-align : middle" class="text-right">#}
+                                        {#                                            {{ SIMBOLO_MONEDA }}{{ l.total|intcomma }}</td>#}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="invoice-price">
+                            <div class="invoice-price-left">
+                                <div class="invoice-price-row">
+                                    <div class="sub-price">
+                                        <small>SUBTOTAL</small>
+                                        <span class="text-inverse">{{ SIMBOLO_MONEDA }}{{ compra.subtotal|intcomma }}</span>
+                                    </div>
+                                    {% if compra.impuestos > 0 %}
+                                        <div class="sub-price">
+                                            <i class="fa fa-plus text-muted"></i>
+                                        </div>
+                                        <div class="sub-price">
+                                            <small>
+                                                Recargo de {{ compra.get_metodo_pago_display }}
+                                            </small>
+                                            <span class="text-inverse">{{ SIMBOLO_MONEDA }}{{ compra.recargopasarela|intcomma }}</span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="invoice-price-right">
+                                <small>TOTAL</small> <span
+                                    class="f-w-600">{{ SIMBOLO_MONEDA }}{{ compra.total|intcomma }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="panel-body">
+            <div class='row'>
+                <div class="col-lg-12">
+                    <span class="pull-right hidden-print">
+                            {% if compra.user.telefono %}
+                                <a class="btn btn-success"
+                                   onclick="contactarcliente('{{ compra.get_telefono }}', '{{ compra.get_nombres }}')"
+                                   href="javascript:void(0);">
+                                <i class="fa fa-whatsapp"></i> Contactar Cliente
+                            </a>
+                            {% endif %}
+                    </span>
+                    <span>
+                        <h3><i class="fa-solid fa-money-bill-transfer"></i> Reversar pago</h3>
+                    </span>
+                    <hr>
+                    <form class="mt-2" method="post" action="{{ ruta }}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk" value="{{ pk }}"/>
+                        <input type="hidden" name="action" value="{{ action }}"/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger" role="alert">
+                                    <b><i class="fa fa-info-circle"></i> Está a punto de reversar el pago al cliente</b>,
+                                    no podrá cancelar la transacción.
+                                    <br>Despues de esta operación el dinero cobrado por esta operación sera
+                                    regresado al cliente.
+
+                                </div>
+                                <label><b>Razón:</b></label>
+                                <textarea class="form-control" name="razon_reverso" placeholder="Razón de reverso"
+                                          required></textarea>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <div class="form-group">
+                                    <a href="{{ request.path }}" class="btn btn-danger">
+                                        <i class="fas fa-times"></i>&nbsp;Cancelar
+                                    </a>
+                                    <button type="submit" id="submit" class="btn btn-success">
+                                        <i class="fa-solid fa-money-bill-transfer"></i>&nbsp;Reversar pago
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block jscript %}
+    <script src="/static/js/forms.js?version=11"></script>
+{% endblock %}

@@ -26,6 +26,7 @@ def callPaperView(request):
             }
     model = CallForPapers
     Formulario = CallForPapersForm
+    conference = request.session['conference']
 
     if request.method == 'POST':
         res_json = []
@@ -99,9 +100,7 @@ def callPaperView(request):
                 return JsonResponse({"result": True, 'data': template.render(data)})
 
         # Filtrado y listado
-        criterio, filtros, url_vars = request.GET.get('criterio',
-                                                                                        '').strip(), Q(
-            status=True), ''
+        criterio, filtros, url_vars = request.GET.get('criterio','').strip(), Q(status=True, conference=conference), ''
         if criterio:
             filtros = filtros & Q(title__icontains=criterio)
             data["criterio"] = criterio

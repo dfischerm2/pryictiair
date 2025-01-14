@@ -1,0 +1,423 @@
+{% extends 'base.html' %}
+{% block head %}
+    <link rel="stylesheet" href="/static/acordeonpersonalizado.css">
+{% endblock %}
+{% load humanize %}
+{% load templatefunctions %}
+{% block content %}
+    <form method="GET">
+        <div class="form-row">
+            <div class="col-md-2 col-sm-12">
+                <input type="date" class="form-control" name="fecha_desde" id="id_fecha_desde" title="Fecha Desde"
+                       value="{{ fecha_desde }}">
+            </div>
+            <div class="col-md-2 col-sm-12">
+                <input type="date" class="form-control" name="fecha_hasta" id="id_fecha_hasta" title="Fecha Hasta"
+                       value="{{ fecha_hasta }}">
+            </div>
+            <div class="col-md-2">
+                <div class="input-group mb-3">
+                    <select name="metodopago" id="id_metodopago" class="form-control select2"
+                            data-placeholder="Filtrar por Metodo Pago">
+                        <option value="">Todos</option>
+                        {% for l in METODO_PAGOS %}
+                            <option value="{{ l.0 }}"
+                                    {% if l.0 == metodopago %}selected{% endif %}>{{ l.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="input-group mb-3">
+                    <select name="estado" id="id_estado" class="form-control select2"
+                            data-placeholder="Filtrar por Estado">
+                        <option value="">Todos</option>
+                        {% for l in ESTADO_PEDIDO %}
+                            <option value="{{ l.0 }}" {% if l.0 == estado %}selected{% endif %}>{{ l.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                           aria-describedby="button-addon2" name="criterio" value="{{ criterio }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="button-addon2"><i
+                                class="fa fa-search"></i></button>
+                        {% if url_vars %}
+                            <a title="Ver todo" href="{{ ruta }}?{{ dict_url_vars }}" class="btn btn-default">
+                                <i class="fas fa-sync-alt"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <label class="label label-primary" style="font-size: 13px">Cant. {{ list_count }}</label>
+            {#            <label class="label label-warning" style="font-size: 13px">Total. ${{ totalrecaudado }}</label>#}
+            {#            <label class="label label-danger" style="font-size: 13px">Total. ${{ totalreversado }}</label>#}
+            {#            <label class="label label-success" style="font-size: 13px">Total. ${{ totalvalido }}</label>#}
+            <table id="tabla" class="table table-hover table-td-valign-middle table-bordered">
+                <thead>
+                <tr>
+                    <th class="text-center">
+                        ID
+                    </th>
+                    <th class="text-center">
+                        Fecha Creación
+                    </th>
+                    <th class="text-center">
+                        User
+                    </th>
+                    <th class="text-center" width="20%">
+                        Details
+                    </th>
+                    <th class="text-center">
+                        Total
+                    </th>
+                    <th class="text-center">
+                        Método de pago
+                    </th>
+                    <th class="text-center">
+                        Estado
+                    </th>
+                    <th class="text-center">
+                        Acción
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for l in listado %}
+                    <tr>
+                        <td class="text-left">
+                            <b>Cod.</b> {{ l.id }}<br>
+                            {% if l.modo_pago %}
+                                <span class="text-primary">Producción</span>
+                            {% else %}
+                                <span class="text-warning">Prueba</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {{ l.fecha_registro|date:'d/M/Y' }}<br>
+                            {{ l.fecha_registro|date:'H:i' }}
+                        </td>
+                        <td class="text-left">
+                            <i class="fa fa-user"></i> {{ l.user.get_full_name }} <br>
+                            <i class="fa fa-envelope"></i> <strong><a
+                                href="mailto:{{ l.user.email|default:'' }}">{{ l.user.email|default:'' }}</a></strong>
+                            {% if l.user.pais %}<br>
+                                <i class="fa fa-map-marked"></i> {{ l.user.pais.nombre }}
+                            {% endif %}
+                            <br>
+                            <i class="fa fa-building"></i> {{ l.user.institucion|upper }}
+                        </td>
+                        <td class="text-left">
+                            <h6 class="text-success">{{ l.cuota.get_role_display }}</h6>
+                            <div id="modulos_{{ l.pk }}" class="accordion accordion-flush"
+                                 role="tablist"
+                                 aria-multiselectable="true">
+                                <div class="accordion-item">
+                                    <div class="accordion-header" role="tab" id="heading_{{ l.pk }}">
+                                        <h5 class="mb-0">
+                                            <button class="accordion-button "
+                                                    data-toggle="collapse" style="font-weight: 300"
+                                                    data-parent="#modulos_{{ l.pk }}"
+                                                    href="#collapseThree_{{ l.pk }}"
+                                                    aria-expanded="false"
+                                                    aria-controls="collapseThree_{{ l.pk }}">
+                                                <h6 class="mb-0 texto-blue">
+                                                    <i class="fa fa-folder dropdown-item-icon pr-2"
+                                                       aria-hidden="true"></i>
+                                                    More details
+                                                </h6>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseThree_{{ l.pk }}"
+                                         class="collapse"
+                                         role="tabpanel" aria-labelledby="heading_{{ l.pk }}">
+                                        <div style="padding: 5px" class="text-left">
+                                            {% if l.cuota.role == 1 %}
+                                                {% for paper in l.get_papers %}
+                                                    <b><i class="fa fa-book"></i> {{ forloop.counter }}. {{ paper.description }}
+                                                    </b>
+                                                    <div class="ml-3">
+                                                        <i class="fa fa-file-text"></i>
+                                                        <b>Sheets: </b> {{ paper.sheets }}
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                {% if l.cuota.role == 4 %}
+                                                    <b>¿Is Student?: </b> <i class="{{ l.get_student }}"></i> <br>
+                                                    <b>Evidence: </b> <a href="/media/{{ l.archivo_evidencia }}" target="_blank" class="btn-link"><i class="fa fa-file-pdf"></i> See evidence</a>
+                                                {% endif %}
+                                            {% endif %}<br>
+
+                                            <b>Total: </b> $ <b>{{ l.subtotal }}</b> USD
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        {#                        <td style="width: 15%">#}
+                        {#                            {% if l.entidad_fin %}#}
+                        {#                                <i class="fa fa-piggy-bank"></i> {{ l.entidad_fin }}#}
+                        {#                            {% else %}#}
+                        {#                                {{ l.comprobante|default:'---' }}#}
+                        {#                            {% endif %}#}
+                        {#                        </td>#}
+                        {#                        <td class="text-center">#}
+                        {#                            $ {{ l.subtotal|intcomma }}#}
+                        {#                        </td>#}
+                        {#                        <td class="text-center">#}
+                        {#                            $ {{ l.impuestos|intcomma }}#}
+                        {#                        </td>#}
+                        <td class="text-center" style="width: 10%">
+                            <b>$ {{ l.total|intcomma }}</b>
+                        </td>
+                        <td class="text-center" style="font-size: 14px">
+                            {{ l.get_icon }} {{ l.get_metodo_pago_display }}
+                            {% if l.pago_reversado %}<br>
+                                <span class="text-danger">
+                                    <i class="fa-solid fa-money-bill-transfer"></i> Pago reversado <br> {{ l.fecha_reversado|date:'d/M/Y H:i' }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {{ l.estado_pedido }}
+                        </td>
+                        <td class="with-btn-group text-center" nowrap>
+                            <div class="btn-group dropleft">
+                                <button type="button" class="btn btn-white btn-sm width-100 dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-angle-left mr-1"></i> Acciones
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item"
+                                       href="{{ ruta }}?pk={{ l.pk }}&action=detalle&{{ dict_url_vars }}">
+                                        <i class="fas fa-eye"></i> Detalle
+                                    </a>
+                                    {% if l.estado == 'EN_ESPERA' %}
+                                        <a class="dropdown-item" t
+                                           href="{{ ruta }}?pk={{ l.pk }}&action=pago_pendiente&{{ dict_url_vars }}">
+                                            <i class="fas fa-check-double"></i> Validar Pago
+                                        </a>
+                                    {% endif %}
+                                    <a data-toggle="modal" data-target="#modalMetodoPago{{ l.id }}"
+                                       class="dropdown-item"
+                                       href="javascript:;">
+                                        {{ l.get_icon }} Ver detalle del pago
+                                    </a>
+                                    <a onclick="verModalHistorial('historial_pedido', '{{ l.pk|get_encrypt }}', 'fas fa-history')"
+                                       class="dropdown-item"
+                                       href="javascript:;">
+                                        <i class="fas fa-history"></i> Historial
+                                    </a>
+                                    {% if not l.estado == 'ERROR_METODO_PAGO' %}
+                                        {% if l.estado != 'ANULADO' %}
+                                            <a class="dropdown-item text-danger" title="Anular"
+                                               href="?pk={{ l.pk|get_encrypt }}&action=anular_pedido">
+                                                <i class="fas fa-times-circle"></i> Anular
+                                            </a>
+                                        {% endif %}
+                                        {% if request.user.is_superuser and l.es_pago_electronico and not l.pago_reversado %}
+                                            <a class="dropdown-item text-warning" title="Reversar pago"
+                                               href="?pk={{ l.pk|get_encrypt }}&pago_id={{ l.id|get_encrypt }}&action=reversar_pago">
+                                                <i class="fa-solid fa-money-bill-transfer"></i> Reversar pago
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% include "paginacion.html" %}
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalle">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}"
+                      class="form-horizontal form-label-left">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title"><b id="modalNombre"></b></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body detalleProd">
+                    </div>
+                    <div class="modal-footer" id="footerModalView">
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal"><i
+                                class="fa fa-window-close"></i>
+                            Cerrar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="label"><i id="icono" class="fas fa-eye"></i> <strong
+                            id="accion"></strong></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ ruta }}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="tablaaqui">
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-white" data-dismiss="modal"><i
+                            class="fa fa-window-close"></i>
+                        Cerrar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for l in listado %}
+        {% with resp_metodo_pago=l.get_resp_metodo_pago %}
+            {% if resp_metodo_pago %}
+                <div class="modal fade bd-example-modal-lg detallePagoModal"
+                     id="modalMetodoPago{{ l.id }}"
+                     tabindex="-1"
+                     role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    {{ l.get_icon }} Pago
+                                    por {{ l.get_metodo_pago_display }} del pedido
+                                    #{{ l.pk }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                                                    <span aria-hidden="true"><i
+                                                                            class="fas fa-times"></i></span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody>
+                                        {#                                        <tr>#}
+                                        {#                                            <th class="text-left">IP</th>#}
+                                        {#                                            <td class="text-left">{{ l.session_user.ip }}</td>#}
+                                        {#                                        </tr>#}
+                                        {#                                        <tr>#}
+                                        {#                                            <th class="text-left">Dispositivo</th>#}
+                                        {#                                            <td class="text-left">{{ l.session_user.dispositivo }}</td>#}
+                                        {#                                        </tr>#}
+                                        {#                                        <tr>#}
+                                        {#                                            <th class="text-left">Localidad</th>#}
+                                        {#                                            <td class="text-left">{{ l.session_user.areageografica }}</td>#}
+                                        {#                                        </tr>#}
+                                        {% for r in resp_metodo_pago %}
+                                            <tr>
+                                                <th class="text-left">{{ r.nombre }}</th>
+                                                <td class="text-left">{{ r.valor }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="javascript:;" class="btn btn-white" data-dismiss="modal"><i
+                                        class="fa fa-window-close"></i>
+                                    Cerrar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+    {% endfor %}
+
+    <link rel="stylesheet" href="/static/lightbox/css/lightbox.min.css">
+    <script src="/static/lightbox/js/lightbox-plus-jquery.min.js"></script>
+{% endblock %}
+
+{% block jscript %}
+    <script src="/static/js/forms.js?version=11"></script>
+    <script>
+        function formModal(id, text, action, footer = false) {
+            pantallaespera()
+            $('#footerModalView').hide();
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                data: {
+                    'action': action,
+                    'id': id,
+                },
+                success: function (data) {
+                    setTimeout($.unblockUI, 1);
+                    if (data.result === true) {
+                        if (footer) {
+                            $('#footerModalView').show();
+                        }
+                        $('#modalNombre').html(text);
+                        $('.detalleProd').html(data.data);
+                        $('#modalDetalle').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeWarning(data.message);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    mensajeWarning("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+    </script>
+    <script src="/static/fancybox/js/core.js"></script>
+    <script>
+
+        const ModalAdd = $('#ModalAdd');
+
+        function verModalHistorial(action, id, icon, ruta = null) {
+            $.ajax({
+                type: "GET",
+                url: ruta ? ruta : "{{ ruta }}",
+                data: {'action': action, 'pk': id},
+                success: function (data) {
+                    if (data.result === true) {
+                        $('#icono').attr('class', icon);
+                        $('#accion').text(data.titulo);
+                        $('.tablaaqui').html(data.data);
+                        ModalAdd.modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeDanger(data.mensaje);
+                    }
+                },
+                error: () => mensajeDanger("Error de conexion."),
+                dataType: "json"
+            });
+        }
+
+        ModalAdd.on('hidden.bs.modal', function (e) {
+            $('.tablaaqui').html('');
+        })
+    </script>
+{% endblock %}
