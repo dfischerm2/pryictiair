@@ -3,6 +3,10 @@
     --primary-dark: #3553ac;
 }
 
+body {
+    background-color: white !important;
+}
+
 .registration-banner {
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     padding: 2rem 0;

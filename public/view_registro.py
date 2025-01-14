@@ -47,6 +47,7 @@ def registerView(request):
                         raise FormError(form)
                     if not filtro:
                         raise NameError('Error trying to register')
+
                     first_name, last_name, email, country, institution = form.cleaned_data['first_name'].strip(), form.cleaned_data['last_name'].strip(), form.cleaned_data['email'].strip(), form.cleaned_data['country'], form.cleaned_data['institution'].strip()
 
                     if filtro.role == 1:
