@@ -93,7 +93,7 @@ def registerView(request):
                             'correo': str(settings.EMAIL_HOST_USER),
                             'password': DEFAULT_PASSWORD_REGISTER
                         }
-                        subject = f'¡Registro completado!'
+                        subject = f'¡Welcome to ICTIAIR – Registration Complete!'
                         to = user_.email
                         send_html_mail(subject, "email/registro_usuario.html", datos, [to], [], [])
                         login(request, user_)
