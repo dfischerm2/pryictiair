@@ -308,6 +308,15 @@ ul.custom-list li:last-child {
     flex-direction: column;
 }
 
+.btn-custom {
+    background-color: #ff8100 !important;
+}
+
 .pricing-s1 .btn-custom {
     margin-top: auto;
+}
+
+
+#section-register {
+    scroll-margin-top: 100px; /* Ajusta este valor según necesites */
 }
