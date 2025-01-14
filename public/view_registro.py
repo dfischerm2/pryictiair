@@ -169,7 +169,7 @@ def registerView(request):
         id = request.GET.get('id', '')
         if not id:
             messages.error(request, 'Error trying to register')
-            return redirect('/')
+            return redirect('/#section-register')
         id_ = encrypt(id)
         filtro = ConferenceFee.objects.get(id=id_)
         data['conference'] = filtro.conference
