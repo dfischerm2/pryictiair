@@ -29,8 +29,8 @@ from django.db.models.functions import Coalesce
 @custom_atomic_request
 def pedidoView(request):
     data = {
-        'titulo': 'Pagos Online',
-        'modulo': 'Pagos Online',
+        'titulo': 'Solicitudes de registro',
+        'modulo': 'Pedidos',
         'ruta': request.path,
         'fecha': str(date.today()),
     }
