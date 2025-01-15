@@ -89,7 +89,7 @@ def registerView(request):
                     if new_user:
                         datos = {
                             'sucursal': request.config.nombre_empresa,
-                            'instancia': user_,
+                            'instance': user_,
                             'url': f'{data["DOMINIO_DEL_SISTEMA"]}',
                             'correo': str(settings.EMAIL_HOST_USER),
                             'password': DEFAULT_PASSWORD_REGISTER
