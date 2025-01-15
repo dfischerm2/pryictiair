@@ -4,8 +4,8 @@ from pedidos.view_pedido import pedidoView
 pedidos_urls = (
 
     {
-        "nombre": "Orders",
-        "url": 'orders/',
+        "nombre": "Solicitudes de registro",
+        "url": 'solicitudes-registro/',
         "vista": pedidoView,
     },
 )
