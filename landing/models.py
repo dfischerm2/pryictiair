@@ -42,6 +42,9 @@ class SponsorCategory(ModeloBase):
     def __str__(self):
         return self.name
 
+    def get_sponsors_all(self):
+        return self.sponsors.filter(status=True)
+
     class Meta:
         verbose_name = 'Sponsor Category'
         verbose_name_plural = 'Sponsor Categories'
@@ -71,6 +74,10 @@ class TopicCategory(ModeloBase):
     def get_topics(self):
         return self.topics.filter(status=True, public=True)
 
+    def get_topics_all(self):
+        return self.topics.filter(status=True)
+
+
     def __str__(self):
         return self.name
 
@@ -98,6 +105,9 @@ class GuidelineType(ModeloBase):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
+
+    def get_guidelines_all(self):
+        return self.guidelines.filter(status=True)
 
     def __str__(self):
         return self.name
@@ -235,6 +245,9 @@ class CommitteeCategory(ModeloBase):
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=200)
     order = models.IntegerField(default=0, null=True, blank=True)
+
+    def get_members_all(self):
+        return self.members.filter(status=True)
 
     def __str__(self):
         return self.name

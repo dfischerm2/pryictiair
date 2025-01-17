@@ -26,16 +26,17 @@ class SponsorCategoryForm(ModelFormBase):
 class SponsorForm(ModelFormBase):
     class Meta:
         model = Sponsor
-        fields = ('category', 'name', 'image', 'public',)
+        fields = ('name', 'image', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
         self.editando = 'instance' in kwargs
         super(SponsorForm, self).__init__(*args, **kwargs)
-        self.fields['category'].queryset = self.fields['category'].queryset.filter(status=True).order_by('-id')
         for k, v in self.fields.items():
             if k == 'category':  # Aplica jselect2 solo al campo ForeignKey
                 self.fields[k].widget.attrs['class'] = "jselect2"
+            if k in('image'):
+                self.fields[k].widget.attrs['class'] = 'dropify'
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
 
@@ -57,13 +58,12 @@ class TopicCategoryForm(ModelFormBase):
 class TopicForm(ModelFormBase):
     class Meta:
         model = Topic
-        fields = ('category', 'name', 'public',)
+        fields = ('name', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
         self.editando = 'instance' in kwargs
         super(TopicForm, self).__init__(*args, **kwargs)
-        self.fields['category'].queryset = self.fields['category'].queryset.all().order_by('-id')
         for k, v in self.fields.items():
             if k == 'category':  # Aplica jselect2 solo al campo ForeignKey
                 self.fields[k].widget.attrs['class'] = "jselect2"
@@ -88,13 +88,12 @@ class GuidelineTypeForm(ModelFormBase):
 class GuidelineForm(ModelFormBase):
     class Meta:
         model = Guideline
-        fields = ('guideline_type', 'content', 'public',)
+        fields = ('content', 'public',)
 
     def __init__(self, *args, **kwargs):
         ver = kwargs.pop('ver', False)
         self.editando = 'instance' in kwargs
         super(GuidelineForm, self).__init__(*args, **kwargs)
-        self.fields['guideline_type'].queryset = self.fields['guideline_type'].queryset.all().order_by('-id')
         for k, v in self.fields.items():
             if k == 'guideline_type':  # Aplica jselect2 solo al campo ForeignKey
                 self.fields[k].widget.attrs['class'] = "jselect2"
@@ -203,6 +202,8 @@ class CommitteeMemberForm(ModelFormBase):
                 self.fields[k].widget.attrs['class'] = "jselect2"
             if k in ['category', 'sexo', 'degree', 'rol', 'linkedin', 'x', 'instagram', 'facebook', 'youtube', 'public']:
                 self.fields[k].widget.attrs['col'] = "6"
+            if k in('photo'):
+                self.fields[k].widget.attrs['class'] = 'dropify'
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
 

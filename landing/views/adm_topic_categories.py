@@ -7,8 +7,8 @@ from django.db.models import Q
 from django.template.loader import get_template
 from django.utils.dateformat import DateFormat
 from django.utils.decorators import method_decorator
-from landing.models import TopicCategory
-from landing.forms import TopicCategoryForm
+from landing.models import TopicCategory, Topic
+from landing.forms import TopicCategoryForm, TopicForm
 from core.funciones_adicionales import salva_logs, customgetattr
 from core.custom_forms import FormError
 from core.funciones import secure_module, log, paginador, addData, redirectAfterPostGet
@@ -63,6 +63,38 @@ def topicCategoryView(request):
                     messages.success(request, "Categoría de tema eliminada exitosamente")
                     res_json.append({'error': False})
 
+                if action == 'addtopic':
+                    filtro = TopicCategory.objects.get(pk=int(request.POST['pk']))
+                    form = TopicForm(request.POST, request=request)
+                    if form.is_valid():
+                        form.instance.category = filtro
+                        form.save()
+                        log(f"Registró un nuevo tema {form.instance.__str__()}", request, "add", obj=form.instance.id)
+                        messages.success(request, "Tema agregado exitosamente")
+                        res_json.append({'error': False, "reload": True})
+                    else:
+                        raise FormError(form)
+
+                elif action == 'changetopic':
+                    filtro = Topic.objects.get(pk=int(request.POST['pk']))
+                    form = TopicForm(request.POST, instance=filtro, request=request)
+                    if form.is_valid() and filtro:
+                        form.save()
+                        log(f"Editó el tema {filtro.__str__()}", request, "change", obj=filtro.id)
+                        messages.success(request, "Tema modificado con éxito")
+                        res_json.append({'error': False, "reload": True})
+                    else:
+                        raise FormError(form)
+
+                elif action == 'deletetopic':
+                    filtro = Topic.objects.get(pk=int(request.POST['id']))
+                    filtro.status = False
+                    filtro.save()
+                    log(f"Eliminó el tema {filtro.__str__()}", request, "del", obj=filtro.id)
+                    messages.success(request, "Tema eliminado exitosamente")
+                    res_json.append({'error': False})
+
+
         except ValueError as ex:
             res_json.append({'error': True, "message": str(ex)})
         except FormError as ex:
@@ -97,6 +129,46 @@ def topicCategoryView(request):
                 data["id"] = pk
                 data["form"] = Formulario(instance=topic_category, ver=True)
                 template = get_template("autenticacion/usuario/formmodal.html")
+                return JsonResponse({"result": True, 'data': template.render(data)})
+
+            elif action == 'topics':
+                try:
+                    # Filtrado y listado
+                    data['cab'] = cab = TopicCategory.objects.get(pk=int(request.GET['id']))
+                    data['titulo'] = f'Temas de la categoría {cab.__str__()}'
+                    criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(status=True, category=cab), f'&action={action}&id={cab.pk}'
+                    if criterio:
+                        filtros = filtros & Q(name__icontains=criterio)
+                        data["criterio"] = criterio
+                        url_vars += '&criterio=' + criterio
+
+                    listado = Topic.objects.filter(filtros)
+                    data["list_count"] = listado.count()
+                    data["url_vars"] = url_vars
+                    paginador(request, listado, 20, data, url_vars)
+                    return render(request, 'conference/topic_category/topics/listado.html', data)
+                except Exception as ex:
+                    pass
+
+            elif action == 'addtopic':
+                data['filtro'] = TopicCategory.objects.get(pk=int(request.GET['id']))
+                data["form"] = TopicForm()
+                template = get_template("conference/topic_category/topics/form.html")
+                return JsonResponse({"result": True, 'data': template.render(data)})
+
+            elif action == 'changetopic':
+                pk = int(request.GET['id'])
+                data['filtro'] = filtro = Topic.objects.get(pk=pk)
+                data["form"] = TopicForm(instance=filtro)
+                template = get_template("conference/topic_category/topics/form.html")
+                return JsonResponse({"result": True, 'data': template.render(data)})
+
+            elif action == 'vertopic':
+                pk = int(request.GET['id'])
+                topic = Topic.objects.get(pk=pk)
+                data["id"] = pk
+                data["form"] = TopicForm(instance=topic, ver=True)
+                template = get_template("conference/topic_category/topics/form.html")
                 return JsonResponse({"result": True, 'data': template.render(data)})
 
         # Filtrado y listado

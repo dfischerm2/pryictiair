@@ -74,6 +74,11 @@
                                             <i class="fas fa-eye"></i> Ver
                                         </a>
 
+                                        <a class="dropdown-item" title="Ver {{ modulo }}"
+                                           href="?action=guides&id={{ l.pk }}">
+                                            <i class="fas fa-eye"></i> Guias ({{ l.get_guidelines_all.count }})
+                                        </a>
+
                                         <a class="dropdown-item" title="Editar {{ modulo }}"
                                            onclick="formModal({{ l.pk }}, 'Editar: {{ l.name }}', 'change')"
                                            href="javascript:void(0);">

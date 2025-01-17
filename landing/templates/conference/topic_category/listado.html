@@ -72,6 +72,11 @@
                                             <i class="fas fa-eye"></i> Ver
                                         </a>
 
+                                        <a class="dropdown-item" title="Ver {{ modulo }}"
+                                           href="?action=topics&id={{ l.pk }}">
+                                            <i class="fas fa-eye"></i> Topics ({{ l.get_topics_all.count }})
+                                        </a>
+
                                         <a class="dropdown-item" title="Editar {{ modulo }}"
                                            onclick="formModal({{ l.pk }}, 'Editar categoria {{ l.name }}', 'change')" href="javascript:void(0);" >
                                             <i class="fas fa-edit"></i> Editar

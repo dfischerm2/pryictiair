@@ -7,8 +7,8 @@ from django.db.models import Q
 from django.template.loader import get_template
 from django.utils.dateformat import DateFormat
 from django.utils.decorators import method_decorator
-from landing.models import SponsorCategory
-from landing.forms import SponsorCategoryForm
+from landing.models import SponsorCategory, Sponsor
+from landing.forms import SponsorCategoryForm, SponsorForm
 from core.funciones_adicionales import salva_logs, customgetattr
 from core.custom_forms import FormError
 from core.funciones import secure_module, log, paginador, addData, redirectAfterPostGet
@@ -36,6 +36,7 @@ def sponsorCategoryView(request):
                 if action == 'add':
                     form = Formulario(request.POST, request=request)
                     if form.is_valid():
+                        form.instance.conference = conference
                         form.save()
                         log(f"Registró una nueva categoría de sponsor {form.instance.__str__()}", request, "add",
                             obj=form.instance.id)
@@ -61,6 +62,37 @@ def sponsorCategoryView(request):
                     filtro.save()
                     log(f"Eliminó la categoría de sponsor {filtro.__str__()}", request, "del", obj=filtro.id)
                     messages.success(request, "Categoría de sponsor eliminada exitosamente")
+                    res_json.append({'error': False})
+
+                elif action == 'addsponsor':
+                    filtro = SponsorCategory.objects.get(pk=int(request.POST['pk']))
+                    form = SponsorForm(request.POST, request.FILES, request=request)
+                    if form.is_valid():
+                        form.instance.category = filtro
+                        form.save()
+                        log(f"Registro un nuevo sponsor {form.instance.__str__()}", request, "add",obj=form.instance.id)
+                        messages.success(request, "Sponsor agregado exitosamente")
+                        res_json.append({'error': False, "reload": True})
+                    else:
+                        raise FormError(form)
+
+                elif action == 'changesponsor':
+                    filtro = Sponsor.objects.get(pk=int(request.POST['pk']))
+                    form = SponsorForm(request.POST, request.FILES, instance=filtro, request=request)
+                    if form.is_valid() and filtro:
+                        form.save()
+                        log(f"Editó el sponsor {filtro.__str__()}", request, "change", obj=filtro.id)
+                        messages.success(request, "Sponsor modificado con éxito")
+                        res_json.append({'error': False, "reload": True})
+                    else:
+                        raise FormError(form)
+
+                elif action == 'deletesponsor':
+                    filtro = Sponsor.objects.get(pk=int(request.POST['id']))
+                    filtro.status = False
+                    filtro.save()
+                    log(f"Eliminó el sponsor {filtro.__str__()}", request, "del", obj=filtro.id)
+                    messages.success(request, "Sponsor eliminado exitosamente")
                     res_json.append({'error': False})
 
         except ValueError as ex:
@@ -97,6 +129,46 @@ def sponsorCategoryView(request):
                 data["id"] = pk
                 data["form"] = Formulario(instance=committee_category, ver=True)
                 template = get_template("conference/summary/form_summary.html")
+                return JsonResponse({"result": True, 'data': template.render(data)})
+
+            elif action == 'sponsors':
+                try:
+                    # Filtrado y listado
+                    data['cab'] = cab = SponsorCategory.objects.get(pk=int(request.GET['id']))
+                    data['titulo'] = f'Sponsors de la categoría {cab.__str__()}'
+                    criterio, filtros, url_vars = request.GET.get('criterio', '').strip(), Q(status=True, category=cab), f'&action={action}&id={cab.pk}'
+                    if criterio:
+                        filtros = filtros & Q(name__icontains=criterio)
+                        data["criterio"] = criterio
+                        url_vars += '&criterio=' + criterio
+
+                    listado = Sponsor.objects.filter(filtros)
+                    data["list_count"] = listado.count()
+                    data["url_vars"] = url_vars
+                    paginador(request, listado, 20, data, url_vars)
+                    return render(request, 'conference/sponsor/listado.html', data)
+                except Exception as ex:
+                    pass
+
+            elif action == 'addsponsor':
+                data['filtro'] = SponsorCategory.objects.get(pk=int(request.GET['id']))
+                data["form"] = SponsorForm()
+                template = get_template("conference/sponsor/form.html")
+                return JsonResponse({"result": True, 'data': template.render(data)})
+
+            elif action == 'changesponsor':
+                pk = int(request.GET['id'])
+                data['filtro'] = filtro = Sponsor.objects.get(pk=pk)
+                data["form"] = SponsorForm(instance=filtro)
+                template = get_template("conference/sponsor/form.html")
+                return JsonResponse({"result": True, 'data': template.render(data)})
+
+            elif action == 'versponsor':
+                pk = int(request.GET['id'])
+                topic = Sponsor.objects.get(pk=pk)
+                data["id"] = pk
+                data["form"] = SponsorForm(instance=topic, ver=True)
+                template = get_template("conference/sponsor/form.html")
                 return JsonResponse({"result": True, 'data': template.render(data)})
 
         # Filtrado y listado
