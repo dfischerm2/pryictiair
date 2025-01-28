@@ -12,6 +12,7 @@ from landing.views.adm_topic_categories import topicCategoryView
 from landing.views.view_conference import conferenceView
 from landing.views.view_notificacions import personNotificacionView
 from landing.views.view_feesconference import conferenceFeesView
+from landing.views.view_scheduleconference import conferenceScheduleView
 
 landing_urls = (
     {
@@ -73,6 +74,11 @@ landing_urls = (
         "nombre": "Conference Fees",
         "url": 'conference_fees/',
         "vista": conferenceFeesView,
+    },
+    {
+        "nombre": "Conference Schedule",
+        "url": 'conference_schedule/',
+        "vista": conferenceScheduleView,
     },
 )
 

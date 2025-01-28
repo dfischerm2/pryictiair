@@ -387,7 +387,7 @@
                                         <span>{{ cfp.name }}</span>
                                     </div>
                                     {% if cfp.file_example %}
-                                        <a href="{{ cfp.file_example.url }}"
+                                        <a href="{{ cfp.file_example.url }}" {% if cfp.download %}download="{{ cfp.file_example.name }}"{% endif %}
                                            class="btn btn-primary btn-lg" target="_blank">
                                             <i class="fa {% if cfp.type_document == 4 %}fa-external-link{% else %}fa-download{% endif %}"></i>
                                             {% if cfp.name_button %}{{ cfp.name_button }}{% else %}Download{% endif %}

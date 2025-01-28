@@ -21,7 +21,7 @@ from django.contrib import messages
 
 from landing.forms import ConferenceForm
 from landing.models import Conference, ConferenceFee, TopicCategory
-from pedidos.models import Pedido, PapersAuthorPedido, TopicsAttendeePedido
+from pedidos.models import Pedido, PapersAuthorPedido, TopicsAttendeePedido, HistorialPedido
 from pryictiair.settings import ID_GRUPO_USUARIO, EXT_EMAILS_COLABORATORS, DEFAULT_PASSWORD_REGISTER
 from public.forms import RegisterUserForm, StudentAttendeeForm
 from seguridad.templatetags.templatefunctions import encrypt
@@ -54,7 +54,7 @@ def registerView(request):
                         details = request.POST.get('papers', [])
                         if not details:
                             raise NameError('You must add at least 1 paper to be able to register your registration for the event')
-                    else:
+                    elif filtro.role in [3, 4]:
                         if not 'archivo_evidencia' in request.FILES:
                             raise NameError('You must upload a file verifying that you are a student or affiliated with one of the institutions promoting this event to complete your registration.')
                         if filtro.role == 4:
@@ -118,21 +118,22 @@ def registerView(request):
                     if filtro.role == 1:
                         details = json.loads(details)
                         for item in details:
-                            PapersAuthorPedido.objects.create(pedido=pedido, description=item['description'], sheets=item['sheets'])
+                            PapersAuthorPedido.objects.create(pedido=pedido, description=item['description'], sheets=item['sheets'], value=item['value'])
                     else:
-                        newfile = request.FILES['archivo_evidencia']
-                        extension = newfile._name.split('.')
-                        tam = len(extension)
-                        exte = extension[tam - 1]
-                        if newfile.size > 4194304:
-                            raise NameError('The file size exceeds the 4 MB limit. Please upload a smaller file.')
-                        if exte in ['pdf', 'jpg', 'jpeg', 'png', 'jpeg', 'peg']:
-                            newfile._name = generar_nombre("pedido_", newfile._name)
-                        else:
-                            raise NameError('Error: Only files with the following extensions are allowed: .pdf, .jpg, .jpeg. Please upload a valid file.')
+                        if filtro.role in [3, 4]:
+                            newfile = request.FILES['archivo_evidencia']
+                            extension = newfile._name.split('.')
+                            tam = len(extension)
+                            exte = extension[tam - 1]
+                            if newfile.size > 4194304:
+                                raise NameError('The file size exceeds the 4 MB limit. Please upload a smaller file.')
+                            if exte in ['pdf', 'jpg', 'jpeg', 'png', 'jpeg', 'peg']:
+                                newfile._name = generar_nombre("pedido_", newfile._name)
+                            else:
+                                raise NameError('Error: Only files with the following extensions are allowed: .pdf, .jpg, .jpeg. Please upload a valid file.')
 
-                        pedido.archivo_evidencia = newfile
-                        pedido.special_price_student = request.POST.get('es_estudiante', False) == 'on'
+                            pedido.archivo_evidencia = newfile
+                            pedido.special_price_student = request.POST.get('es_estudiante', False) == 'on'
 
                         topics = request.POST.get('topics', [])
                         if topics:
@@ -142,6 +143,8 @@ def registerView(request):
                                 TopicsAttendeePedido.objects.create(pedido=pedido, topic=topic_)
 
                     pedido.save()
+                    historial_ = HistorialPedido(pedido=pedido, user=user_, estado='PENDIENTE', detalle=f'Registro solicitud de inscripcion')
+                    historial_.save()
                     datos = {
                         'filtro': pedido,
                         'user': user_,
@@ -150,7 +153,7 @@ def registerView(request):
                     subject = f'¡Order Received!'
                     to = user_.email
                     send_html_mail(subject, "email/pedido_recibido.html", datos, [to], [], [])
-                    log(f"Registró pedido para evento {pedido.__str__()}", request, "add", obj=pedido.id)
+                    log(f"Registró pedido para evento {pedido.__str__()}", request, "add", obj=pedido.id, user=user_)
                     messages.success(request, f'Your registration has been successfully completed. You will receive an email with the details of your registration.')
                     res_json.append({'error': False, 'to': '/'})
 

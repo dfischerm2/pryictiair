@@ -338,6 +338,7 @@ TYPE_DOCUMENT = (
 class CallForPapers(ModeloBase):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     public = models.BooleanField(default=True)
+    download = models.BooleanField(default=False, verbose_name='¿Archivo descargable?')
     order = models.IntegerField(default=0)
     icon = models.FileField(upload_to='icon_callforpapers/', null=True, blank=True)
     type_document = models.IntegerField(choices=TYPE_DOCUMENT)
@@ -415,7 +416,16 @@ class DetailConferenceFee(ModeloBase):
 
 class ScheduleConference(ModeloBase):
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
+    order = models.IntegerField(default=0, verbose_name='Orden')
     title = models.CharField(max_length=200, verbose_name='Título')
+    date = models.DateField(verbose_name='Fecha', blank=True, null=True)
+    published = models.BooleanField(default=True, verbose_name='Publicado')
+
+    def get_public(self):
+        return 'text-success fa fa-check-circle' if self.published else 'text-danger fa fa-times-circle'
+
+    def get_details(self):
+        return self.details.filter(status=True).order_by('order')
 
     def __str__(self):
         return self.title
@@ -429,10 +439,9 @@ class DetailScheduleConference(ModeloBase):
     cab = models.ForeignKey(ScheduleConference, related_name='details', on_delete=models.CASCADE, verbose_name='Cabecera')
     order = models.IntegerField(default=0, verbose_name='Orden')
     description = models.CharField(max_length=200, verbose_name='Descripción')
-    date = models.DateField(verbose_name='Fecha')
     start_time = models.TimeField(verbose_name='Hora Inicio')
-    end_time = models.TimeField(verbose_name='Hora Fin')
-    link = models.URLField(verbose_name='Enlace')
+    end_time = models.TimeField(verbose_name='Hora Fin', blank=True, null=True)
+    link = models.URLField(verbose_name='Enlace', blank=True, null=True)
 
     def __str__(self):
         return self.description

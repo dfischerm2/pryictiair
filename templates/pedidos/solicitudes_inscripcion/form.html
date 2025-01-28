@@ -1,0 +1,158 @@
+<div class="row">
+    <div class="col-lg-8">
+        <div class="table-responsive">
+            <table class="table table-bordered table-td-valign-middle">
+                <tbody>
+                <tr>
+                    <td class="text-left text-bold">User</td>
+                    <td class="text-left">{{ filtro.user.get_full_name }}</td>
+                    <td class="text-left text-bold">Email</td>
+                    <td class="text-left">{{ filtro.user.email|default:'' }}</td>
+                </tr>
+                <tr>
+                    <td class="text-left text-bold">Country</td>
+                    <td class="text-left">{{ filtro.user.pais.nombre|default:'' }}</td>
+                    <td class="text-left text-bold">Institution</td>
+                    <td class="text-left">{{ filtro.user.institucion|upper }}</td>
+                </tr>
+                <tr>
+                    <td class="text-left text-bold">Conference</td>
+                    <td class="text-left" colspan="3">{{ filtro.cuota.conference.title }}</td>
+                </tr>
+                <tr>
+                    <td class="text-left text-bold">Fee type</td>
+                    <td class="text-left">{{ filtro.cuota.get_role_display }}</td>
+                    <td class="text-left text-bold">Total</td>
+                    <td class="text-left">$ {{ filtro.subtotal|floatformat:2 }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-td-valign-middle">
+                {% if filtro.cuota.role == 1 %}
+                    <thead>
+                    <tr>
+                        <th class="text-center" colspan="4"><i class="fa fa-list"></i> Details</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center" width="5%">#</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center"># Sheets</th>
+                        <th class="text-center">Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for paper in filtro.get_papers %}
+                        <tr>
+                            <td class="text-center">{{ forloop.counter }}</td>
+                            <td class="text-center">{{ paper.description }}</td>
+                            <td class="text-center">{{ paper.sheets }}</td>
+                            <td class="text-center">$ {{ paper.value|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-right">Total</td>
+                        <td class="text-center">$ <b>{{ filtro.subtotal|floatformat:2 }}</b></td>
+                    </tr>
+                    </tfoot>
+                {% elif filtro.cuota.role == 3 %}
+                    <thead>
+                    <tr>
+                        <th class="text-center" colspan="3"><i class="fa fa-list"></i> Details</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Fee type</th>
+                        <th class="text-center">Institution</th>
+                        <th class="text-center">Evidence</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">
+                            {{ filtro.cuota.get_role_display }}
+                        </td>
+                        <td class="text-center">
+                            {{ filtro.user.institucion|upper }}
+                        </td>
+                        <td class="text-center">
+                            <a href="/media/{{ filtro.archivo_evidencia }}" target="_blank" class="btn-link"><i
+                                    class="fa fa-file-pdf"></i> Evidence</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% elif filtro.cuota.role == 4 %}
+                    <thead>
+                    <tr>
+                        <th class="text-center" colspan="4"><i class="fa fa-list"></i> Details</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Fee type</th>
+                        <th class="text-center">¿Is student?</th>
+                        <th class="text-center">Institution</th>
+                        <th class="text-center">Evidence</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">
+                            {{ filtro.cuota.get_role_display }}
+                        </td>
+                        <td class="text-center">
+                            <i class="{{ filtro.get_student }}"></i>
+                        </td>
+                        <td class="text-center">
+                            {{ filtro.user.institucion|upper }}
+                        </td>
+                        <td class="text-center">
+                            <a href="/media/{{ filtro.archivo_evidencia }}" target="_blank" class="btn-link"><i
+                                    class="fa fa-file-pdf"></i> Evidence</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="row">
+            <input type="hidden" value="{{ filtro.pk }}" name="pk">
+            <input type="hidden" name="action" value="{{ action }}"/>
+            {% for field in form %}
+                {% if field.is_hidden %}
+                    {{ field }}
+                {% else %}
+                    <div class="col-lg-{{ field.field.widget.attrs.col }}">
+                        <div class="form-group">
+                            <label class="form-label" for="id_{{ field.name }}">{{ field.label }}:</label><br>
+                            {{ field }}
+                            <div class="invalid-feedback" id="errorMessage{{ field.name }}"></div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="ln_solid"></div>
+
+<div class="form-group">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-3 text-right">
+        <a href="javascript:;" class="btn btn-danger" data-dismiss="modal"><i
+                class="fa fa-window-close"></i>
+            Cancelar</a>
+        <button type="submit"
+                class="btn btn-success">
+            <i class="fa fa-save"></i> Guardar
+        </button>
+    </div>
+</div>
+
+{{ form.media }}
+<script>
+    $(document).ready(function () {
+        $.fn.select2.defaults.set('language', 'es');
+        $('.jselect2').select2();
+    });
+</script>

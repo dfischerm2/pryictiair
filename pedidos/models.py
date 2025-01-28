@@ -19,6 +19,10 @@ def _estado_pedido(self):
     s = ""
     if self.estado == "PENDIENTE":
         s = '<i class="text-info fas fa-ellipsis-h"></i> Pendiente de validar'
+    elif self.estado == "RECHAZADO":
+        s = '<i class="text-danger fas fa-times-circle"></i> Inscripción rechazada'
+    elif self.estado == "PENDIENTE_PAGO":
+        s = '<i class="text-info fas fa-ellipsis-h"></i> Pendiente de realizar pago'
     elif self.estado == "EN_ESPERA":
         s = '<i class="text-warning far fa-clock"></i> Pendiente de aprobación'
     elif self.estado == "ANULADO":
@@ -40,6 +44,8 @@ METODO_PAGOS = (
 
 ESTADO_PEDIDO = (
     ("PENDIENTE", "Pendiente de validar"),
+    ("RECHAZADO", "Inscripcion Rechazada"),
+    ("PENDIENTE_PAGO", "Pendiente de pago"),
     ("EN_ESPERA", "En espera de aprobación"),
     ("ANULADO", "Anulado"),
     ("COMPLETADO", "Completado"),
@@ -78,6 +84,9 @@ class Pedido(ModeloBase):
 
     def get_papers(self):
         return self.papersauthorpedido_set.filter(status=True)
+
+    def get_topics_interest(self):
+        return self.topicsattendeepedido_set.filter(status=True)
 
     def get_student(self):
         return 'text-success fa fa-check-circle' if self.special_price_student else 'text-danger fa fa-times-circle'
@@ -155,6 +164,7 @@ class PapersAuthorPedido(ModeloBase):
     pedido = models.ForeignKey(Pedido, on_delete=models.PROTECT, verbose_name="Pedido")
     description = models.CharField(verbose_name="Descripción", max_length=500)
     sheets = models.IntegerField(verbose_name="Hojas", default=0)
+    value = models.DecimalField(verbose_name="Valor", default=0, max_digits=30, decimal_places=2)
 
     def __str__(self):
         return f"{self.description} - {self.sheets} hojas"

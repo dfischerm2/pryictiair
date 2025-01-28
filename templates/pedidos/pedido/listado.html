@@ -17,18 +17,6 @@
             </div>
             <div class="col-md-2">
                 <div class="input-group mb-3">
-                    <select name="metodopago" id="id_metodopago" class="form-control select2"
-                            data-placeholder="Filtrar por Metodo Pago">
-                        <option value="">Todos</option>
-                        {% for l in METODO_PAGOS %}
-                            <option value="{{ l.0 }}"
-                                    {% if l.0 == metodopago %}selected{% endif %}>{{ l.1 }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="input-group mb-3">
                     <select name="estado" id="id_estado" class="form-control select2"
                             data-placeholder="Filtrar por Estado">
                         <option value="">Todos</option>
@@ -81,9 +69,6 @@
                         Total
                     </th>
                     <th class="text-center">
-                        Método de pago
-                    </th>
-                    <th class="text-center">
                         Estado
                     </th>
                     <th class="text-center">
@@ -95,12 +80,7 @@
                 {% for l in listado %}
                     <tr>
                         <td class="text-left">
-                            <b>Cod.</b> {{ l.id }}<br>
-                            {% if l.modo_pago %}
-                                <span class="text-primary">Producción</span>
-                            {% else %}
-                                <span class="text-warning">Prueba</span>
-                            {% endif %}
+                            <b>Cod.</b> {{ l.id }}
                         </td>
                         <td class="text-center">
                             {{ l.fecha_registro|date:'d/M/Y' }}<br>
@@ -117,7 +97,10 @@
                             <i class="fa fa-building"></i> {{ l.user.institucion|upper }}
                         </td>
                         <td class="text-left">
-                            <h6 class="text-success">{{ l.cuota.get_role_display }}</h6>
+                            <h6 class=""><i class="fa fa-certificate tu"
+                                            title="Conference"></i> {{ l.cuota.conference.title }}</h6>
+                            <h6 class="text-success"><i class="fa fa-file-invoice tu"
+                                                        title="Fee type"></i> {{ l.cuota.get_role_display }}</h6>
                             <div id="modulos_{{ l.pk }}" class="accordion accordion-flush"
                                  role="tablist"
                                  aria-multiselectable="true">
@@ -154,40 +137,20 @@
                                             {% else %}
                                                 {% if l.cuota.role == 4 %}
                                                     <b>¿Is Student?: </b> <i class="{{ l.get_student }}"></i> <br>
-                                                    <b>Evidence: </b> <a href="/media/{{ l.archivo_evidencia }}" target="_blank" class="btn-link"><i class="fa fa-file-pdf"></i> See evidence</a>
                                                 {% endif %}
-                                            {% endif %}<br>
-
-                                            <b>Total: </b> $ <b>{{ l.subtotal }}</b> USD
-
+                                                {% if l.cuota.role == 3 or l.cuota.role == 4 %}
+                                                    <b>Evidence: </b>
+                                                    <a href="/media/{{ l.archivo_evidencia }}" target="_blank"
+                                                       class="btn-link"><i class="fa fa-file-pdf"></i> See evidence</a>
+                                                {% endif %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        {#                        <td style="width: 15%">#}
-                        {#                            {% if l.entidad_fin %}#}
-                        {#                                <i class="fa fa-piggy-bank"></i> {{ l.entidad_fin }}#}
-                        {#                            {% else %}#}
-                        {#                                {{ l.comprobante|default:'---' }}#}
-                        {#                            {% endif %}#}
-                        {#                        </td>#}
-                        {#                        <td class="text-center">#}
-                        {#                            $ {{ l.subtotal|intcomma }}#}
-                        {#                        </td>#}
-                        {#                        <td class="text-center">#}
-                        {#                            $ {{ l.impuestos|intcomma }}#}
-                        {#                        </td>#}
                         <td class="text-center" style="width: 10%">
-                            <b>$ {{ l.total|intcomma }}</b>
-                        </td>
-                        <td class="text-center" style="font-size: 14px">
-                            {{ l.get_icon }} {{ l.get_metodo_pago_display }}
-                            {% if l.pago_reversado %}<br>
-                                <span class="text-danger">
-                                    <i class="fa-solid fa-money-bill-transfer"></i> Pago reversado <br> {{ l.fecha_reversado|date:'d/M/Y H:i' }}
-                                </span>
-                            {% endif %}
+                            <b>$ {{ l.subtotal|intcomma }}</b>
                         </td>
                         <td class="text-center">
                             {{ l.estado_pedido }}
@@ -199,39 +162,20 @@
                                     <i class="fas fa-angle-left mr-1"></i> Acciones
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item"
-                                       href="{{ ruta }}?pk={{ l.pk }}&action=detalle&{{ dict_url_vars }}">
+                                    <a href="javascript:void(0)" class="dropdown-item"
+                                       onclick="formModal('{{ l.pk|encrypt }}', 'Detalle solicitud Cod. {{ l.pk }}', 'detailsRequest')">
                                         <i class="fas fa-eye"></i> Detalle
-                                    </a>
-                                    {% if l.estado == 'EN_ESPERA' %}
-                                        <a class="dropdown-item" t
-                                           href="{{ ruta }}?pk={{ l.pk }}&action=pago_pendiente&{{ dict_url_vars }}">
-                                            <i class="fas fa-check-double"></i> Validar Pago
-                                        </a>
-                                    {% endif %}
-                                    <a data-toggle="modal" data-target="#modalMetodoPago{{ l.id }}"
-                                       class="dropdown-item"
-                                       href="javascript:;">
-                                        {{ l.get_icon }} Ver detalle del pago
                                     </a>
                                     <a onclick="verModalHistorial('historial_pedido', '{{ l.pk|get_encrypt }}', 'fas fa-history')"
                                        class="dropdown-item"
                                        href="javascript:;">
                                         <i class="fas fa-history"></i> Historial
                                     </a>
-                                    {% if not l.estado == 'ERROR_METODO_PAGO' %}
-                                        {% if l.estado != 'ANULADO' %}
-                                            <a class="dropdown-item text-danger" title="Anular"
-                                               href="?pk={{ l.pk|get_encrypt }}&action=anular_pedido">
-                                                <i class="fas fa-times-circle"></i> Anular
-                                            </a>
-                                        {% endif %}
-                                        {% if request.user.is_superuser and l.es_pago_electronico and not l.pago_reversado %}
-                                            <a class="dropdown-item text-warning" title="Reversar pago"
-                                               href="?pk={{ l.pk|get_encrypt }}&pago_id={{ l.id|get_encrypt }}&action=reversar_pago">
-                                                <i class="fa-solid fa-money-bill-transfer"></i> Reversar pago
-                                            </a>
-                                        {% endif %}
+                                    {% if l.estado == 'PENDIENTE' %}
+                                        <a href="javascript:void(0)" class="dropdown-item"
+                                           onclick="formModal('{{ l.pk|encrypt }}', 'Validar solicitud Cod. {{ l.pk }}', 'validateRequest')">
+                                            <i class="fas fa-check-circle"></i> Validar
+                                        </a>
                                     {% endif %}
                                 </div>
                             </div>
@@ -408,7 +352,7 @@
                         $('.tablaaqui').html(data.data);
                         ModalAdd.modal({backdrop: 'static'}).modal('show');
                     } else {
-                        mensajeDanger(data.mensaje);
+                        mensajeDanger(data.message);
                     }
                 },
                 error: () => mensajeDanger("Error de conexion."),

@@ -1,0 +1,143 @@
+<style>
+    .text-bold {
+        font-weight: bold;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-td-valign-middle">
+                <tbody>
+                <tr>
+                    <td class="text-left text-bold">User</td>
+                    <td class="text-left">{{ filtro.user.get_full_name }}</td>
+                    <td class="text-left text-bold">Email</td>
+                    <td class="text-left">{{ filtro.user.email|default:'' }}</td>
+                </tr>
+                <tr>
+                    <td class="text-left text-bold">Country</td>
+                    <td class="text-left">{{ filtro.user.pais.nombre|default:'' }}</td>
+                    <td class="text-left text-bold">Institution</td>
+                    <td class="text-left">{{ filtro.user.institucion|upper }}</td>
+                </tr>
+                <tr>
+                    <td class="text-left text-bold">Conference</td>
+                    <td class="text-left" colspan="3">{{ filtro.cuota.conference.title }}</td>
+                </tr>
+                <tr>
+                    <td class="text-left text-bold">Fee type</td>
+                    <td class="text-left">{{ filtro.cuota.get_role_display }}</td>
+                    <td class="text-left text-bold">Total</td>
+                    <td class="text-left">$ {{ filtro.subtotal|floatformat:2 }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-td-valign-middle">
+                {% if filtro.cuota.role == 1 %}
+                    <thead>
+                    <tr>
+                        <th class="text-center" colspan="4"><i class="fa fa-list"></i> Details</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center" width="5%">#</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center"># Sheets</th>
+                        <th class="text-center">Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for paper in filtro.get_papers %}
+                        <tr>
+                            <td class="text-center">{{ forloop.counter }}</td>
+                            <td class="text-center">{{ paper.description }}</td>
+                            <td class="text-center">{{ paper.sheets }}</td>
+                            <td class="text-center">$ {{ paper.value|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-right">Total</td>
+                        <td class="text-center">$ <b>{{ filtro.subtotal|floatformat:2 }}</b></td>
+                    </tr>
+                    </tfoot>
+                {% elif filtro.cuota.role == 3 %}
+                    <thead>
+                    <tr>
+                        <th class="text-center" colspan="3"><i class="fa fa-list"></i> Details</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Fee type</th>
+                        <th class="text-center">Institution</th>
+                        <th class="text-center">Evidence</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">
+                            {{ filtro.cuota.get_role_display }}
+                        </td>
+                        <td class="text-center">
+                            {{ filtro.user.institucion|upper }}
+                        </td>
+                        <td class="text-center">
+                            <a href="/media/{{ filtro.archivo_evidencia }}" target="_blank" class="btn-link"><i
+                                    class="fa fa-file-pdf"></i> Evidence</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% elif filtro.cuota.role == 4 %}
+                    <thead>
+                    <tr>
+                        <th class="text-center" colspan="4"><i class="fa fa-list"></i> Details</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Fee type</th>
+                        <th class="text-center">¿Is student?</th>
+                        <th class="text-center">Institution</th>
+                        <th class="text-center">Evidence</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">
+                            {{ filtro.cuota.get_role_display }}
+                        </td>
+                        <td class="text-center">
+                            <i class="{{ filtro.get_student }}"></i>
+                        </td>
+                        <td class="text-center">
+                            {{ filtro.user.institucion|upper }}
+                        </td>
+                        <td class="text-center">
+                            <a href="/media/{{ filtro.archivo_evidencia }}" target="_blank" class="btn-link"><i
+                                    class="fa fa-file-pdf"></i> Evidence</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endif %}
+            </table>
+            {% if filtro.cuota.role != 1 %}
+                <table class="table table-bordered table-td-valign-middle">
+                    <thead>
+                    <tr>
+                        <th class="text-center" colspan="4"><i class="fa fa-list"></i> Topics of interest</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for topic in filtro.get_topics_interest %}
+                        <tr>
+                            <td class="text-center">{{ topic }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td class="text-center">No records</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+{% extends 'email/base_ictiair.html' %}
+{% block content %}
+    <div style="font-size:12px; padding: 5px; line-height:14px; color:#555555; font-family:Arial,'Helvetica Neue',Helvetica,sans-serif; text-align:left;">
+        <div style="font-size:14px; color:#555555; text-align:left;">
+            <p style="margin:0;">Hello {{ user.datos }},</p><br>
+            <p style="margin:0;">
+                We would like to inform you about the status of your application to participate in the
+                <strong>“{{ conference.title }}”</strong> conference. Below, you will find the related information:
+            </p>
+            <br>
+            <p style="margin:0;">
+                <strong>Status:</strong> {% if estado == '1' %} APPROVED {% else %} REJECTED {% endif %}
+            </p> <br>
+            <p style="margin:0;">
+                <strong>Observation:</strong><br>
+                {{ observacion }} <br>
+            </p><br>
+            {% if isStudent %}
+                <p style="margin:0;">
+                    We are pleased to inform you that your participation has been approved and accepted. As you are
+                    registering
+                    as a student, your access to the congress will be free of charge. Congratulations on becoming part
+                    of
+                    this important event!
+                </p> <br>
+            {% else %}
+                {% if estado == '1' %}
+                    <p style="margin:0;">
+                        To confirm your participation, we kindly request you to complete the payment process.
+                        Please click on the following link:
+                    </p><br>
+                    <div style="text-align:center;">
+                        <a href="{{ payment_link }}"
+                                style="display:inline-block; padding:10px 20px; background-color:#4CAF50; color:#ffffff; text-decoration:none; border-radius:4px;"
+                        >
+                            Make payment
+                        </a>
+                    </div> <br>
+                {% endif %}
+            {% endif %}
+
+            <p style="margin:0;"><strong>Sincerely,</strong></p>
+            <p style="margin:0;">{{ confi.nombre_empresa }}</p>
+            <p style="margin:0;">{{ confi.email }}</p>
+        </div>
+    </div>
+
+{% endblock %}
