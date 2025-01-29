@@ -60,7 +60,12 @@
                                     </div>
                                 </div>
                                 <div class="">
-                                    <span><b>Date:</b> {{ l.date|date:'d/m/Y' }}</span>
+                                    <span><b>Date:</b> {{ l.date|date:'d/m/Y' }}</span> <br>
+                                    {% if l.pdf %}
+                                        <a class="btn btn-default btn-mini mt-1 mb-1" href="/media/{{ l.pdf }}" target="_blank"><i class="fa fa-file-pdf text-danger"></i> Schedule PDF</a>
+                                    {% else %}
+                                        <span class="text-muted"><i class="fa fa-info-circle"></i> The schedule pdf has not been configured for this day</span>
+                                    {% endif %}
                                 </div>
                                 <table class="table">
                                     <thead>

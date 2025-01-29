@@ -36,5 +36,14 @@
         $.fn.select2.defaults.set('language', 'es');
         $('.jselect2').select2();
 
+        $('.dropify').dropify({
+            messages: {
+                default: 'Arrastre y suelte un archivo o haga clic aquí.',
+                replace: 'Arrastre y suelte un archivo o haga clic aquí.',
+                remove: 'Eliminar',
+            },
+            imgFileExtensions: ["jpg"]
+        });
+
     });
 </script>

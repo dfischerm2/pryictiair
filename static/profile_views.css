@@ -1,0 +1,287 @@
+:root {
+    --primary-color: #060a38;
+    --accent-color: #FF9900;
+}
+
+.sidebar-profile {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+}
+
+.nav-profile .nav-link {
+    color: #4a5568;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.nav-profile .nav-link:hover {
+    background-color: #f8f9fa;
+    color: var(--primary-color);
+}
+
+.nav-profile .nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.nav-profile .nav-link i {
+    width: 20px;
+    text-align: center;
+    margin-right: 12px;
+    font-size: 1.1rem;
+}
+
+.profile-header {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.profile-name {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.profile-role {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.section-title {
+    color: #6c757d;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.logout-link {
+    color: #dc3545 !important;
+}
+
+.logout-link:hover {
+    background-color: #fff5f5 !important;
+}
+
+/* Estilos para mobile */
+@media (max-width: 991px) {
+    .profile-wrapper {
+        margin-top: 0 !important;
+    }
+
+    .mobile-nav {
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        padding: 1rem;
+    }
+
+    .mobile-nav .nav {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+
+    .mobile-nav .nav-link {
+        text-align: center;
+        padding: 0.75rem 0.5rem;
+        margin: 0;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .mobile-nav .nav-link i {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+    }
+
+    .mobile-nav .nav-link.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .mobile-header {
+        padding: 1rem;
+        background: #fff;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .logout-mobile {
+        grid-column: span 3;
+    }
+}
+
+/* Estilos para el contenido principal */
+.content-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.content-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.content-header i {
+    color: #060a38;
+    font-size: 1.5rem;
+}
+
+.content-header h2 {
+    color: #060a38;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Estilos para la tabla */
+.table-modern {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border: none;
+}
+
+.table-modern thead th {
+    background-color: #f8f9fa;
+    border: none;
+    padding: 1rem;
+    font-weight: 600;
+    color: #060a38;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-modern tbody td {
+    padding: 1rem;
+    border: none;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+    color: #4a5568;
+}
+
+.table-modern tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status badges */
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-paid {
+    background-color: #def7ec;
+    color: #03543f;
+}
+
+.status-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+/* Action buttons */
+.btn-action {
+    padding: 0.5rem;
+    border-radius: 8px;
+    color: #4a5568;
+    transition: all 0.2s ease;
+}
+
+.btn-action:hover {
+    background-color: #f8f9fa;
+    color: #060a38;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-modern {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .table-modern thead th {
+        white-space: nowrap;
+        padding: 0.75rem;
+    }
+
+    .table-modern tbody td {
+        padding: 0.75rem;
+    }
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+    border-radius: 20px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+
+/* Success badge - Verde */
+.badge-success {
+    color: #0f766e;
+    background-color: #d1fae5;
+}
+
+/* Info badge - Azul */
+.badge-info {
+    color: #1e40af;
+    background-color: #dbeafe;
+}
+
+/* Warning badge - Amarillo */
+.badge-warning {
+    color: #92400e;
+    background-color: #fef3c7;
+}
+
+/* Danger badge - Rojo */
+.badge-danger {
+    color: #991b1b;
+    background-color: #fee2e2;
+}
+
+/* Hover effects */
+.badge-success:hover {
+    background-color: #a7f3d0;
+}
+
+.badge-info:hover {
+    background-color: #bfdbfe;
+}
+
+.badge-warning:hover {
+    background-color: #fde68a;
+}
+
+.badge-danger:hover {
+    background-color: #fecaca;
+}
+
+/* Optional: versión pequeña */
+.badge-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+}

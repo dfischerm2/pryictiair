@@ -2,7 +2,6 @@
 {% load templatefunctions %}
 {% block head %}
     <link rel="stylesheet" href="/static/views.css">
-    <link rel="stylesheet" href="/static/register.css">
 {% endblock %}
 {% block content %}
     <div class="mt-125 p-3">
@@ -11,6 +10,11 @@
                 <div class="col">
                     <div class="wm wm-border wow fadeInDown">Register</div>
                     <h1>Register for {{ filtro.get_role_display }}</h1>
+                    {% if filtro.special_price %}
+                        <div class="text-center">
+                            <h3>Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)</h3> <br>
+                        </div>
+                    {% endif %}
                     <div class="separator"><span><i class="fa fa-square"></i></span></div>
                     <div class="spacer-single"></div>
                 </div>
@@ -43,19 +47,7 @@
                                             </div>
                                         {% endif %}
                                     {% endfor %}
-                                    {% if filtro.role == 4 %}
-                                        <div class="col-lg-12">
-                                            <div class="form-group p-1">
-                                                <label for="id_es_estudiante">
-                                                    <span style="padding-right: 10px">Are you a student at any of <b>UNEMI, VIU, or UCLM?</b>:</span>
-                                                    <input type="checkbox" class="js-switch" id="id_es_estudiante"
-                                                           name="es_estudiante">
-
-                                                </label>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                    {% if filtro.role == 3 or filtro.role == 4 %}
+                                    {% if filtro.role == 3 or filtro.special_price %}
                                         <p class="upload-description mt-2">
                                         </p>
                                         <div class="form-group">
@@ -79,7 +71,8 @@
                                             <table class="table" id="tablePapers" width="100%">
                                                 <thead>
                                                 <tr>
-                                                    <th class="text-center">Short description</th>
+                                                    <th class="text-center">ID</th>
+                                                    <th class="text-center">Title</th>
                                                     <th class="text-center" width="30%">Num .Sheets</th>
                                                     <th class="text-center"><i class="fa fa-cogs"></i></th>
                                                 </thead>
@@ -88,63 +81,61 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                    {% else %}
-                                        <hr class="mt-4">
-                                        <h3 class="mb-4"><i class="fa fa-list-alt mr-2"></i> Select topics of interest
-                                        </h3>
-                                        <p style="font-size: 13px" class="text-muted"><i class="fa fa-info-circle"></i>
-                                            You're close to completing your registration! This step is optional, but
-                                            we'd love to hear about the topics that interest you the most for the
-                                            event. Your input will help us make the experience even better for
-                                            you. Please note that adding this information will not affect the final
-                                            amount to be paid. </p>
-                                        <div class="accordion" id="accordionTopics">
-                                            {% for tc in conference.get_topics %}
-                                                <div class="card custom-card mb-3">
-                                                    <div class="card-header position-relative" id="heading_{{ tc.id }}">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <div class="form-check mb-0">
-                                                                <input type="checkbox"
-                                                                       class="form-check-input topic-checkbox"
-                                                                       id="topic_{{ tc.id }}"
-                                                                       value="{{ tc.id }}">
-                                                                <label class="form-check-label topic-label"
-                                                                       for="topic_{{ tc.id }}">
-                                                                    {{ tc.name }}
-                                                                </label>
-                                                            </div>
-                                                            <button class="btn btn-link custom-accordion-btn p-0"
-                                                                    type="button"
-                                                                    data-toggle="collapse"
-                                                                    data-target="#collapse_{{ tc.id }}"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="collapse_{{ tc.id }}">
-                                                                <i class="fa fa-chevron-down"></i>
-                                                            </button>
+                                    {% endif %}
+                                    <hr class="mt-4">
+                                    <h3 class="mb-4"><i class="fa fa-list-alt mr-2"></i> Select topics of interest
+                                    </h3>
+                                    <p style="font-size: 13px" class="text-muted"><i class="fa fa-info-circle"></i>
+                                        You're close to completing your registration! This step is optional, but
+                                        we'd love to hear about the topics that interest you the most for the
+                                        event. Your input will help us make the experience even better for
+                                        you. Please note that adding this information will not affect the final
+                                        amount to be paid. </p>
+                                    <div class="accordion" id="accordionTopics">
+                                        {% for tc in conference.get_topics %}
+                                            <div class="card custom-card mb-3">
+                                                <div class="card-header position-relative" id="heading_{{ tc.id }}">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="form-check mb-0">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input topic-checkbox"
+                                                                   id="topic_{{ tc.id }}"
+                                                                   value="{{ tc.id }}">
+                                                            <label class="form-check-label topic-label"
+                                                                   for="topic_{{ tc.id }}">
+                                                                {{ tc.name }}
+                                                            </label>
                                                         </div>
+                                                        <button class="btn btn-link custom-accordion-btn p-0"
+                                                                type="button"
+                                                                data-toggle="collapse"
+                                                                data-target="#collapse_{{ tc.id }}"
+                                                                aria-expanded="false"
+                                                                aria-controls="collapse_{{ tc.id }}">
+                                                            <i class="fa fa-chevron-down"></i>
+                                                        </button>
                                                     </div>
+                                                </div>
 
-                                                    <div id="collapse_{{ tc.id }}"
-                                                         class="collapse"
-                                                         aria-labelledby="heading_{{ tc.id }}"
-                                                         data-parent="#accordionTopics">
-                                                        <div class="card-body">
-                                                            <div class="topic-description">
-                                                                <ul class="custom-list">
-                                                                    {% for t in tc.get_topics %}
-                                                                        {% if t.status and t.public %}
-                                                                            <li>{{ t.name }}</li>
-                                                                        {% endif %}
-                                                                    {% endfor %}
-                                                                </ul>
-                                                            </div>
+                                                <div id="collapse_{{ tc.id }}"
+                                                     class="collapse"
+                                                     aria-labelledby="heading_{{ tc.id }}"
+                                                     data-parent="#accordionTopics">
+                                                    <div class="card-body">
+                                                        <div class="topic-description">
+                                                            <ul class="custom-list">
+                                                                {% for t in tc.get_topics %}
+                                                                    {% if t.status and t.public %}
+                                                                        <li>{{ t.name }}</li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            {% endfor %}
-                                        </div>
-
-                                    {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                     <div class="text-right mb-2">
                                         <div class="price-highlight">
                                             <i class="fa fa-money mr-2"></i> $ <span id="value-counter"
@@ -193,8 +184,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
 {% endblock %}
@@ -208,7 +197,9 @@
             BASE_SHEETS: parseInt('{{ conference.max_sheets|default:0 }}'),
             BASE_PAPERS: parseInt('{{ conference.max_papers|default:0 }}'),
             ROLE: parseInt({{ filtro.role }}),
-            ROLES_EVIDENCIA: [3, 4]
+            ROLES_EVIDENCIA: [2, 3],
+            SPECIAL_PRICE: "{{ filtro.special_price }}" === "True"
+
         };
 
         $(document).ready(function () {
@@ -226,20 +217,12 @@
 
             let initialPrice = $('#value-counter').text();
 
-            $('#id_es_estudiante').on('change', function () {
-                if ($(this).is(':checked')) {
-                    $('#value-counter').text('0')
-                } else {
-                    $('#value-counter').text(initialPrice);
-                }
-            });
-
             if (config.ROLES_EVIDENCIA.includes(config.ROLE)) {
                 $('#additionalMessage_email').html('*Registration must be with institutional email');
-                if (config.ROLE === 3) {
-                    $('.upload-description').html(`We kindly request verification of your student status. To complete this process, please upload an official document as proof of your academic record.`);
-                } else {
+                if (config.SPECIAL_PRICE) {
                     $('.upload-description').html(`We need to verify that you are affiliated with one of the following institutions: UNEMI, VIU, or UCLM. Please upload a document that confirms your affiliation.`);
+                } else {
+                    $('.upload-description').html(`We kindly request verification of your student status. To complete this process, please upload an official document as proof of your academic record.`);
                 }
             }
 
@@ -265,7 +248,10 @@
                 const newRow = `
                     <tr>
                         <td class="text-center">
-                            <input type="text" class="form-control" placeholder="Enter description">
+                            <input type="text" class="form-control" placeholder="Enter ID">
+                        </td>
+                        <td class="text-center">
+                            <input type="text" class="form-control" placeholder="Enter title">
                         </td>
                         <td class="text-center">
                             <input type="number" class="form-control" min="1" value="1">
@@ -287,7 +273,7 @@
                 if (rowCount === 0) {
                     $("#tbPapers").html(`
                 <tr id="emptyMessage">
-                    <td colspan="3" class="text-center text-muted">
+                    <td colspan="4" class="text-center text-muted">
                         No papers have been registered yet
                     </td>
                 </tr>
@@ -333,29 +319,28 @@
         function funcionAntesDeGuardar() {
             let detalles = [];
             let basePrice = parseInt($('#value-counter').data('base-price'));
-            let isStudent = $('#id_es_estudiante').is(':checked');
 
             $('#tbPapers tr').each(function (index) {
-                let descripcion = $(this).find('input[type="text"]').val();
+                let idpaper = $(this).find('input[type="text"]').eq(0).val();
+                let title = $(this).find('input[type="text"]').eq(1).val();
                 let hojas = parseInt($(this).find('input[type="number"]').val());
 
-                if (descripcion && hojas) {
-                    let paperValue = 0;
+                if (idpaper && title && hojas) {
 
                     if (index === 0) {
-                        paperValue = isStudent ? 0 : basePrice;
+                        paperValue = basePrice;
                         if (hojas > config.BASE_SHEETS) {
                             paperValue += (hojas - config.BASE_SHEETS) * config.EXTRA_SHEET_PRICE;
                         }
-                    }
-                    else {
+                    } else {
                         paperValue = config.ADDITIONAL_PAPER_PRICE;
                         if (hojas > config.BASE_SHEETS) {
                             paperValue += (hojas - config.BASE_SHEETS) * config.EXTRA_SHEET_PRICE;
                         }
                     }
                     detalles.push({
-                        description: descripcion,
+                        idpaper: idpaper,
+                        title: title,
                         sheets: hojas,
                         value: paperValue
                     });

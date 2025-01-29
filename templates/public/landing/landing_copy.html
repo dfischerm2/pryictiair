@@ -212,7 +212,7 @@
     </section>
 
     <!-- section begin -->
-    <section id="section-about"  class="mb-3">
+    <section id="section-about" class="mb-3">
         <div class="wm wm-border wow fadeInDown">welcome</div>
         <div class="container">
             <div class="row align-items-center">
@@ -387,7 +387,8 @@
                                         <span>{{ cfp.name }}</span>
                                     </div>
                                     {% if cfp.file_example %}
-                                        <a href="{{ cfp.file_example.url }}" {% if cfp.download %}download="{{ cfp.file_example.name }}"{% endif %}
+                                        <a href="{{ cfp.file_example.url }}"
+                                           {% if cfp.download %}download="{{ cfp.file_example.name }}"{% endif %}
                                            class="btn btn-primary btn-lg" target="_blank">
                                             <i class="fa {% if cfp.type_document == 4 %}fa-external-link{% else %}fa-download{% endif %}"></i>
                                             {% if cfp.name_button %}{{ cfp.name_button }}{% else %}Download{% endif %}
@@ -481,7 +482,8 @@
                                         <div class="de-team-list">
                                             <div class="team-pic">
                                                 {% if cp.photo %}
-                                                    <img src="{{ cp.photo.url }}" class="img-responsive" style="width: 192px;height: 192px"
+                                                    <img src="{{ cp.photo.url }}" class="img-responsive"
+                                                         style="width: 192px;height: 192px"
                                                          alt="{{ cp.name }}">
                                                 {% else %}
                                                     {% if cp.sexo == 'MASCULINO' %}
@@ -542,6 +544,9 @@
 
 
 
+
+
+
                                                     {% if cp.linkedin %}{{ cp.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                                  class="btn btn-primary btn-rounded btn-mini"><i
                                                     class="fa fa-linkedin"></i></a></h4>
@@ -568,7 +573,8 @@
                                             <div class="de-team-list">
                                                 <div class="team-pic">
                                                     {% if c.photo %}
-                                                        <img src="{{ c.photo.url }}" class="img-responsive img-circle" style="width: 192px;height: 192px"
+                                                        <img src="{{ c.photo.url }}" class="img-responsive img-circle"
+                                                             style="width: 192px;height: 192px"
                                                              alt="{{ cp.name }}">
                                                     {% else %}
                                                         {% if c.sexo == 'MASCULINO' %}
@@ -592,6 +598,9 @@
 
 
                                                         
+
+
+
 
 
 
@@ -647,9 +656,14 @@
                                 <div style="background: #101010!important;"
                                      class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
                                     <div class="top">
+                                    {% if item.special_price %}
+                                            Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)<br>
+                                        {% endif %}
                                         <h2>{{ item.get_role_display }}</h2>
-                                        <p class="price"><span class="currency id-color">$</span>
-                                            <b>{{ item.get_value }}</b></p>
+                                        <p class="price">
+                                            {% if item.value > 0 %}<span class="currency id-color">$</span> {% endif %}
+                                            <b>{{ item.get_value }}</b>
+                                        </p>
                                     </div>
                                     <div class="bottom">
                                         <ul>

@@ -1,0 +1,121 @@
+/* Estilos para la paginación */
+.pagination-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin: 2rem 0;
+}
+
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0.375rem;
+    margin: 0;
+    gap: 0.25rem;
+}
+
+.page-item {
+    margin: 0;
+}
+
+.page-item .page-link {
+    padding: 0.5rem 0.75rem;
+    min-width: 2.25rem;
+    text-align: center;
+    color: #060a38;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.page-item .page-link:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #060a38;
+}
+
+.page-item.active .page-link {
+    background-color: #060a38;
+    border-color: #060a38;
+    color: white;
+}
+
+.page-item.active .page-link:hover {
+    background-color: #060a38;
+    color: white;
+}
+
+/* Estilos para los puntos suspensivos */
+.page-item .page-link.active {
+    background-color: transparent;
+    border-color: transparent;
+    color: #6c757d;
+    cursor: default;
+}
+
+.page-item .page-link.active:hover {
+    background-color: transparent;
+    color: #6c757d;
+}
+
+/* Contenedor principal */
+.pagination-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .pagination {
+        gap: 0.15rem;
+    }
+
+    .page-item .page-link {
+        padding: 0.4rem 0.6rem;
+        min-width: 2rem;
+        font-size: 0.9rem;
+    }
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-button {
+    background-color: #f5f5f5;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    min-width: 140px;
+    z-index: 10;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}

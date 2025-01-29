@@ -31,7 +31,7 @@ from django.db.models.functions import Coalesce
 @login_required
 @secure_module
 @custom_atomic_request
-def pedidoView(request):
+def solicitudesRegistroView(request):
     data = {
         'titulo': 'Solicitudes de registro',
         'modulo': 'Pedidos',
@@ -52,7 +52,7 @@ def pedidoView(request):
                     if not form.is_valid():
                         raise FormError(form)
                     estado, observacion = form.cleaned_data['estado'], form.cleaned_data['observacion']
-                    isStudent = filtro.cuota.role == 4 and filtro.special_price_student
+                    isStudent = filtro.cuota.role == 3 and filtro.special_price_student
                     estado_ = (('PENDIENTE_PAGO' if estado == '1' else 'RECHAZADO') if not isStudent else 'COMPLETADO' if estado == '1' else 'RECHAZADO')
                     filtro.estado = estado_
                     filtro.observacion = observacion

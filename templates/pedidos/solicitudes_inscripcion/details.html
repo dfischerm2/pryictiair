@@ -19,7 +19,7 @@
                     <td class="text-left text-bold">Country</td>
                     <td class="text-left">{{ filtro.user.pais.nombre|default:'' }}</td>
                     <td class="text-left text-bold">Institution</td>
-                    <td class="text-left">{{ filtro.user.institucion|upper }}</td>
+                    <td class="text-left">{{ filtro.user.institucion|default:'Unregistered'|upper }}</td>
                 </tr>
                 <tr>
                     <td class="text-left text-bold">Conference</td>
@@ -27,7 +27,7 @@
                 </tr>
                 <tr>
                     <td class="text-left text-bold">Fee type</td>
-                    <td class="text-left">{{ filtro.cuota.get_role_display }}</td>
+                    <td class="text-left">{{ filtro.cuota.get_role_display }} {% if filtro.cuota.special_price %}<br><b>(Special Price for Sponsor Universities (UNEMI, VIU, or UCLM))</b>{% endif %}</td>
                     <td class="text-left text-bold">Total</td>
                     <td class="text-left">$ {{ filtro.subtotal|floatformat:2 }}</td>
                 </tr>
@@ -37,20 +37,22 @@
                 {% if filtro.cuota.role == 1 %}
                     <thead>
                     <tr>
-                        <th class="text-center" colspan="4"><i class="fa fa-list"></i> Details</th>
+                        <th class="text-center" colspan="5"><i class="fa fa-list"></i> Details</th>
                     </tr>
                     <tr>
                         <th class="text-center" width="5%">#</th>
-                        <th class="text-center">Description</th>
+                        <th class="text-center" width="10%">Id</th>
+                        <th class="text-center">Title</th>
                         <th class="text-center"># Sheets</th>
-                        <th class="text-center">Price</th>
+                        <th class="text-center">Subtotal</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for paper in filtro.get_papers %}
                         <tr>
                             <td class="text-center">{{ forloop.counter }}</td>
-                            <td class="text-center">{{ paper.description }}</td>
+                            <td class="text-center">{{ paper.idpaper }}</td>
+                            <td class="text-center">{{ paper.title }}</td>
                             <td class="text-center">{{ paper.sheets }}</td>
                             <td class="text-center">$ {{ paper.value|floatformat:2 }}</td>
                         </tr>
@@ -58,43 +60,18 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td colspan="3" class="text-right">Total</td>
+                        <td colspan="4" class="text-right">Total</td>
                         <td class="text-center">$ <b>{{ filtro.subtotal|floatformat:2 }}</b></td>
                     </tr>
                     </tfoot>
-                {% elif filtro.cuota.role == 3 %}
-                    <thead>
-                    <tr>
-                        <th class="text-center" colspan="3"><i class="fa fa-list"></i> Details</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center">Fee type</th>
-                        <th class="text-center">Institution</th>
-                        <th class="text-center">Evidence</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="text-center">
-                            {{ filtro.cuota.get_role_display }}
-                        </td>
-                        <td class="text-center">
-                            {{ filtro.user.institucion|upper }}
-                        </td>
-                        <td class="text-center">
-                            <a href="/media/{{ filtro.archivo_evidencia }}" target="_blank" class="btn-link"><i
-                                    class="fa fa-file-pdf"></i> Evidence</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                {% elif filtro.cuota.role == 4 %}
+                {% elif filtro.cuota.role == 3  or filtro.cuota.special_price %}
                     <thead>
                     <tr>
                         <th class="text-center" colspan="4"><i class="fa fa-list"></i> Details</th>
                     </tr>
                     <tr>
                         <th class="text-center">Fee type</th>
-                        <th class="text-center">¿Is student?</th>
+                        <th class="text-center">¿Special Price Applied?</th>
                         <th class="text-center">Institution</th>
                         <th class="text-center">Evidence</th>
                     </tr>
@@ -105,10 +82,10 @@
                             {{ filtro.cuota.get_role_display }}
                         </td>
                         <td class="text-center">
-                            <i class="{{ filtro.get_student }}"></i>
+                           <i class="{{ filtro.cuota.get_special_price }}"></i>
                         </td>
                         <td class="text-center">
-                            {{ filtro.user.institucion|upper }}
+                            {{ filtro.user.institucion|default:'Unregistered'|upper }}
                         </td>
                         <td class="text-center">
                             <a href="/media/{{ filtro.archivo_evidencia }}" target="_blank" class="btn-link"><i
@@ -118,26 +95,24 @@
                     </tbody>
                 {% endif %}
             </table>
-            {% if filtro.cuota.role != 1 %}
-                <table class="table table-bordered table-td-valign-middle">
-                    <thead>
+            <table class="table table-bordered table-td-valign-middle">
+                <thead>
+                <tr>
+                    <th class="text-center" colspan="4"><i class="fa fa-list"></i> Topics of interest</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for topic in filtro.get_topics_interest %}
                     <tr>
-                        <th class="text-center" colspan="4"><i class="fa fa-list"></i> Topics of interest</th>
+                        <td class="text-center">{{ topic }}</td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for topic in filtro.get_topics_interest %}
-                        <tr>
-                            <td class="text-center">{{ topic }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td class="text-center">No records</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
+                {% empty %}
+                    <tr>
+                        <td class="text-center">No records</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -16,7 +16,7 @@ from django.template.loader import get_template
 from autenticacion.models import Usuario, PerfilPersona
 from core.custom_models import FormError
 from core.email_config import send_html_mail
-from core.funciones import addData, paginador, secure_module, log, generar_nombre
+from core.funciones import addData, paginador, secure_module, log, generar_nombre, validate_email_sponsor
 from django.contrib import messages
 
 from landing.forms import ConferenceForm
@@ -54,13 +54,15 @@ def registerView(request):
                         details = request.POST.get('papers', [])
                         if not details:
                             raise NameError('You must add at least 1 paper to be able to register your registration for the event')
-                    elif filtro.role in [3, 4]:
+                    elif filtro.role == 3 or filtro.special_price:
                         if not 'archivo_evidencia' in request.FILES:
-                            raise NameError('You must upload a file verifying that you are a student or affiliated with one of the institutions promoting this event to complete your registration.')
-                        if filtro.role == 4:
-                            ext_email = email.split('@')[1]
-                            if not ext_email in EXT_EMAILS_COLABORATORS:
-                                raise NameError('You must register using the institutional email address of one of the institutions promoting this event.')
+                            if filtro.special_price:
+                                raise NameError('You must upload a file verifying that you are a student or affiliated with one of the institutions promoting this event to complete your registration.')
+                            else:
+                                raise NameError('You must upload a file verifying that you are a student to complete your registration.')
+                        if filtro.special_price:
+                            if not validate_email_sponsor(email):
+                                raise NameError('The email provided does not belong to a sponsor of the event. Please enter a valid email.')
 
                     new_user = False
                     qsUser = Usuario.objects.filter(email=email)
@@ -97,6 +99,7 @@ def registerView(request):
                         subject = f'¡Welcome to ICTIAIR – Registration Complete!'
                         to = user_.email
                         send_html_mail(subject, "email/registro_usuario.html", datos, [to], [], [])
+                    if not request.user.is_authenticated:
                         login(request, user_)
 
                     if Pedido.objects.filter(user=user_, status=True, estado='PENDIENTE', cuota__conference=filtro.conference).exists():
@@ -118,9 +121,9 @@ def registerView(request):
                     if filtro.role == 1:
                         details = json.loads(details)
                         for item in details:
-                            PapersAuthorPedido.objects.create(pedido=pedido, description=item['description'], sheets=item['sheets'], value=item['value'])
+                            PapersAuthorPedido.objects.create(pedido=pedido,idpaper=item['idpaper'],  title=item['title'], sheets=item['sheets'], value=item['value'])
                     else:
-                        if filtro.role in [3, 4]:
+                        if filtro.role == 3 or filtro.special_price:
                             newfile = request.FILES['archivo_evidencia']
                             extension = newfile._name.split('.')
                             tam = len(extension)
@@ -133,14 +136,14 @@ def registerView(request):
                                 raise NameError('Error: Only files with the following extensions are allowed: .pdf, .jpg, .jpeg. Please upload a valid file.')
 
                             pedido.archivo_evidencia = newfile
-                            pedido.special_price_student = request.POST.get('es_estudiante', False) == 'on'
+                            pedido.special_price_student =  filtro.role == 3 and filtro.special_price
 
-                        topics = request.POST.get('topics', [])
-                        if topics:
-                            topics = json.loads(topics)
-                            for item in topics:
-                                topic_ = TopicCategory.objects.get(id=item['id'])
-                                TopicsAttendeePedido.objects.create(pedido=pedido, topic=topic_)
+                    topics = request.POST.get('topics', [])
+                    if topics:
+                        topics = json.loads(topics)
+                        for item in topics:
+                            topic_ = TopicCategory.objects.get(id=item['id'])
+                            TopicsAttendeePedido.objects.create(pedido=pedido, topic=topic_)
 
                     pedido.save()
                     historial_ = HistorialPedido(pedido=pedido, user=user_, estado='PENDIENTE', detalle=f'Registro solicitud de inscripcion')

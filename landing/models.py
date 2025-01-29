@@ -371,7 +371,6 @@ ROLES_FEE_CHOICE = (
     (1, 'Authors'),
     (2, 'Attendees'),
     (3, 'Student Attendees'),
-    (4, 'Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)')
 )
 
 
@@ -380,10 +379,14 @@ class ConferenceFee(ModeloBase):
     order = models.IntegerField(default=0, verbose_name='Orden')
     role = models.IntegerField(choices=ROLES_FEE_CHOICE, verbose_name='Rol')
     value = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Valor')
+    special_price = models.BooleanField(default=False, verbose_name='Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)')
     published = models.BooleanField(default=True, verbose_name='Publicado')
 
     def get_public(self):
         return 'text-success fa fa-check-circle' if self.published else 'text-danger fa fa-times-circle'
+
+    def get_special_price(self):
+        return 'text-success fa fa-check-circle' if self.special_price else 'text-danger fa fa-times-circle'
 
     def get_details(self):
         return self.details.filter(status=True).order_by('order')
@@ -420,6 +423,7 @@ class ScheduleConference(ModeloBase):
     title = models.CharField(max_length=200, verbose_name='Título')
     date = models.DateField(verbose_name='Fecha', blank=True, null=True)
     published = models.BooleanField(default=True, verbose_name='Publicado')
+    pdf = models.FileField(upload_to='schedule_conference/', null=True, blank=True, verbose_name='Schedule of day')
 
     def get_public(self):
         return 'text-success fa fa-check-circle' if self.published else 'text-danger fa fa-times-circle'
@@ -441,7 +445,7 @@ class DetailScheduleConference(ModeloBase):
     description = models.CharField(max_length=200, verbose_name='Descripción')
     start_time = models.TimeField(verbose_name='Hora Inicio')
     end_time = models.TimeField(verbose_name='Hora Fin', blank=True, null=True)
-    link = models.URLField(verbose_name='Enlace', blank=True, null=True)
+    link = models.URLField(verbose_name='Link Meet', blank=True, null=True)
 
     def __str__(self):
         return self.description
@@ -450,3 +454,48 @@ class DetailScheduleConference(ModeloBase):
         verbose_name = 'Detail Schedule Conference'
         verbose_name_plural = 'Detail Schedule Conferences'
         ordering = ['order']
+
+
+class InscripcionConference(ModeloBase):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
+    persona = models.ForeignKey('autenticacion.Usuario', on_delete=models.CASCADE, blank=True, null=True, related_name='persona_inscripcion')
+    fecha = models.DateField(verbose_name=u'Fecha de inscripción', blank=True, null=True)
+    role = models.IntegerField(choices=ROLES_FEE_CHOICE, verbose_name='Rol')
+    special_price = models.BooleanField(default=False, verbose_name='¿Special Price Applied?')
+    gen_certificado = models.BooleanField(default=False, verbose_name='¿Generar Certificado?')
+    certificado = models.FileField(upload_to='certificados/', null=True, blank=True, verbose_name='Certificado')
+    fecha_certificado = models.DateField(verbose_name='Fecha de generación de certificado', blank=True, null=True)
+    user_certificado = models.ForeignKey('autenticacion.Usuario', on_delete=models.CASCADE, blank=True, null=True, related_name='user_certificado')
+
+    def __str__(self):
+        return f'{self.persona.__str__()} - {self.conference.__str__()}'
+
+    class Meta:
+        verbose_name = 'Inscripción Conference'
+        verbose_name_plural = 'Inscripción Conferences'
+
+
+class PapersInscripcionConference(ModeloBase):
+    cab = models.ForeignKey(InscripcionConference, related_name='papers', on_delete=models.CASCADE, verbose_name='Cabecera')
+    idpaper = models.CharField(verbose_name="ID Paper", max_length=100, blank=True, null=True)
+    title = models.CharField(verbose_name="title", max_length=500, blank=True, null=True)
+    sheets = models.IntegerField(verbose_name="Hojas", default=0)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Papers Inscripción Conference'
+        verbose_name_plural = 'Papers Inscripción Conferences'
+
+
+class TopicsInscripcionConference(ModeloBase):
+    cab = models.ForeignKey(InscripcionConference, related_name='topics', on_delete=models.CASCADE, verbose_name='Cabecera')
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return self.topic.__str__()
+
+    class Meta:
+        verbose_name = 'Topics Inscripción Conference'
+        verbose_name_plural = 'Topics Inscripción Conferences'

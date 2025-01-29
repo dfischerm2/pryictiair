@@ -281,7 +281,7 @@ class ConferenceFeeForm(ModelFormBase):
             if k in ('role',):
                 self.fields[k].widget.attrs['class'] = "jselect2"
 
-            if k in ('published',):
+            if k in ('published','special_price',):
                 self.fields[k].widget.attrs['class'] = "js-switch"
                 self.fields[k].widget.attrs['data-render'] = "switchery"
                 self.fields[k].widget.attrs['data-theme'] = "default"
@@ -315,6 +315,8 @@ class ScheduleConferenceForm(ModelFormBase):
         ver = kwargs.pop('ver') if 'ver' in kwargs else False
         instancia = kwargs["instance"] if 'instance' in kwargs else None
         super(ScheduleConferenceForm, self).__init__(*args, **kwargs)
+        self.fields["pdf"].widget.attrs['data_default_file'] = self.instance.pdf.url if self.instance.pdf else ""
+        self.fields['pdf'].widget.attrs['data-allowed-file-extensions'] = "pdf"
         for k, v in self.fields.items():
             self.fields[k].widget.attrs['class'] = "form-control"
             self.fields[k].widget.attrs['col'] = "6"
@@ -326,6 +328,11 @@ class ScheduleConferenceForm(ModelFormBase):
                 self.fields[k].widget.attrs['class'] = "js-switch"
                 self.fields[k].widget.attrs['data-render'] = "switchery"
                 self.fields[k].widget.attrs['data-theme'] = "default"
+
+            if k in ('pdf',):
+                self.fields[k].widget.attrs['class'] = 'dropify'
+                self.fields[k].widget.attrs['col'] = "12"
+
 
 
 class DetailScheduleConferenceForm(ModelFormBase):

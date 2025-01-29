@@ -43,14 +43,14 @@ METODO_PAGOS = (
 
 
 ESTADO_PEDIDO = (
-    ("PENDIENTE", "Pendiente de validar"),
-    ("RECHAZADO", "Inscripcion Rechazada"),
-    ("PENDIENTE_PAGO", "Pendiente de pago"),
-    ("EN_ESPERA", "En espera de aprobación"),
-    ("ANULADO", "Anulado"),
-    ("COMPLETADO", "Completado"),
-    ("DEVUELTO", "Devuelto",),
-    ("ERROR_METODO_PAGO", "Error en el médoto de pago")
+    ("PENDIENTE", "Pending validation"),
+    ("RECHAZADO", "Registration rejected"),
+    ("PENDIENTE_PAGO", "Pending payment"),
+    ("EN_ESPERA", "Waiting for approval"),
+    ("ANULADO", "Canceled"),
+    ("COMPLETADO", "Completed"),
+    ("DEVUELTO", "Refunded"),
+    ("ERROR_METODO_PAGO", "Payment method error")
 )
 
 
@@ -148,6 +148,22 @@ class Pedido(ModeloBase):
 
         return salida
 
+    def get_total_by_state(self):
+        if self.estado in ['PENDIENTE', 'PENDIENTE_PAGO', 'EN_ESPERA', 'RECHAZADO']:
+            return self.subtotal
+        else:
+            return self.total
+
+    def estadoSTR(self):
+        color_ = 'warning'
+        if self.estado == 'EN_ESPERA':
+            color_ = 'info'
+        if self.estado == 'COMPLETADO':
+            color_ = 'success'
+        if self.estado in ['RECHAZADO', 'ANULADO', 'DEVUELTO', 'ERROR_METODO_PAGO']:
+            color_ = 'danger'
+        return color_
+
     class Meta:
         ordering = ("estado", "id")
         verbose_name = "Pedido"
@@ -162,12 +178,17 @@ class Pedido(ModeloBase):
 
 class PapersAuthorPedido(ModeloBase):
     pedido = models.ForeignKey(Pedido, on_delete=models.PROTECT, verbose_name="Pedido")
-    description = models.CharField(verbose_name="Descripción", max_length=500)
+    idpaper = models.CharField(verbose_name="ID Paper", max_length=100, blank=True, null=True)
+    title = models.CharField(verbose_name="title", max_length=500, blank=True, null=True)
     sheets = models.IntegerField(verbose_name="Hojas", default=0)
     value = models.DecimalField(verbose_name="Valor", default=0, max_digits=30, decimal_places=2)
 
     def __str__(self):
-        return f"{self.description} - {self.sheets} hojas"
+        return f"ID: {self.idpaper} {self.title} - {self.sheets} hojas"
+
+    class Meta:
+        verbose_name = "Paper Autor Pedido"
+        verbose_name_plural = "Papers Autor Pedido"
 
 
 class TopicsAttendeePedido(ModeloBase):

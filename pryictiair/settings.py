@@ -56,7 +56,7 @@ with open(os.path.join(BASE_DIR, 'credenciales.json')) as json_file:
 
 # CONFIGURACIONES
 
-EXT_EMAILS_COLABORATORS = ['unemi.edu.ec']
+EXT_EMAILS_COLABORATORS = ['unemi.edu.ec', 'universidadviu.com']
 DEFAULT_PASSWORD_REGISTER = 'Ictiair2025*'
 
 WKHTMLTOPDF_CMD_OPTIONS = {'encoding': 'utf8', 'quiet': True, 'enable-local-file-access': True}

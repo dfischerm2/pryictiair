@@ -94,13 +94,13 @@
                                 <i class="fa fa-map-marked"></i> {{ l.user.pais.nombre }}
                             {% endif %}
                             <br>
-                            <i class="fa fa-building"></i> {{ l.user.institucion|upper }}
+                            <i class="fa fa-building"></i> {{ l.user.institucion|default:'Unregistered'|upper }}
                         </td>
                         <td class="text-left">
                             <h6 class=""><i class="fa fa-certificate tu"
                                             title="Conference"></i> {{ l.cuota.conference.title }}</h6>
                             <h6 class="text-success"><i class="fa fa-file-invoice tu"
-                                                        title="Fee type"></i> {{ l.cuota.get_role_display }}</h6>
+                                                        title="Fee type"></i> {{ l.cuota.get_role_display }} {% if l.cuota.special_price %}(Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)){% endif %}</h6>
                             <div id="modulos_{{ l.pk }}" class="accordion accordion-flush"
                                  role="tablist"
                                  aria-multiselectable="true">
@@ -127,18 +127,18 @@
                                         <div style="padding: 5px" class="text-left">
                                             {% if l.cuota.role == 1 %}
                                                 {% for paper in l.get_papers %}
-                                                    <b><i class="fa fa-book"></i> {{ forloop.counter }}. {{ paper.description }}
-                                                    </b>
+                                                    <b><i class="fa fa-book"></i> <b>ID: </b> {{ paper.idpaper }}
+                                                    </b>  - {{ paper.title }}
                                                     <div class="ml-3">
                                                         <i class="fa fa-file-text"></i>
                                                         <b>Sheets: </b> {{ paper.sheets }}
                                                     </div>
                                                 {% endfor %}
                                             {% else %}
-                                                {% if l.cuota.role == 4 %}
-                                                    <b>¿Is Student?: </b> <i class="{{ l.get_student }}"></i> <br>
-                                                {% endif %}
-                                                {% if l.cuota.role == 3 or l.cuota.role == 4 %}
+                                                {% if l.cuota.role == 3 or l.cuota.special_price %}
+                                                    {% if l.cuota.special_price %}
+                                                        <b>¿Is Student?: </b> <i class="{{ l.get_student }}"></i> <br>
+                                                    {% endif %}
                                                     <b>Evidence: </b>
                                                     <a href="/media/{{ l.archivo_evidencia }}" target="_blank"
                                                        class="btn-link"><i class="fa fa-file-pdf"></i> See evidence</a>

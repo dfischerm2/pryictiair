@@ -10,7 +10,7 @@ from .view_registro import registerView
 from .view_restaurar import restaurar
 from .view_login import login_tienda, logout_tienda
 from .view_recordarusername import recordarusername
-from .view_perfil import perfil
+from .view_perfil import myProfileView
 
 
 urlpatterns = [
@@ -18,7 +18,7 @@ urlpatterns = [
     re_path(r'^test_landing/', index_copy),
     re_path(r'^acercade/', acercade),
     #path('pago/<str:pedido_id>/', pagoView),
-    re_path(r'^perfil/', perfil),
+    re_path(r'^profile/', myProfileView),
     # url(r'^register/', registro),
     re_path(r'^login/', login_tienda),
     re_path(r'^logout/', logout_tienda),

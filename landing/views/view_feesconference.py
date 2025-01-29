@@ -53,7 +53,7 @@ def conferenceFeesView(request):
                     filtro = ConferenceFee.objects.get(pk=int(request.POST['id']))
                     filtro.status = False
                     filtro.save(request)
-                    DetailConferenceFee.objects.filter(fee=filtro,status=True).update(status=False)
+                    DetailConferenceFee.objects.filter(cab=filtro,status=True).update(status=False)
                     log(f"Elimino una tarifa de conferencia {filtro.__str__()}", request, "delete")
                     messages.success(request, f"Registro Eliminado")
                     res_json = {"error": False}

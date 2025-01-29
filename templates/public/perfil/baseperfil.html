@@ -1,47 +1,126 @@
 {% extends 'public/base.html' %}
 {% load templatefunctions %}
+{% block head %}
+    <link rel="stylesheet" href="/static/views.css">
+    <link rel="stylesheet" href="/static/profile_views.css">
+{% endblock %}
 
 {% block content %}
 
-    <div class="container py-5 mt-4 mt-lg-5 mb-lg-4 my-xl-5">
-        <div class="row pt-sm-2 pt-lg-0">
-            <aside class="col-lg-3 pe-lg-4 pe-xl-5 mt-n3">
-                <div class="position-lg-sticky top-0">
-                    <div class="d-none d-lg-block" style="padding-top: 105px;"></div>
-                    <div class="offcanvas-lg offcanvas-start" id="sidebarAccount">
-                        <button class="btn-close position-absolute top-0 end-0 mt-3 me-3 d-lg-none" type="button"
-                                data-bs-dismiss="offcanvas" data-bs-target="#sidebarAccount"></button>
-                        <div class="offcanvas-body">
-                            <div class="pb-2 pb-lg-0 mb-4 mb-lg-5">
-                                <h3 class="h5 mb-1">Hola {{ request.user.first_name }}</h3>
-                                <p class="fs-sm text-muted mb-0">ICTIAIR</p>
-                            </div>
-                            <nav class="nav flex-column pb-2 pb-lg-4 mb-3">
-                                <h4 class="fs-xs fw-medium text-muted text-uppercase pb-1 mb-2">Cuenta</h4>
-                                <a class="nav-link fw-semibold py-2 px-0" href="/perfil/">
-                                    <i class="ai-user-check fs-5 opacity-60 me-2"></i>Perfil
+    <div class="profile-wrapper mt-0 mt-lg-125 p-3">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar para desktop / Header y nav para mobile -->
+                <aside class="col-lg-3 pe-lg-4 pe-xl-5">
+                    <!-- Versión Mobile -->
+                    <div class="d-block d-lg-none">
+                        <div class="mobile-header">
+                            <h3 class="profile-name h5 mb-1">Hello {{ request.user.first_name }}</h3>
+                            <p class="profile-role mb-0">ICTIAIR</p>
+                        </div>
+                        <div class="mobile-nav">
+                            <nav class="nav">
+                                <a class="nav-link {% if viewprofile == 1 %} active {% endif %}" href="/profile/">
+                                    <i class="fa fa-user"></i>
+                                    <span>Profile</span>
                                 </a>
-                                <a class="nav-link fw-semibold py-2 px-0" href="/perfil?action=changepass">
-                                    <i class="fa fa-lock fs-5 opacity-60 me-2"></i>Contraseña
+                                <a class="nav-link {% if viewprofile == 2 %} active {% endif %}"
+                                   href="?action=inscriptions">
+                                    <i class="fa fa-graduation-cap"></i>
+                                    <span>Inscriptions</span>
                                 </a>
-                            </nav>
-                            <nav class="nav flex-column">
-                                <a class="nav-link fw-semibold py-2 px-0" href="/logout/">
-                                    <i class="ai-logout fs-5 opacity-60 me-2"></i>Cerrar Sesión</a>
+                                <a class="nav-link {% if viewprofile == 3 %} active {% endif %}"
+                                   href="?action=payments">
+                                    <i class="fa fa-shopping-bag"></i>
+                                    <span>My Order</span>
+                                </a>
+                                <a class="nav-link {% if viewprofile == 4 %} active {% endif %}"
+                                   href="?action=changepass">
+                                    <i class="fa fa-lock"></i>
+                                    <span>Password</span>
+                                </a>
+                                <a class="nav-link logout-link logout-mobile" href="/logout/">
+                                    <i class="fa fa-sign-out"></i>
+                                    <span>Log out</span>
+                                </a>
                             </nav>
                         </div>
                     </div>
+
+                    <!-- Versión Desktop -->
+                    <div class="d-none d-lg-block">
+                        <div class="position-lg-sticky" style="top: 1rem;">
+                            <div class="sidebar-profile">
+                                <div class="profile-header">
+                                    <h3 class="profile-name h5 mb-1">Hola {{ request.user.first_name }}</h3>
+                                    <p class="profile-role mb-0">ICTIAIR</p>
+                                </div>
+
+                                <nav class="nav flex-column nav-profile pb-2 pb-lg-4 mb-3">
+                                    <h4 class="section-title fs-xs fw-medium pb-1 mb-2">Account</h4>
+                                    <a class="nav-link {% if viewprofile == 1 %} active {% endif %}" href="/profile/">
+                                        <i class="fa fa-user"></i>
+                                        <span>Profile</span>
+                                    </a>
+                                    <a class="nav-link {% if viewprofile == 2 %} active {% endif %}"
+                                       href="?action=inscriptions">
+                                        <i class="fa fa-graduation-cap"></i>
+                                        <span>Inscriptions</span>
+                                    </a>
+                                    <a class="nav-link {% if viewprofile == 3 %} active {% endif %}"
+                                       href="?action=payments">
+                                        <i class="fa fa-shopping-bag"></i>
+                                        <span>My Orders</span>
+                                    </a>
+                                    <a class="nav-link {% if viewprofile == 4 %} active {% endif %}"
+                                       href="?action=changepass">
+                                        <i class="fa fa-lock"></i>
+                                        <span>Password</span>
+                                    </a>
+                                </nav>
+
+                                <nav class="nav flex-column nav-profile">
+                                    <a class="nav-link logout-link" href="/logout/">
+                                        <i class="fa fa-sign-out"></i>
+                                        <span>Log out</span>
+                                    </a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content Area -->
+                <div class="col-lg-9">
+                    {% block contentperfil %}
+                    {% endblock %}
                 </div>
-            </aside>
-
-            {% block contentperfil %}
-            {% endblock %}
-
+            </div>
         </div>
     </div>
-    <hr class="d-none d-dark-mode-block">
-    <button class="d-lg-none btn btn-sm fs-sm btn-primary w-100 rounded-0 fixed-bottom" data-bs-toggle="offcanvas"
-            data-bs-target="#sidebarAccount"><i class="ai-menu me-2"></i> Menu
-    </button>
+    <div class="mb-100"></div>
+{% endblock %}
 
+{% block jscript %}
+    <script src="/static/js/forms.js?version=11"></script>
+    <script>
+        function toggleDropdown(event, button) {
+            event.stopPropagation();
+
+            document.querySelectorAll(".dropdown-menu").forEach(menu => {
+                menu.style.display = "none";
+            });
+
+            let menu = button.nextElementSibling;
+            menu.style.display = "block";
+        }
+
+        document.addEventListener("click", function () {
+            document.querySelectorAll(".dropdown-menu").forEach(menu => {
+                menu.style.display = "none";
+            });
+        });
+    </script>
+    {% block extra_js %}
+    {% endblock %}
 {% endblock %}

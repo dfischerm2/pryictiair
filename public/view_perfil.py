@@ -1,6 +1,7 @@
 import os
 import time
 from django.core import mail
+from django.db.models import Q
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate
@@ -10,20 +11,22 @@ from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.utils.html import strip_tags
-from core.funciones import addData, salva_auditoria, secure_module, generar_nombre
+from core.funciones import addData, salva_auditoria, secure_module, generar_nombre, paginador
 from autenticacion.models import Usuario
 from datetime import timedelta, datetime
 
+from pedidos.models import Pedido
 
 
 @login_required
-def perfil(request):
+def myProfileView(request):
     data = {
         'titulo': "Editar Perfil",
         'modulo': 'Perfil',
         'ruta': request.path,
     }
     addData(request, data)
+    persona = request.user
 
     if request.method == 'POST':
         res_json = []
@@ -81,5 +84,19 @@ def perfil(request):
             if action == 'changepass':
                 data['titulo'] = 'Cambiar Contraseña'
                 return render(request, 'public/perfil/changepass.html', data)
+            elif action == 'payments':
+                try:
+                    filtros, url_vars = Q(status=True), f'&action={action}'
+                    data['title'] = 'My orders'
+                    listado = Pedido.objects.filter(filtros)
+                    data["list_count"] = listado.count()
+                    data["url_vars"] = url_vars
+                    data['viewprofile'] = 3
+                    paginador(request, listado.order_by('-id'), 10, data, url_vars)
+                    return render(request, 'public/perfil/view_payments.html', data)
+                except Exception as ex:
+                    messages.error(request, ex)
+                    return redirect(request.path)
     data['fecha_nacimiento'] = str(request.user.fecha_nacimiento)
+    data['viewprofile'] = 1
     return render(request, 'public/perfil/perfil.html', data)

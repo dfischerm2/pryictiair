@@ -1,4 +1,5 @@
 import json
+import re
 from datetime import time
 import random
 
@@ -10,6 +11,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
 
 from landing.models import Conference
+from pryictiair.settings import EXT_EMAILS_COLABORATORS
 from seguridad.models import *
 from datetime import date
 from django.db import transaction
@@ -737,3 +739,26 @@ class Dict2Obj():
         if isinstance(dicc, dict):
             for k, v in dicc.items():
                 setattr(self, str(k), v)
+
+
+def remover_caracteres_especiales_unicode(cadena):
+    return cadena.replace(u'ñ', u'n').replace(u'Ñ', u'N').replace(u'Á', u'A').replace(u'á', u'a').replace(u'É',
+                                                                                                          u'E').replace(
+        u'é', u'e').replace(u'Í', u'I').replace(u'í', u'i').replace(u'Ó', u'O').replace(u'ó', u'o').replace(u'Ú',
+                                                                                                            u'U').replace(
+        u'ú', u'u').replace(u'ü', u'u').replace(u'Ü', u'U').replace(u'°', u'_').replace(u'º', u'_').replace('[', '').replace(']', '').replace('{', '').replace('}', '').replace('-', '')
+
+
+def remover_caracteres_tildes_unicode(cadena):
+    return cadena.replace(u'Á', u'A').replace(u'á', u'a').replace(u'É', u'E').replace(u'é', u'e').replace(u'Í',
+                                                                                                          u'I').replace(
+        u'í', u'i').replace(u'Ó', u'O').replace(u'ó', u'o').replace(u'Ú', u'U').replace(u'ú', u'u')
+
+
+def validate_email_sponsor(email):
+    ext_email = email.split('@')[1]
+    if ext_email in EXT_EMAILS_COLABORATORS:
+        return True
+    if re.match(r'^(.*\.)?universidadviu\.com$', ext_email):
+        return True
+    return False

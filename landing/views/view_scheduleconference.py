@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from core.custom_models import FormError
-from core.funciones import addData, paginador, secure_module, log
+from core.funciones import addData, paginador, secure_module, log, remover_caracteres_especiales_unicode, generar_nombre
 from django.contrib import messages
 
 from landing.forms import ScheduleConferenceForm, DetailScheduleConferenceForm
@@ -34,6 +34,11 @@ def conferenceScheduleView(request):
                 if action == 'add':
                     form = ScheduleConferenceForm(request.POST, request.FILES, request=request)
                     if form.is_valid():
+                        if 'pdf' in request.FILES:
+                            file = request.FILES['pdf']
+                            nombredocumento = remover_caracteres_especiales_unicode(file._name)
+                            file._name = generar_nombre(nombredocumento, file._name)
+                            form.instance.pdf = file
                         form.instance.conference = conference
                         form.save()
                         log(f"Registro un dia de conferencia {form.instance.__str__()}", request, "add")
@@ -44,6 +49,11 @@ def conferenceScheduleView(request):
                     filtro = ScheduleConference.objects.get(pk=int(request.POST['pk']))
                     form = ScheduleConferenceForm(request.POST, request.FILES, request=request, instance=filtro)
                     if form.is_valid() and filtro:
+                        if 'pdf' in request.FILES:
+                            file = request.FILES['pdf']
+                            nombredocumento = remover_caracteres_especiales_unicode(file._name)
+                            file._name = generar_nombre(nombredocumento, file._name)
+                            form.instance.pdf = file
                         form.save()
                         log(f"Edito un dia de conferencia {form.instance.__str__()}", request, "change")
                         res_json.append({'error': False, "reload": True})
