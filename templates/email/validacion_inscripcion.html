@@ -21,8 +21,13 @@
                     registering
                     as a student, your access to the congress will be free of charge. Congratulations on becoming part
                     of
-                    this important event!
+                    this important event!. You can access our website using the link below
                 </p> <br>
+                 <div style="text-align:center;">
+                        <a href="{{ profile_link }}"  style="display:inline-block; padding:10px 20px; background-color:#1460df; color:#ffffff; text-decoration:none; border-radius:4px;">
+                            Ictiair Website
+                        </a>
+                    </div> <br>
             {% else %}
                 {% if estado == '1' %}
                     <p style="margin:0;">
@@ -31,8 +36,7 @@
                     </p><br>
                     <div style="text-align:center;">
                         <a href="{{ payment_link }}"
-                                style="display:inline-block; padding:10px 20px; background-color:#4CAF50; color:#ffffff; text-decoration:none; border-radius:4px;"
-                        >
+                                style="display:inline-block; padding:10px 20px; background-color:#4CAF50; color:#ffffff; text-decoration:none; border-radius:4px;">
                             Make payment
                         </a>
                     </div> <br>

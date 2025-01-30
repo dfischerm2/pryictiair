@@ -1,0 +1,95 @@
+{% extends 'public/perfil/baseperfil.html' %}
+{% load templatefunctions %}
+
+{% block contentperfil %}
+
+    <div class="col-lg-12">
+        <div class="content-card mt-4">
+            <div class="content-header p-4">
+                <h2 class="h4"><i class="fa fa-graduation-cap me-2"></i>{{ title }}</h2>
+            </div>
+        </div>
+        {% for l in listado %}
+            <div class="content-card">
+                <div class="p-4">
+                    <div class="conference-item">
+                        <div class="row align-items-center">
+                            <div class="col-md-9 col-12 conference-info">
+                                <div class="badges-container">
+                                 <span class="role-badge">
+                                    <i class="fas fa-user-graduate me-2"></i>
+                                    {{ l.get_role_display }}
+                                </span>
+                                    {% if l.special_price %}
+                                        <span class="special-price-badge">
+                                            <i class="fa fa-tag me-2"></i>
+                                            Special Price Applied
+                                        </span>
+                                    {% endif %}
+                                </div>
+
+                                <h3 class="conference-title">{{ l.conference.title }}</h3>
+
+                                <div class="conference-date">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>{{ l.conference.start_date|date:'d/m/Y' }} - {{ l.conference.end_date|date:'d/m/Y' }}</span>
+                                </div>
+                                {% if l.conference.get_status_conference == 1 or  l.conference.get_status_conference == 2 %}
+                                    <div class="conference-text">
+                                        <br>
+                                        <span class="badge badge-{{ l.conference.get_status_color }}">{{ l.conference.get_status_str }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-3 col-12">
+                                <div class="conf-action-buttons">
+                                    <a href="?action=schedule&id={{ l.pk|encrypt }}"
+                                       class="conf-action-btn conf-action-btn--schedule"
+                                       data-tooltip="Schedule">
+                                        <i class="fa fa-calendar"></i>
+                                    </a>
+
+                                    {#                                        <a href=""#}
+                                    {#                                           class="conf-action-btn conf-action-btn--papers"#}
+                                    {#                                           data-tooltip="Papers">#}
+                                    {#                                            <i class="fa fa-file"></i>#}
+                                    {#                                        </a>#}
+
+                                    {% if l.role == 1 %}
+                                        <a href="javascript:void(0);" onclick="formModal('{{ l.pk|encrypt }}', 'My papers', 'paperslist')"
+                                           class="conf-action-btn conf-action-btn--materials"
+                                           data-tooltip="Materials">
+                                            <i class="fa fa-book"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if l.gen_certificado %}
+                                        <a href="#"
+                                           class="conf-action-btn conf-action-btn--certificate"
+                                           data-tooltip="Certificate">
+                                            <i class="fa fa-certificate"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="content-card">
+                <div class="p-4">
+                    <div class="alert alert-warning text-center">
+                        No records found
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+    </script>
+{% endblock %}

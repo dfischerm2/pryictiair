@@ -1,0 +1,250 @@
+{% extends 'public/base.html' %}
+{% load templatefunctions %}
+{% block head %}
+    <link rel="stylesheet" href="/static/views.css">
+    <link rel="stylesheet" href="/static/profile_views.css">
+    <script src="/static/fontawesome-6.6.0/js/all.js"></script>
+    <link rel="stylesheet" href="/static/fontawesome-6.6.0/css/all.min.css">
+    {% block extrahead %}
+    {% endblock %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="profile-wrapper mt-0 mt-lg-125 p-3">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="wm wm-border wow fadeInDown">Payment</div>
+                    <h1>Complete order for {{ order.cuota.get_role_display }}</h1>
+                    {% if order.cuota.special_price %}
+                        <div class="text-center">
+                            <h3>Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)</h3> <br>
+                        </div>
+                    {% endif %}
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+                <div class="col-lg-12">
+                    <form class="needs-validation container position-relative zindex-2 pt-5 pb-lg-5 pb-md-4 pb-2"
+                          method="POST" style="margin-top: 27px;" action="{{ request.path }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk" value="{{ order.pk }}"/>
+                        <input type="hidden" name="action" value="complete_purchase"/>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3>Order</h3>
+                                <h6 class="fw-normal text-body text-uppercase">1.<span
+                                        class="text-decoration-underline ms-1">Billing data</span></h6>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group p-1">
+                                            <label class="form-label" for="id_first_name">First Name:</label><br>
+                                            <input type="text" class="form-control" disabled
+                                                   value="{{ order.user.first_name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group p-1">
+                                            <label class="form-label" for="id_first_name">Last Name:</label><br>
+                                            <input type="text" class="form-control" disabled
+                                                   value="{{ order.user.last_name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group p-1">
+                                            <label class="form-label" for="id_first_name">Email:</label><br>
+                                            <input type="text" class="form-control" disabled
+                                                   value="{{ order.user.email }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group p-1">
+                                            <label class="form-label" for="id_first_name">Country:</label><br>
+                                            <input type="text" class="form-control" disabled
+                                                   value="{{ order.user.pais.nombre }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group p-1">
+                                            <label class="form-label" for="id_first_name">Institution:</label><br>
+                                            <input type="text" class="form-control" disabled
+                                                   value="{{ order.user.institucion|default:'' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group p-1">
+                                            <label class="form-label" for="id_first_name">Observation for payment
+                                                (Optional):</label><br>
+                                            <textarea name="observacion" class="form-control" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <h3>Order summary</h3>
+                                <h6 class="fw-normal text-body text-uppercase">3.<span
+                                        class="text-decoration-underline ms-1">Detail</span></h6>
+                                <div class="d-sm-flex align-items-center py-1">
+                                    <div class="w-100 pt-1">
+                                        <div class="d-flex">
+                                            <div class="me-3">
+                                                <h3 class="h6 mb-2">
+                                                    Fee type: {{ order.cuota.get_role_display }}
+                                                </h3>
+                                                {% if order.cuota.special_price %}
+                                                    <h3 class="h6 mb-2">
+                                                        <b>(Special Price for Sponsor Universities (UNEMI, VIU, or
+                                                            UCLM))</b>
+                                                    </h3>
+                                                {% endif %}
+                                                <h3 class="h6 mb-2">Conference: {{ order.cuota.conference.title }} </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if order.cuota.role == 1 and order.get_papers %}
+                                    <h6 class="h6 mb-2 mt-2"><i class="fa fa-file-pdf"></i> Papers list</h6>
+                                    {% for l in order.get_papers %}
+                                        <div class="d-flex align-items-center justify-content-between border-top pt-2 py-1">
+                                            <span>
+                                                <b>ID: </b>{{ l.id }}
+                                            </span>
+                                            <span>
+                                            {{ l.title }}
+                                            </span>
+                                            <span>
+                                                {{ l.sheets }} Sheets
+                                            </span>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="d-flex align-items-center justify-content-between fs-xl pt-4">
+                                    Subtotal :<span
+                                        class="fw-semibold ms-2 suubtotal_">$ {{ order.subtotal|floatformat:2 }}</span>
+                                </div>
+                                {% if impuesto_pago_online %}
+                                    <li class="d-flex justify-content-between mb-2">
+                                        (+) Online Payment: <span
+                                            class="fw-semibold ms-2 impuesto_">{{ SIMBOLO_MONEDA }}{{ impuesto_pago_online|floatformat:2 }}</span>
+                                    </li>
+                                {% endif %}
+                                <div class="d-flex align-items-center justify-content-between border-top fs-xl pt-4">
+                                    Total:<span
+                                        class="fs-3 fw-semibold text-dark ms-2 total_">{{ SIMBOLO_MONEDA }}{{ total|floatformat:2 }}</span>
+                                </div>
+                                <br>
+                                <h6 class="fw-normal text-body text-uppercase pt-2">4.<span
+                                        class="text-decoration-underline ms-1">Payment method</span></h6>
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input metodo_pago" type="radio" name="metodo_pago" required
+                                           id="id_metodo_pago_transferencia" value="TRANSFERENCIA_BANCARIA">
+                                    <label class="form-check-label" for="id_metodo_pago_transferencia"><span><span
+                                            class="d-block text-dark fw-medium mb-1">Bank Transfer / Deposit</span><span
+                                            class="text-body">Pay from your preferred bank.</span></span></label><br>
+                                    <input class="form-check-input metodo_pago" type="radio" name="metodo_pago" required
+                                           id="id_metodo_pago_paypal" value="PAYPAL">
+                                    <label class="form-check-label" for="id_metodo_pago_paypal"><span><span
+                                            class="d-block text-dark fw-medium mb-1">Paypal</span><span
+                                            class="text-body">Pay from the platform.</span></span></label><br>
+                                </div>
+                                <div class=" d-lg-block pt-2 mt-n3">
+                                    <div class="form-check mb-1 mt-1">
+                                        <input class="form-check-input" type="checkbox" id="save-info">
+                                        <label class="form-check-label" for="save-info"><span class="text-muted">Your personal information will be used to process your order, to support your experience on this site and for other purposes described in the </span><a
+                                                class="btn-link" href="/termsandconditions/" target="_blank">privacy
+                                            policy</a></label>
+                                    </div>
+                                    <button class="btn btn-lg btn-success" id="submit" type="submit">Complete Order
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-100"></div>
+
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalNombre" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title"><b id="modalNombre"></b></h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body detalleProd">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block jscript %}
+    <script src="/static/js/forms.js?version=11"></script>
+    <script>
+        function formModal(id, text, action,) {
+            pantallaespera()
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                data: {
+                    'action': action,
+                    'id': id,
+                },
+                success: function (data) {
+                    setTimeout($.unblockUI, 1);
+                    if (data.result === true) {
+                        $('#modalNombre').html(text);
+                        $('.detalleProd').html(data.data);
+                        $('#modalDetalle').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeWarning(data.message);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    mensajeWarning("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+
+        function toggleDropdown(event, button) {
+            event.stopPropagation();
+
+            document.querySelectorAll(".dropdown-menu").forEach(menu => {
+                menu.style.display = "none";
+            });
+
+            let menu = button.nextElementSibling;
+            menu.style.display = "block";
+        }
+
+        document.addEventListener("click", function () {
+            document.querySelectorAll(".dropdown-menu").forEach(menu => {
+                menu.style.display = "none";
+            });
+        });
+
+        $(function () {
+            $('.metodo_pago').on('change', function () {
+                var valor_ = $(this).val();
+                if (valor_ === 'TRANSFERENCIA_BANCARIA') {
+                    $('.impuesto_').html('{{ SIMBOLO_MONEDA }}0,00');
+                    $('.total_').html('{{ SIMBOLO_MONEDA }}{{ subtotal_aplicable|floatformat:2 }}');
+                } else {
+                    $('.impuesto_').html('{{ SIMBOLO_MONEDA }}{{ impuesto_pago_online|floatformat:2 }}');
+                    $('.total_').html('{{ SIMBOLO_MONEDA }}{{ total|floatformat:2 }}');
+                }
+            });
+
+        })
+    </script>
+{% endblock %}

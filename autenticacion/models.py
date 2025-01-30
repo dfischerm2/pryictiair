@@ -46,6 +46,17 @@ class Usuario(AbstractUser, ModeloBase):
     RUC = "R"
     PASAPORTE = "P"
 
+    def get_foto_gris(self):
+        try:
+            if self.foto == '':
+                inicial = self.first_name[0]
+                if inicial and not inicial.isdigit():
+                    return f"/static/images/initials/gris/{inicial}.png"
+                return "/static/foto_defaultd.png"
+            return self.foto.url
+        except Exception:
+            return "/static/foto_defaultd.png"
+
     def anios_actual(self):
         anio_actual = datetime.now().year
         anio_nacimiento = self.fecha_nacimiento.year if self.fecha_nacimiento else 0

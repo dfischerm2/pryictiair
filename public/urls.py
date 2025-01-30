@@ -4,6 +4,7 @@ from django.urls import path, re_path
 from .acerade import acercade
 from .index import index, index_copy
 from .view_changepass import changepass
+from .view_complete_purchase import completePurchaseView
 
 #from .view_pago import pagoView
 from .view_registro import registerView
@@ -19,6 +20,7 @@ urlpatterns = [
     re_path(r'^acercade/', acercade),
     #path('pago/<str:pedido_id>/', pagoView),
     re_path(r'^profile/', myProfileView),
+    re_path(r'^complete_purchase/', completePurchaseView),
     # url(r'^register/', registro),
     re_path(r'^login/', login_tienda),
     re_path(r'^logout/', logout_tienda),

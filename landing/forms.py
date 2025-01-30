@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.safestring import mark_safe
 
+from seguridad.models import CertificadosFormato
 from .models import Sponsor, TopicCategory, Topic, GuidelineType, Guideline, ImportantDate, Summary, CommitteeCategory, \
     CommitteeMember, SponsorCategory, SummaryImage, PrincipalCarrousel, CallForPapers, TYPE_DOCUMENT, Conference, \
     ConferenceFee, DetailConferenceFee, ScheduleConference, DetailScheduleConference
@@ -253,12 +254,15 @@ class ConferenceForm(ModelFormBase):
         ver = kwargs.pop('ver') if 'ver' in kwargs else False
         instancia = kwargs["instance"] if 'instance' in kwargs else None
         super(ConferenceForm, self).__init__(*args, **kwargs)
+        self.fields['certificado_autores'].queryset = CertificadosFormato.objects.filter(status=True)
+        self.fields['certificado_asistentes'].queryset = CertificadosFormato.objects.filter(status=True)
         for k, v in self.fields.items():
             self.fields[k].widget.attrs['class'] = "form-control"
 
-            if k in ('start_date','end_date','max_papers', 'value_adittional_paper','max_sheets', 'value_adittional_sheet',):
+            if k in ('start_date','end_date','max_papers', 'value_adittional_paper','max_sheets', 'value_adittional_sheet','certificado_autores', 'certificado_asistentes',):
                 self.fields[k].widget.attrs['col'] = "6"
-
+            if k in ('certificado_autores', 'certificado_asistentes',):
+                self.fields[k].widget.attrs['class'] = "select2-simple"
             if k in ('active',):
                 self.fields[k].widget.attrs['class'] = "js-switch"
                 self.fields[k].widget.attrs['data-render'] = "switchery"

@@ -4,6 +4,7 @@ from .cambiar_sesion_view import cambiarSesionView, regresarSesionView
 from .view_arbol_modulogrupo import arbol_modulo_grupo
 from .view_auditoria import auditoria
 from .view_configuracion import configuracion
+from .view_formatocertificados import formatoCertificadosView
 from .view_grupo import grupo
 from .view_grupourls import grupoUrlsView
 from .view_modulo import modulo
@@ -39,6 +40,11 @@ seguridad_urls = (
         "nombre": "Auditoría",
         "url": 'auditoria/',
         "vista": auditoria,
+    },
+    {
+        "nombre": "Formato certificado",
+        "url": 'formato_certificado/',
+        "vista": formatoCertificadosView,
     },
 )
 

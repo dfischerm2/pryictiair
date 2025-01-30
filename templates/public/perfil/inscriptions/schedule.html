@@ -1,0 +1,73 @@
+{% extends 'public/perfil/baseperfil.html' %}
+{% load templatefunctions %}
+{% block extrahead %}
+{% endblock %}
+
+{% block contentperfil %}
+
+    <div class="col-lg-12">
+        <div class="content-card mt-4">
+            <div class="content-header p-4">
+                <h2 class="h4"><i class="fa fa-calendar me-2"></i>{{ title }}</h2>
+            </div>
+        </div>
+        <div class="timeline">
+            {% for schedule in listado %}
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <div class="timeline-start">
+                            <span>{{ schedule.title }}</span>
+                            {% if schedule.is_today %}
+                                <span class="badge ms-2">Today</span>
+                            {% endif %}
+                        </div>
+                        <div class="timeline-end">
+                            {% if schedule.pdf %}
+                                <a href="/media/{{ schedule.pdf }}" target="_blank"
+                                   class="conf-action-btn conf-action-btn--papers"
+                                   data-tooltip="Get the full schedule for the day">
+                                    <i class="fa fa-file-pdf text-danger"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="timeline-content">
+                        <p><b><i class="fas fa-calendar me-2"></i> {{ schedule.date|date:'d/m/Y' }}</b></p>
+                        <div class="schedule-details mt-3">
+                            {% for detail in schedule.get_details %}
+                                <p class="timeline-time">{{ detail.start_time|time:"H:i" }} {% if detail.end_time %} -
+                                    {{ detail.end_time|time:"H:i" }} {% endif %}</p>
+                                <p>{{ detail.description }}</p>
+                                {% if detail.link %}
+                                    <a href="javascript:void(0)"
+                                       onclick="saveAttendance('{{ detail.pk|encrypt }}','{{ filtro.pk|encrypt }}')"
+                                       class="btn-link-2"><i class="fa-brands fa-google me-2"></i>Join
+                                        the meeting</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        const saveAttendance = (iddetail, idinscripcion) => {
+            pantallaespera();
+            $.post("{{ request.path }}", {'action': 'saveAttendance', iddetail, idinscripcion },
+                function (data) {
+                const data_ = data[0]
+                $.unblockUI();
+                if (data_.error === false) {
+                     window.open(data_.url, '_blank');
+                } else {
+                    mensajeDanger(data_.message)
+                }
+            }, "json");
+        }
+    </script>
+{% endblock %}

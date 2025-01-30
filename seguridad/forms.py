@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Value
 from django.db.models.functions import Concat
 from core.custom_models import ModelFormBase
-from seguridad.models import Configuracion, Modulo, ModuloGrupo, GroupModulo
+from seguridad.models import Configuracion, Modulo, ModuloGrupo, GroupModulo, CertificadosFormato
 
 
 class ConfiguracionForm(ModelFormBase):
@@ -26,7 +26,7 @@ class ConfiguracionForm(ModelFormBase):
         self.fields['fondoprincipal'].widget.attrs['data-allowed-file-extensions'] = "jpg jpeg png tiff svg jfif"
 
         for k, v in self.fields.items():
-            if k in ('ico', 'logo_sistema', 'logo_sistema_white', 'direccion', 'fondoprincipal', 'nombre_empresa', 'alias', 'descripcion', 'telefono', 'email',  'email_notificacion', 'textoprincipal', 'textosecundario', 'web'):
+            if k in ('ico', 'logo_sistema', 'logo_sistema_white', 'direccion', 'fondoprincipal', 'nombre_empresa', 'alias', 'descripcion', 'telefono', 'email',  'email_notificacion', 'textoprincipal', 'textosecundario', 'web', 'paypal_modo', 'porcentaje_pagoonline',):
                 self.fields[k].widget.attrs['col'] = "6"
             if k in ('telefono', 'telefono_emergencia'):
                 self.fields[k].widget.attrs['pattern'] = "\d*"
@@ -84,3 +84,28 @@ class GroupModuloForm(ModelFormBase):
         super(GroupModuloForm, self).__init__(*args, **kwargs)
         self.fields['modulos'].queryset = self.fields['modulos'].queryset.order_by('orden')
         self.fields["group"].widget = forms.HiddenInput()
+
+
+
+class CertificadosFormatoForm(ModelFormBase):
+    class Meta:
+        model = CertificadosFormato
+        exclude = ('usuario_creacion', 'fecha_registro', 'hora_registro', 'status','usuario_modificacion','formato')
+
+    def __init__(self, *args, **kwargs):
+        ver = kwargs.pop('ver') if 'ver' in kwargs else False
+        instancia = kwargs["instance"] if 'instance' in kwargs else None
+        super(CertificadosFormatoForm, self).__init__(*args, **kwargs)
+        self.fields['fondocertificado'].widget.attrs['data-default-file'] = instancia.fondocertificado.url if instancia and instancia.fondocertificado else ""
+        self.fields['fondocertificado'].widget.attrs['data-allowed-file-extensions'] = "jpg jpeg png tiff svg jfif"
+        self.fields['fondocertificadoatras'].widget.attrs['data-default-file'] = instancia.fondocertificadoatras.url if instancia and instancia.fondocertificadoatras else ""
+        self.fields['fondocertificadoatras'].widget.attrs['data-allowed-file-extensions'] = "jpg jpeg png tiff svg jfif"
+        for k, v in self.fields.items():
+            if k in ('color', 'tipocertificado',):
+                self.fields[k].widget.attrs['col'] = "6"
+            if k in('tipocertificado',):
+                self.fields[k].widget.attrs['class'] = "form-control select2"
+            if k in ('color',):
+                self.fields[k].widget.input_type = "color"
+            if not k in ('nombre', 'tipocertificado', 'color', 'formato'):
+                self.fields[k].widget.attrs['class'] = "dropify"

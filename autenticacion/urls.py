@@ -2,6 +2,7 @@ from django.urls import path, re_path
 
 from public.view_login import login_tienda
 from .recuperar_clave import recuperar
+from .view_inscripciones import inscripcionesView
 from .view_login import logout_user
 from .view_usuario import usuarioView
 from .view_persona import personasView
@@ -16,6 +17,11 @@ autenticacion_urls = (
         "nombre": "Personas",
         "url": 'personas/',
         "vista": personasView,
+    },
+    {
+        "nombre": "Inscripciones",
+        "url": 'inscripciones/',
+        "vista": inscripcionesView,
     },
 )
 

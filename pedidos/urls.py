@@ -1,10 +1,16 @@
 from django.urls import re_path
-from pedidos.view_pedido import solicitudesRegistroView
+from pedidos.view_order_register import solicitudesRegistroView
+from pedidos.view_pedido import pedidoView
 
 pedidos_urls = (
+    {
+        "nombre": "Orders",
+        "url": 'orders/',
+        "vista": pedidoView,
+    },
 
     {
-        "nombre": "Solicitudes de registro",
+        "nombre": "Registration requests",
         "url": 'solicitudes-registro/',
         "vista": solicitudesRegistroView,
     },

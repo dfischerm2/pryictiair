@@ -146,7 +146,7 @@ def registerView(request):
                             TopicsAttendeePedido.objects.create(pedido=pedido, topic=topic_)
 
                     pedido.save()
-                    historial_ = HistorialPedido(pedido=pedido, user=user_, estado='PENDIENTE', detalle=f'Registro solicitud de inscripcion')
+                    historial_ = HistorialPedido(pedido=pedido, user=user_, estado='PENDIENTE', detalle=f'Conference registration request')
                     historial_.save()
                     datos = {
                         'filtro': pedido,

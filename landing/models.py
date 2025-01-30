@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from django.db import models
 from core.custom_models import ModeloBase
+from seguridad.models import CertificadosFormato
 
 
 # Create your models here.
@@ -13,6 +16,8 @@ class Conference(ModeloBase):
     value_adittional_paper = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Valor por Paper adicional', default=0)
     max_sheets = models.IntegerField(default=0, verbose_name='Cantidad máxima de Hojas por paper')
     value_adittional_sheet = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Valor por Hoja adicional', default=0)
+    certificado_autores = models.ForeignKey(CertificadosFormato, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Formato de Certificado para Autores', related_name='certificado_autores')
+    certificado_asistentes = models.ForeignKey(CertificadosFormato, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Formato de Certificado para Asistentes', related_name='certificado_asistentes')
     active = models.BooleanField(default=True, verbose_name='Activo')
 
     def get_summary(self):
@@ -23,6 +28,34 @@ class Conference(ModeloBase):
 
     def get_active(self):
         return 'text-success fa fa-check-circle' if self.active else 'text-danger fa fa-times-circle'
+
+    def get_status_conference(self):
+        today = datetime.now().date()
+        if today > self.end_date:
+            return 1
+        if today >= self.start_date and today <= self.end_date:
+            return 2
+        return 0
+
+    def get_status_color(self):
+        status = self.get_status_conference()
+        color_ = 'warning'
+        if status == 1:
+            color_ = 'danger'
+        elif status == 2:
+            color_ = 'info'
+        return color_
+
+    def get_status_str(self):
+        status = self.get_status_conference()
+        if status == 1:
+            return 'Ended'
+        if status == 2:
+            return 'Ongoing'
+        return 'Upcoming'
+
+
+
 
     def __str__(self):
         return self.title
@@ -431,6 +464,10 @@ class ScheduleConference(ModeloBase):
     def get_details(self):
         return self.details.filter(status=True).order_by('order')
 
+    def is_today(self):
+        today = datetime.now().date()
+        return today == self.date
+
     def __str__(self):
         return self.title
 
@@ -457,15 +494,26 @@ class DetailScheduleConference(ModeloBase):
 
 
 class InscripcionConference(ModeloBase):
+    pedido = models.ForeignKey('pedidos.Pedido', on_delete=models.CASCADE, blank=True, null=True)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE, blank=True, null=True)
     persona = models.ForeignKey('autenticacion.Usuario', on_delete=models.CASCADE, blank=True, null=True, related_name='persona_inscripcion')
     fecha = models.DateField(verbose_name=u'Fecha de inscripción', blank=True, null=True)
     role = models.IntegerField(choices=ROLES_FEE_CHOICE, verbose_name='Rol')
     special_price = models.BooleanField(default=False, verbose_name='¿Special Price Applied?')
+    # CERTIFICADO
     gen_certificado = models.BooleanField(default=False, verbose_name='¿Generar Certificado?')
     certificado = models.FileField(upload_to='certificados/', null=True, blank=True, verbose_name='Certificado')
     fecha_certificado = models.DateField(verbose_name='Fecha de generación de certificado', blank=True, null=True)
     user_certificado = models.ForeignKey('autenticacion.Usuario', on_delete=models.CASCADE, blank=True, null=True, related_name='user_certificado')
+    # ASISTENCIA
+    asistio = models.BooleanField(default=False, verbose_name='¿Asistencia?')
+    fecha_asistencia = models.DateField(verbose_name='Fecha de asistencia', blank=True, null=True)
+
+    def get_papers(self):
+        return self.papers.filter(status=True).order_by('id')
+
+    def get_asistio(self):
+        return 'text-success fa fa-check-circle' if self.asistio else 'text-danger fa fa-times-circle'
 
     def __str__(self):
         return f'{self.persona.__str__()} - {self.conference.__str__()}'
@@ -491,7 +539,7 @@ class PapersInscripcionConference(ModeloBase):
 
 class TopicsInscripcionConference(ModeloBase):
     cab = models.ForeignKey(InscripcionConference, related_name='topics', on_delete=models.CASCADE, verbose_name='Cabecera')
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, blank=True, null=True)
+    topic = models.ForeignKey(TopicCategory, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.topic.__str__()

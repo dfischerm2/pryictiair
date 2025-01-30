@@ -1,0 +1,164 @@
+<meta charset=UTF-8">
+{% load templatefunctions %}
+{% block heading %}
+{% endblock %}
+{% block canvas %}
+    <style type="text/css">
+        @page {
+            background-image: url('{{ data.DOMINIO_DEL_SISTEMA }}/media/{{ data.certificado.fondocertificado }}');
+            size: A4 landscape;
+            top: 1.5cm;
+            left: 3cm;
+            right: 1cm;
+            bottom: 1cm;
+            @frame
+            {
+                -pdf-frame-content: company_logo;
+                left: 0cm;
+                right: 0cm;
+                bottom: -2cm;
+                top: 0cm;
+            }
+            @frame
+            {
+                -pdf-frame-content: evolucion_logo;
+                left: 15cm;
+                right: 0cm ;
+                bottom: 5cm;
+                top: 0.5cm;
+            }
+        }
+
+        @page maintmpl {
+            background-image: url('{{ data.DOMINIO_DEL_SISTEMA }}/media/{{ data.certificado.fondocertificadoatras }}');
+            size: A4 landscape;
+            top: 1.5cm;
+            left: 3cm;
+            right: 1cm;
+            bottom: 1cm;
+        }
+
+
+        .formatotipo2 {
+            text-align: center;
+            color: #092c45;
+        }
+
+        .spacer {
+            height: 20px;
+        }
+
+        .content {
+            text-align: justify;
+            line-height: 2.2em;
+            margin: 10px;
+            margin-right: 75px;
+        }
+    </style>
+    <div>
+        {#        <div id="evolucion_logo">#}
+        {#             <img src="https://sagest.epunemi.gob.ec/media/reportes/encabezados_pies/logoevolucionacademica.png" width="180" height="50">#}
+        {#        </div>#}
+        {#        <table align="left"  style="font-family: Verdana, Arial, sans-serif">#}
+        {#            <tr>#}
+        {#                <td></td>#}
+        {#                <td align="center" height="187" colspan="3">#}
+        {#                </td>#}
+        {#                <td></td>#}
+        {#                <td></td>#}
+        {#                <td></td>#}
+        {#                <td></td>#}
+        {#                <td></td>#}
+        {#                <td></td>#}
+        {#                <td></td>#}
+        {#            </tr>#}
+        {#        </table>#}
+
+        <table align="center" style="margin: 0 auto; text-align: center; width: 100%;">
+            <!-- Espacios simulados con filas vacías -->
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr class="spacer"></tr>
+            <tr>
+                <td class="formatotipo2" style="margin-right: 65px">
+                    <span style="font-size: 18px;">A</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span style="font-size: 26px;"><b>{{ data.inscrito.persona.datos }}</b></span>
+                </td>
+            </tr>
+        </table>
+        <br><br><br>
+        <table style="margin: 0 auto; width: 100%;">
+            <tr>
+                <td colspan="12" width="100px" class="content">
+                    <span style="font-size:20px;"><b>"{{ data.evento.title }}"</b></span>
+                </td>
+            </tr>
+        </table>
+        <table style="margin: 20px auto; width: 100%;">
+            <tr>
+                <td></td>
+                <td style="width: 10px;"></td>
+                <td style="width: 10px;"></td>
+                <td style="text-align: right; font-size: 20px; margin-right: 75px;">{{ fecha }}</td>
+            </tr>
+        </table>
+        <pdf:nexttemplate name="maintmpl"/>
+        <pdf:nextpage/>
+
+        <table>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr>
+                <td></td>
+                <td style="width:500px; text-align: center; font-size: 12px">
+                    <img src="{{ data.DOMINIO_DEL_SISTEMA }}/media/certificados/qr/{{ data.qrname }}.png"
+                         width="120" height="120"
+                         align="middle"><br>
+                    <strong>COD: {{ data.inscrito.id }}</strong><br>
+                    VALIDATE YOUR CERTIFICATE AT https://ictiair.tiacon.org/certificate-verification
+                    OR SCAN WITH YOUR QR CODE READER
+                </td>
+                <td></td>
+            </tr>
+        </table>
+
+{% endblock %}

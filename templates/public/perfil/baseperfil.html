@@ -3,6 +3,10 @@
 {% block head %}
     <link rel="stylesheet" href="/static/views.css">
     <link rel="stylesheet" href="/static/profile_views.css">
+    <script src="/static/fontawesome-6.6.0/js/all.js"></script>
+    <link rel="stylesheet" href="/static/fontawesome-6.6.0/css/all.min.css">
+    {% block extrahead %}
+    {% endblock %}
 {% endblock %}
 
 {% block content %}
@@ -21,26 +25,26 @@
                         <div class="mobile-nav">
                             <nav class="nav">
                                 <a class="nav-link {% if viewprofile == 1 %} active {% endif %}" href="/profile/">
-                                    <i class="fa fa-user"></i>
+                                    <i class="fa fa-user me-2"></i>
                                     <span>Profile</span>
                                 </a>
                                 <a class="nav-link {% if viewprofile == 2 %} active {% endif %}"
                                    href="?action=inscriptions">
-                                    <i class="fa fa-graduation-cap"></i>
+                                    <i class="fa fa-graduation-cap me-2"></i>
                                     <span>Inscriptions</span>
                                 </a>
                                 <a class="nav-link {% if viewprofile == 3 %} active {% endif %}"
                                    href="?action=payments">
-                                    <i class="fa fa-shopping-bag"></i>
+                                    <i class="fa fa-shopping-bag me-2"></i>
                                     <span>My Order</span>
                                 </a>
                                 <a class="nav-link {% if viewprofile == 4 %} active {% endif %}"
                                    href="?action=changepass">
-                                    <i class="fa fa-lock"></i>
+                                    <i class="fa fa-lock me-2"></i>
                                     <span>Password</span>
                                 </a>
                                 <a class="nav-link logout-link logout-mobile" href="/logout/">
-                                    <i class="fa fa-sign-out"></i>
+                                    <i class="fa fa-sign-out me-2"></i>
                                     <span>Log out</span>
                                 </a>
                             </nav>
@@ -59,22 +63,22 @@
                                 <nav class="nav flex-column nav-profile pb-2 pb-lg-4 mb-3">
                                     <h4 class="section-title fs-xs fw-medium pb-1 mb-2">Account</h4>
                                     <a class="nav-link {% if viewprofile == 1 %} active {% endif %}" href="/profile/">
-                                        <i class="fa fa-user"></i>
+                                        <i class="fa fa-user me-2"></i>
                                         <span>Profile</span>
                                     </a>
                                     <a class="nav-link {% if viewprofile == 2 %} active {% endif %}"
                                        href="?action=inscriptions">
-                                        <i class="fa fa-graduation-cap"></i>
+                                        <i class="fa fa-graduation-cap me-2"></i>
                                         <span>Inscriptions</span>
                                     </a>
                                     <a class="nav-link {% if viewprofile == 3 %} active {% endif %}"
                                        href="?action=payments">
-                                        <i class="fa fa-shopping-bag"></i>
+                                        <i class="fa fa-shopping-bag me-2"></i>
                                         <span>My Orders</span>
                                     </a>
                                     <a class="nav-link {% if viewprofile == 4 %} active {% endif %}"
                                        href="?action=changepass">
-                                        <i class="fa fa-lock"></i>
+                                        <i class="fa fa-lock me-2"></i>
                                         <span>Password</span>
                                     </a>
                                 </nav>
@@ -99,11 +103,55 @@
         </div>
     </div>
     <div class="mb-100"></div>
+
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalNombre" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title"><b id="modalNombre"></b></h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body detalleProd">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block jscript %}
     <script src="/static/js/forms.js?version=11"></script>
     <script>
+        function formModal(id, text, action,) {
+            pantallaespera()
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                data: {
+                    'action': action,
+                    'id': id,
+                },
+                success: function (data) {
+                    setTimeout($.unblockUI, 1);
+                    if (data.result === true) {
+                        $('#modalNombre').html(text);
+                        $('.detalleProd').html(data.data);
+                        $('#modalDetalle').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeWarning(data.message);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    mensajeWarning("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+
         function toggleDropdown(event, button) {
             event.stopPropagation();
 

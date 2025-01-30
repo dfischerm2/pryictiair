@@ -1,0 +1,527 @@
+{% extends 'base.html' %}
+{% block head %}
+    <link rel="stylesheet" href="/static/card-inscripciones.css?1">
+    <link rel="stylesheet" href="/static/acordeonpersonalizado.css">
+{% endblock %}
+{% block content %}
+    <form method="GET">
+        <div class="container-fluid">
+            <div class="form-row text align-items-center mb-4">
+                <div class="col-sm-3">
+                    Desde
+                    <div class="form-group">
+                        <input type="date" class="form-control hidestring" id="desde"
+                               name="desde"
+                               value="{{ desde }}"/>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    Hasta
+                    <div class="form-group">
+                        <input type="date" class="form-control hidestring" id="hasta"
+                               name="hasta"
+                               value="{{ hasta }}"/>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    Tipo de inscripcion
+                    <div class="form-group">
+                        <select name="rolid" id="rolid" class="form-control select2">
+                            <option value="">TODOS</option>
+                            {% for t in ROLES_FEE_CHOICE %}
+                                <option value="{{ t.0 }}"
+                                        {% if t.0 == rolid %}selected{% endif %}>{{ t.1|upper }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Buscar Nombres, Apellido, Email"
+                               aria-label="Buscar"
+                               aria-describedby="button-addon2" name="criterio" value="{{ criterio }}">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="button-addon2"><i
+                                    class="fa fa-search"></i></button>
+                            {% if url_vars %}
+                                <a title="Ver todo" href="{{ request.path }}" class="btn btn-default">
+                                    <i class="fas fa-sync-alt"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <div class="row">
+        {% for l in listado %}
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+                <div class="card-container mycard-container">
+                    <div class="mycard card border-0">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <a href="{{ l.persona.get_foto_gris }}" data-fancybox="image"
+                                       data-width="2048"
+                                       data-height="1365"
+                                       title="{{ l.persona.username }}">
+                                        <img id="presentaimg2" src="{{ l.persona.get_foto_gris }}"
+                                             style="border-radius: 2.375rem;" width="55px" height="55px">
+                                    </a>
+                                    <div class="info-top ml-2">
+                                        <h6 class="text-muted" style="font-size: 0.9em;">
+                                            {{ l.persona.datos }}<br>
+                                            Usuario: {{ l.persona.username }} <br>
+                                            {% if not l.persona.get_perfil_per.status %}
+                                                <span class="text-danger"> <i class="fas fa-times-circle"></i> PFL DESACT.</span>
+                                                <br>
+                                            {% endif %}
+                                            {% if not l.persona.is_active %}
+                                                <span class="text-danger"> <i class="fas fa-user-slash"></i> USUARIO DESACT.</span>
+                                            {% else %}
+                                                <span class="text-success"> <i class="fas fa-user-check"></i> USUARIO ACTIVO.</span>
+                                            {% endif %}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="acciones mr-3">
+                                    <div class="with-btn-group text-center" nowrap>
+                                        <div class="btn-group dropleft">
+                                            <button type="button"
+                                                    class="btn btn-white rounded-circle btn-sm border-0 dropdown-toggle"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                {% if l.asistio %}
+                                                    <a class="certificado_view_pdf dropdown-item"
+                                                       href="javascript:;" idi="{{ l.id }}"><span class="fa fa-file-pdf mr-2"></span>&nbsp;Vista
+                                                        Previa Certificado</a>
+                                                    {% if l.gen_certificado %}
+                                                        <a href="" class="dropdown-item"><i
+                                                                class="fa fa-times-circle"></i>
+                                                            Eliminar certificado</a>
+                                                    {% else %}
+                                                        <a href="" class="dropdown-item"><i class="fa fa-print"></i>
+                                                            Generar certificado</a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <b>Tipo:</b> {{ l.get_role_display }} {% if l.cuota.special_price %}(Special Price for
+                                Sponsor Universities (UNEMI, VIU, or UCLM)){% endif %} <br>
+                                <b>Institucion: </b> {{ l.persona.institucion|default:'' }}<br>
+                                <b>Pais: </b> {{ l.persona.pais.nombre }}<br>
+                                {% if l.persona.email %}
+                                    <a href="mailto:{{ l.persona.email }}"><i
+                                            class="fa fa-envelope"></i> {{ l.persona.email }}</a><br>
+                                {% endif %}
+                                <span class="text-primary">F.registro : {{ l.fecha_registro|date:'d/m/Y' }} {{ l.hora_registro }}</span><br>
+                                <span class="">¿Asistió al evento? : <i class="{{ l.get_asistio }}"></i></span><br>
+
+                                <div id="modulos_{{ l.pk }}" class="accordion accordion-flush"
+                                     role="tablist"
+                                     aria-multiselectable="true">
+                                    <div class="accordion-item">
+                                        <div class="accordion-header" role="tab" id="heading_{{ l.pk }}">
+                                            <h5 class="mb-0">
+                                                <button class="accordion-button "
+                                                        data-toggle="collapse" style="font-weight: 300"
+                                                        data-parent="#modulos_{{ l.pk }}"
+                                                        href="#collapseThree_{{ l.pk }}"
+                                                        aria-expanded="false"
+                                                        aria-controls="collapseThree_{{ l.pk }}">
+                                                    <h6 class="mb-0 texto-blue">
+                                                        <i class="fa fa-folder dropdown-item-icon pr-2"
+                                                           aria-hidden="true"></i>
+                                                        More details
+                                                    </h6>
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseThree_{{ l.pk }}"
+                                             class="collapse"
+                                             role="tabpanel" aria-labelledby="heading_{{ l.pk }}">
+                                            <div style="padding: 5px" class="text-left">
+                                                {% if l.cuota.role == 1 %}
+                                                    {% for paper in l.get_papers %}
+                                                        <b><i class="fa fa-book"></i> <b>ID: </b> {{ paper.idpaper }}
+                                                        </b>  - {{ paper.title }}
+                                                        <div class="ml-3">
+                                                            <i class="fa fa-file-text"></i>
+                                                            <b>Sheets: </b> {{ paper.sheets }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    {% if l.cuota.role == 3 or l.cuota.special_price %}
+                                                        {% if l.cuota.special_price %}
+                                                            <b>¿Is Student?: </b> <i class="{{ l.get_student }}"></i>
+                                                            <br>
+                                                        {% endif %}
+                                                        <b>Evidence: </b>
+                                                        <a href="/media/{{ l.archivo_evidencia }}" target="_blank"
+                                                           class="btn-link"><i class="fa fa-file-pdf"></i> See evidence</a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="text-center">
+                    <h2><b>Sin Registros</b></h2>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% include "paginacion.html" %}
+            <div class="container-fluid">
+                <hr>
+                <div class="form-row mb-3 text-right">
+                    <label class="badge badge-primary" style="font-size: 13px">Cant. {{ list_count }}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalChangePassword">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <form autocomplete="off" id="frmEliminar" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <input type="hidden" id="id_dict_url_vars" name="dict_url_vars" value="">
+                    <div class="modal-header">
+                        <i class="fa fa-key"></i>&nbsp;
+                        <h4 class="modal-title"></h4>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="pk" id="pk">
+                        <input type="hidden" name="action" id="action">
+                        <label>Nueva Clave:</label>
+                        <input type="password" name="password" class="form-control" data-toggle="password"
+                               data-placement="after" data-eye-class="fas" data-eye-open-class="fa-eye"
+                               data-eye-close-class="fa-eye-slash"><br>
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle"></i> Recuerde que la contraseña registrada servirá como clave
+                            actual para la plataforma.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Cambiar Clave</button>
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal"><i
+                                class="fa fa-window-close"></i> Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalActivar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="frmActivar" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <input type="hidden" id="id_dict_url_vars" name="dict_url_vars" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">¿Seguro desea activar este registro?</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info m-b-0">
+                            <h5><i class="fa fa-info-circle"></i> Atención!</h5>
+                            <p>Estas a punto de activar este registro '<b id="elimNombre"></b>'</p>
+                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="action" id="action">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Activar</button>
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal"><i
+                                class="fa fa-window-close"></i> Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCrearAdministrativo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="frmAdmin" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <input type="hidden" id="id_dict_url_vars" name="dict_url_vars" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">¿Seguro desea crear perfil administrativo para este usuario?</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-primary m-b-0">
+                            <h5><i class="fa fa-info-circle"></i> Atención!</h5>
+                            <p>Estas a punto de crear perfil administrativo para '<b id="adminNombre"></b>'</p>
+                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="action" id="action">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><i class="fa fa-check-circle"></i> Crear</button>
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal"><i
+                                class="fa fa-window-close"></i> Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalle">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}"
+                      class="form-horizontal form-label-left">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title"><b id="modalNombre"></b></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body detalleProd">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalExp">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"><b id="modalExpTitulo"></b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body detalleExp">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="itemspanel5" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>
+                        <i class="fa fa-search" aria-hidden="true"></i> Auditorias de <a
+                            id="ingresobono4"></a></b>
+                    </h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal">&times;
+                    </button>
+
+                </div>
+
+                <div class="modal-body panelbody4" style="padding-bottom: 50px">
+                </div>
+
+                <div class="modal-footer">
+                    <table class="pull-right">
+                        <tr>
+                            <td><a data-dismiss="modal" href="javascript:;" class="btn btn-cerrar4 btn-danger"><i
+                                    class="fa fa-window-close"></i> Cerrar</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block jscript %}
+    <script src="/static/assets/plugins/bootstrap-show-password/dist/bootstrap-show-password.js?v=1"></script>
+    <script src="/static/js/forms.js?version=11"></script>
+    <script>
+        function formModal(id, text, action,) {
+            pantallaespera()
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                data: {
+                    'action': action,
+                    'id': id,
+                },
+                success: function (data) {
+                    setTimeout($.unblockUI, 1);
+                    if (data.result === true) {
+                        $('#modalNombre').html(text);
+                        $('.detalleProd').html(data.data);
+                        $('#modalDetalle').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeWarning(data.message);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    mensajeWarning("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+    </script>
+    <script>
+
+
+        function crearperfiladm(pk, nombre, accion, dict_url_vars = "") {
+            $('#frmAdmin #id').val(pk);
+            $('#frmAdmin #adminNombre').html(nombre);
+            $('#frmAdmin #action').val(accion);
+            $('#frmAdmin #id_dict_url_vars').val(dict_url_vars);
+            $('#modalCrearAdministrativo').modal({backdrop: 'static'}).modal('show');
+        }
+
+        function consultar(pk, nombre) {
+            $.ajax({
+                type: "GET",
+                url: "{{ ruta }}",
+                data: {'action': 'consultar', 'id': pk},
+                success: function (data) {
+                    if (data.result === true) {
+                        $('.tablaaqui').html(data.data)
+                        $('#frmConsulta #nombre').html(nombre);
+                        $('#modalConsulta').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+
+        function activarusu(pk, nombre, accion, dict_url_vars = "") {
+            $('#frmActivar #id').val(pk);
+            $('#frmActivar #elimNombre').html(nombre);
+            $('#frmActivar #action').val(accion);
+            $('#frmActivar #id_dict_url_vars').val(dict_url_vars);
+            $('#modalActivar').modal({backdrop: 'static'}).modal('show');
+        }
+
+        const modalChangePassword = $('#modalChangePassword');
+
+        function cambiarcontrasena(pk, nombre, dict_url_vars = "") {
+            modalChangePassword.find(".modal-header").children('h4').html(`Nueva Contraseña para ${nombre}`);
+            modalChangePassword.find(".modal-body").children('input[name=password]').val('');
+            modalChangePassword.find(".modal-body").children('input[name=pk]').val(pk.toString());
+            modalChangePassword.find(".modal-body").children('input[name=action]').val('change_password');
+            modalChangePassword.find('#id_dict_url_vars').val(dict_url_vars);
+            modalChangePassword.modal('show');
+        }
+
+        $(document).ready(function () {
+            $('.cloaked').inputCloak();
+        });
+
+        function eliminarajax(pk, nombre, accion, dict_url_vars = "", titulo = `Estas a punto de eliminar este registro ${nombre}`) {
+            Swal.fire({
+                title: titulo,
+                text: "Esta acción es irreversible",
+                type: 'warning',
+                showCancelButton: true,
+                allowOutsideClick: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, deseo hacerlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    pantallaespera();
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ reques.path }}',
+                        async: false,
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            action: accion,
+                            id: pk,
+                            dict_url_vars: dict_url_vars,
+                        },
+                        dataType: "json",
+                        beforeSend: function () {
+                            pantallaespera();
+                        }
+                    }).done(function (data) {
+                        setTimeout($.unblockUI, 1);
+                        if (data.error === false) {
+                            location.reload();
+                        }
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        setTimeout($.unblockUI, 1);
+                        mensajeWarning('Error en el servidor');
+                    }).always(function () {
+                    });
+                }
+            })
+        }
+
+
+        function verauditoria(id, mes, anio, persona) {
+            fecha = persona
+            pantallaespera();
+            $.ajax({
+                type: "GET",
+                url: "{{ ruta }}",
+                data: {'action': 'consultarauditoria', 'id': id},
+
+                success: function (data) {
+                    if (data.result === 'ok') {
+                        setTimeout($.unblockUI, 1);
+                        $('#ingresobono4').html(fecha);
+                        $(".panelbody4").html(data.data);
+                        $("#itemspanel5").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        setTimeout($.unblockUI, 1);
+                        smoke.alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    smoke.alert("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+
+        function verExperiencia(title, expText) {
+            $('#modalExpTitulo').html(title);
+            $('.detalleExp').html(`<p>${expText}</p>`);
+            $('#modalExp').modal({backdrop: 'static'}).modal('show');
+        }
+
+        $(function () {
+            $(".certificado_view_pdf").click(function () {
+                var id = $(this).attr('idi');
+                openwindow('POST', '{{ request.path }}', {
+                    action: 'preview_certificado', 'id': id
+                }, '_blank');
+            });
+        })
+    </script>
+{% endblock %}

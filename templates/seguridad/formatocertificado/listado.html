@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="GET">
+        <div class="container-fluid">
+            <div class="form-row">
+                <div class="col-md-6 col-sm-12 offset-md-6">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                               aria-describedby="button-addon2" name="criterio" value="{{ criterio }}">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="button-addon2"><i
+                                    class="fa fa-search"></i></button>
+                            {% if url_vars %}
+                                <a title="Ver todo" href="{{ ruta }}" class="btn btn-primary">
+                                    <i class="fas fa-sync-alt"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="mb-3">
+        <a href="?action=add" class="btn btn-success"><i class="fas fa-plus-circle mr-2"></i> Nuevo Registro</a>
+    </div>
+
+    <div class="panel panel-default">
+
+
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table id="tabla" class="table table-hover table-td-valign-middle table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center; width: 50px">Cod.</th>
+                        <th style="text-align: center">Descripción</th>
+                        <th style="text-align: center">Color Certificación</th>
+                        <th style="text-align: center">Tipo</th>
+                        <th style="text-align: center">Formato</th>
+                        {#                        <th style="text-align: center">Formato Atras</th>#}
+                        <th class="text-center">
+                            Acción
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for l in listado %}
+                        <tr>
+                            <td style="text-align: center">CERTI{{ l.id }}</td>
+                            <td style="text-align: center">{{ l.nombre }}</td>
+                            <td style="text-align: center"><i class="fa fa-square"
+                                                              style="color: {{ l.color|safe }}; font-size: 25px"></i>
+                            </td>
+                            <td style="text-align: center">
+                                {{ l.get_tipocertificado_display }}
+                            </td>
+                            <td style="text-align: center">
+                                {% if l.fondocertificado %}
+                                    <a data-fancybox class="btn tu"
+                                       href="/media/{{ l.fondocertificado }}">
+                                        <img src="/media/{{ l.fondocertificado }}" class="img-thumbnail" width="50px">
+                                    </a>
+                                {% endif %}
+                            </td>
+                            {#                            <td style="text-align: center">#}
+                            {#                                {% if l.fondocertificadoatras %}#}
+                            {#                                    <a data-fancybox class="btn tu"#}
+                            {#                                       href="/media/{{ l.fondocertificadoatras }}">#}
+                            {#                                        <img src="/media/{{ l.fondocertificadoatras }}" class="img-thumbnail"#}
+                            {#                                             width="50px">#}
+                            {#                                    </a>#}
+                            {#                                {% endif %}#}
+                            {#                            </td>#}
+                            <td class="text-center">
+                                <a class="btn btn-mini btn-secondary" title="Ver {{ modulo }}"
+                                   href="{{ ruta }}?pk={{ l.pk }}&action=ver">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a class="btn btn-mini btn-info tl" title="Editar {{ modulo }}"
+                                   href="?pk={{ l.pk }}&action=change">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-mini btn-danger tl" title="Eliminar {{ modulo }}"
+                                   onclick="eliminarajax({{ l.pk }}, '{{ l.nombre }}', 'delete')"
+                                   href="javascript:void(0);">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% include "paginacion.html" %}
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/static/lightbox/css/lightbox.min.css">
+    <script src="/static/lightbox/js/lightbox-plus-jquery.min.js"></script>
+
+    <div class="modal fade" id="modalDetalle">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}"
+                      class="form-horizontal form-label-left">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title"><b id="modalNombre"></b></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body detalleProd">
+                    </div>
+                    {#                    <div class="modal-footer" id="footerModalView">#}
+                    {#                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal"><i#}
+                    {#                                class="fa fa-window-close"></i>#}
+                    {#                            Cerrar</a>#}
+                    {#                    </div>#}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jscript %}
+    <script>
+        function formModal(id, text, action,) {
+            pantallaespera()
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                data: {
+                    'action': action,
+                    'id': id,
+                },
+                success: function (data) {
+                    setTimeout($.unblockUI, 1);
+                    if (data.result) {
+                        $('#modalNombre').html(text);
+                        $('.detalleProd').html(data.data);
+                        $('#modalDetalle').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeWarning(data.message);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    mensajeWarning("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
+    </script>
+{% endblock %}

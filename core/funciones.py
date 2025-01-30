@@ -428,6 +428,7 @@ def addData(request, data):
     data['email_notificacion'] = confi.email_notificacion if confi.email_notificacion else ""
     data['nombreempresa'] = confi.nombre_empresa
     data['telefonoempresa'] = confi.telefono if confi.telefono else ''
+    data['porcentaje_pagoonline'] = confi.porcentaje_pagoonline if confi.porcentaje_pagoonline else 0
     # data['mensajeempresa'] = confi.mensaje if confi.mensaje else ''
     data['alias'] = confi.alias
     data['NOMBRE_MONEDA'] = NOMBRE_MONEDA

@@ -13,6 +13,7 @@ from django.utils.safestring import mark_safe
 from autenticacion.models import Usuario
 from core.custom_models import ModeloBase, NormalModel
 from core.models_utils import FileNameUploadToPath
+from core.validadores import validate_file_size_20mb
 from pryictiair.settings import AUTH_USER_MODEL
 
 
@@ -93,10 +94,6 @@ class AudiUsuarioTabla(models.Model):
 TIPO_ENTORNO = ((True, "Producción"), (False, "Test"),)
 
 
-TIPO_AMBIENTE_SRI = (
-    (1, u'PRUEBAS'),
-    (2, u'PRODUCCIÓN'),
-)
 
 
 class Configuracion(ModeloBase):
@@ -115,6 +112,12 @@ class Configuracion(ModeloBase):
     web = models.CharField(max_length=100, blank=True, null=True, verbose_name='Web')
     email_notificacion = models.CharField(max_length=100, blank=True, null=True, verbose_name='Email Notificaciones')
     direccion = models.CharField(max_length=5000, blank=True, null=True, verbose_name='Dirección Empresa')
+    # metodos de pago
+    paypal_modo = models.BooleanField("Running PayPal", choices=TIPO_ENTORNO, default=1)
+    porcentaje_pagoonline = models.DecimalField(max_digits=19, decimal_places=2, default=0,
+                                                verbose_name='% Convenience Fee',
+                                                validators=[MinValueValidator(Decimal('0')),
+                                                            MaxValueValidator(Decimal('100'))])
 
     @staticmethod
     def get_instancia():
@@ -221,3 +224,40 @@ class SessionUser(NormalModel):
     def is_not_expired(self):
         from datetime import datetime
         return self.session.expire_date > datetime.now()
+
+
+
+TIPO_CERTIFICADO = (
+    (1, 'HORIZONTAL'),
+    (2, 'VERTICAL'),
+)
+
+FORMATO_CERTIFICADO = (
+    (1, 'CON LOGO'),
+    (2, 'CON MENCIÓN'),
+)
+
+
+class CertificadosFormato(ModeloBase):
+    nombre = models.CharField(default='', blank=True, null=True, max_length=200, verbose_name=u"Nombre")
+    tipocertificado = models.IntegerField(choices=TIPO_CERTIFICADO, default=1, verbose_name=u'Tipo Certificado')
+    formato = models.IntegerField(choices=FORMATO_CERTIFICADO, default=1, verbose_name=u'Tipo Certificado')
+    color = models.CharField(default='', blank=True, null=True, max_length=200, verbose_name=u"Color")
+    fondocertificado = models.FileField(upload_to='cursos/fondocertificados/', max_length=6000, blank=True, null=True,
+                                        verbose_name="Fondo Alfrente",
+                                        validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'tiff', "jfif", "svg"]),validate_file_size_20mb])
+    fondocertificadoatras = models.FileField(upload_to='cursos/fondocertificados/', max_length=6000, blank=True,
+                                             null=True, verbose_name="Fondo Atras",
+                                             validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'tiff', "jfif", "svg"]), validate_file_size_20mb])
+
+    def __str__(self):
+        return u'%s' % self.nombre
+
+    class Meta:
+        verbose_name = u"Formato de certificación"
+        verbose_name_plural = u"Formato de certificaciones"
+        ordering = ['nombre']
+
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper().strip()
+        super(CertificadosFormato, self).save(*args, **kwargs)

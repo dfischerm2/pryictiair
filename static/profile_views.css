@@ -3,6 +3,14 @@
     --accent-color: #FF9900;
 }
 
+body {
+    background-color: #f9f9f9 !important;
+}
+
+.de_light #content {
+    background-color: #f9f9f9 !important;
+}
+
 .sidebar-profile {
     background-color: #ffffff;
     border-radius: 12px;
@@ -284,4 +292,625 @@
 .badge-sm {
     padding: 0.25rem 0.75rem;
     font-size: 0.75rem;
+}
+
+/* Estilos para tabla con bordes */
+.table-bordered {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+}
+
+.table-bordered th,
+.table-bordered td {
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+.table-bordered thead th {
+    background-color: #f8fafc;
+    border-bottom: 2px solid #e2e8f0;
+    font-weight: 600;
+    color: #1e293b;
+    white-space: nowrap;
+}
+
+.table-bordered tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .table-bordered {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-bordered th,
+    .table-bordered td {
+        padding: 0.75rem;
+    }
+}
+
+/* Variantes de color para filas */
+.table-bordered tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Estilos para el contenedor de la tabla */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+}
+
+/* Estilos opcionales para bordes redondeados */
+.table-bordered.table-rounded {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Estilos para celdas con acciones */
+.table-bordered td.actions {
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Estilos para el header de acciones */
+.table-bordered th.actions {
+    text-align: center;
+    min-width: 100px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+    transition: all 0.15s ease-in-out;
+}
+
+/* Success button */
+.btn-success {
+    color: #fff !important;
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+}
+
+.btn-success:hover {
+    background-color: #059669 !important;
+    border-color: #059669 !important;
+}
+
+.btn-success:active {
+    background-color: #047857 !important;
+    border-color: #047857 !important;
+}
+
+/* Info button */
+.btn-info {
+    color: #fff !important;
+    background-color: #0ea5e9 !important;
+    border-color: #0ea5e9 !important;
+}
+
+.btn-info:hover {
+    background-color: #0284c7 !important;
+    border-color: #0284c7 !important;
+}
+
+.btn-info:active {
+    background-color: #0369a1 !important;
+    border-color: #0369a1 !important;
+}
+
+/* Warning button */
+.btn-warning {
+    color: #fff !important ;
+    background-color: #f59e0b !important;
+    border-color: #f59e0b !important;
+}
+
+.btn-warning:hover {
+    background-color: #d97706 !important;
+    border-color: #d97706 !important;
+}
+
+.btn-warning:active {
+    background-color: #b45309 !important;
+    border-color: #b45309 !important;
+}
+
+/* Danger button */
+.btn-danger {
+    color: #fff !important;
+    background-color: #ef4444 !important;
+    border-color: #ef4444 !important;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+}
+
+.btn-danger:active {
+    background-color: #b91c1c !important;
+    border-color: #b91c1c !important;
+}
+
+/* Button sizes */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Disabled state */
+.btn:disabled {
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+/* Button with icon */
+.btn i {
+    margin-right: 0.5rem;
+}
+
+/* Optional: Outline variants */
+.btn-outline-success {
+    color: #10b981;
+    border-color: #10b981;
+    background-color: transparent;
+}
+
+.btn-outline-success:hover {
+    color: #fff;
+    background-color: #10b981;
+}
+
+.btn-outline-info {
+    color: #0ea5e9;
+    border-color: #0ea5e9;
+    background-color: transparent;
+}
+
+.btn-outline-info:hover {
+    color: #fff;
+    background-color: #0ea5e9;
+}
+
+.btn-outline-warning {
+    color: #f59e0b;
+    border-color: #f59e0b;
+    background-color: transparent;
+}
+
+.btn-outline-warning:hover {
+    color: #fff;
+    background-color: #f59e0b;
+}
+
+.btn-outline-danger {
+    color: #ef4444;
+    border-color: #ef4444;
+    background-color: transparent;
+}
+
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: #ef4444;
+}
+
+.content-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.content-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.content-header h2 {
+    margin: 0;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+
+.conference-info {
+    flex: 1;
+}
+
+.badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+}
+
+.special-price-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.conference-title {
+    color: var(--primary-color);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0.75rem 0;
+    line-height: 1.4;
+}
+
+.conference-date {
+    color: #64748b;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.conference-date i {
+    color: #f59e0b;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Distintivo visual en el lado izquierdo */
+.conference-item::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--primary-color), #1a237e);
+}
+
+@media (max-width: 768px) {
+    .conference-item {
+        padding: 1.25rem;
+    }
+
+    .action-buttons {
+        margin-top: 1.25rem;
+        justify-content: flex-start;
+    }
+
+    .badges-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+
+/* Contenedor específico para los botones de acción */
+.conf-action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Clase base para los botones de acción */
+.conf-action-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: white;
+    color: #64748b;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 17%);
+    text-decoration: none;
+}
+
+.conf-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.conf-action-btn i {
+    font-size: 1.1rem;
+}
+
+/* Tooltips para los botones */
+.conf-action-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #060A38;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.conf-action-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Variantes de color específicas */
+.conf-action-btn--schedule {
+    color: #f59e0b;
+    border-color: #fde68a;
+}
+
+.conf-action-btn--schedule:hover {
+    background: #fef3c7;
+}
+
+.conf-action-btn--papers {
+    color: #ef4444;
+    border-color: #fecaca;
+}
+
+.conf-action-btn--papers:hover {
+    background: #fee2e2;
+}
+
+.conf-action-btn--materials {
+    color: #3b82f6;
+    border-color: #bfdbfe;
+}
+
+.conf-action-btn--materials:hover {
+    background: #dbeafe;
+}
+
+.conf-action-btn--certificate {
+    color: #10b981;
+    border-color: #a7f3d0;
+}
+
+.conf-action-btn--certificate:hover {
+    background: #d1fae5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .conf-action-buttons {
+        justify-content: flex-start;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .conf-action-buttons {
+        gap: 0.75rem;
+    }
+
+    .conf-action-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .conf-action-btn i {
+        font-size: 1rem;
+    }
+}
+
+.content-card {
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+
+/* Ajustes para mobile */
+@media (max-width: 768px) {
+    .conference-item {
+        padding: 1.25rem;
+        text-align: center;
+    }
+
+    .conference-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .badges-container {
+        justify-content: center;
+        flex-direction: row; /* Mantener badges en línea */
+    }
+
+    .conference-date {
+        justify-content: center;
+    }
+
+    .conf-action-buttons {
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+
+    /* Ajustar espaciado */
+    .col-md-9.col-12,
+    .col-md-3.col-12 {
+        padding: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .badges-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .conference-title {
+        text-align: center;
+    }
+
+    .p-4 {
+        padding: 1rem !important;
+    }
+}
+
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+@media (min-width: 768px) {
+    .timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 4px;
+        height: 96%;
+        background: #060A38;
+        transform: translateX(-50%);
+    }
+}
+
+.timeline-item {
+    position: relative;
+    width: 50%;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.timeline-item:nth-child(odd) {
+    left: 0;
+}
+
+.timeline-item:nth-child(even) {
+    left: 50%;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    width: 20px;
+    height: 20px;
+    background: #060A38;
+    border-radius: 50%;
+    left: -10px;
+}
+
+.timeline-item:nth-child(even)::after {
+    left: auto;
+    right: -10px;
+}
+
+.timeline-header {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #060A38;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timeline-header .badge {
+    background: #060A38;
+    color: white;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.timeline-content {
+    padding-top: 10px;
+}
+
+.timeline-time {
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+    .timeline::before {
+        left: 20px;
+    }
+
+    .timeline-item {
+        width: 100%;
+        left: 0 !important;
+        margin-left: 30px;
+    }
+
+    .timeline-item::after {
+        left: -30px;
+    }
+}
+
+.btn-link-2 {
+    color: #ffad00 !important;
+    font-weight: 600;
 }

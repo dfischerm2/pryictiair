@@ -308,6 +308,16 @@ class HistorialPedido(ModeloBase):
     def es_estudiante(self):
         return self.pedido.user.id == self.user.id
 
+    def estadoSTR(self):
+        color_ = 'warning'
+        if self.estado == 'EN_ESPERA':
+            color_ = 'info'
+        if self.estado == 'COMPLETADO':
+            color_ = 'success'
+        if self.estado in ['RECHAZADO', 'ANULADO', 'DEVUELTO', 'ERROR_METODO_PAGO']:
+            color_ = 'danger'
+        return color_
+
     class Meta:
         ordering = ('-pk',)
         verbose_name = 'Historial de pedido'

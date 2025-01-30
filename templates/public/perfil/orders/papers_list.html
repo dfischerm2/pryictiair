@@ -1,0 +1,35 @@
+<style>
+    .text-bold {
+        font-weight: bold;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table table-modern table-td-valign-middle">
+                <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Title</th>
+                    <th class="text-center">Sheets</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for l in filtro.get_papers %}
+                    <tr>
+                        <td class="text-center">{{ l.idpaper }}</td>
+                        <td class="text-center">{{ l.title }}</td>
+                        <td class="text-center">{{ l.sheets }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-window-close"></i> Close
+    </button>
+</div>

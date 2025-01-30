@@ -1,0 +1,31 @@
+.info-top h6 {
+    font-size: 12px !important;
+    margin-bottom: 0 !important;
+}
+
+.texto {
+    font-size: 10px;
+}
+
+.texto p,
+.texto a {
+    margin-bottom: 5px;
+    display: block;
+}
+
+.card-text {
+    margin-bottom: 0;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Opcional: Ajusta el espaciado entre las tarjetas */
+    align-items: stretch; /* Hace que todas las tarjetas tengan la misma altura */
+}
+
+.card {
+    flex: 1 1 auto; /* Asegura que las tarjetas se expandan verticalmente */
+    margin-bottom: 20px; /* Espacio entre las tarjetas */
+    /* Otros estilos de la tarjeta */
+}
