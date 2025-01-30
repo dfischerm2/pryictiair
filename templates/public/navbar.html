@@ -36,6 +36,9 @@
                             <li>
                                 <a href="{% if request.path == '/' %}/#callforpapers{% else %}/{% endif %}">Templates</a>
                             </li>
+                            <li>
+                                <a href="{% if request.path == '/' %}/#cameraready{% else %}/{% endif %}">Camera Ready</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -63,7 +66,7 @@
                     {% else %}
                         <li><a href="javascript:void(0)">Hello, {{ request.user.primernombre }}<span></span></a>
                             <ul>
-                            <li><a href="/profile/"><i class="fa fa-user"></i> My Profile</a></li>
+                                <li><a href="/profile/"><i class="fa fa-user"></i> My Profile</a></li>
                                 {% if request.user.get_perfil_adm %}
                                     <li><a href="/panel/"><i class="fa fa-lock"></i> Administration</a></li>
                                 {% endif %}

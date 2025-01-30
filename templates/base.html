@@ -13,7 +13,7 @@
     <link href="/static/fonts/family-roboto/family-roboto.css" rel="stylesheet"/>
     <link href="/static/fonts/material-icons/material-icons.css" rel="stylesheet"/>
     {#    <link href="/static/assets/css/google/app.min.css" rel="stylesheet"/>#}
-    <link href="/static/assets/css/default/app.min.old.css?3.1" rel="stylesheet"/>
+    <link href="/static/assets/css/default/app.min.old.css?4.0" rel="stylesheet"/>
 {#    <link href="/static/assets/css/default/app.min.css?15.18" rel="stylesheet"/>#}
     <link href="/static/fonts/fontawesome/css/all.css?v=6.1.1" rel="stylesheet"/>
     <link href="/static/assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet"/>
@@ -1445,6 +1445,25 @@ $(function() {
 })
 
 </script>
+
+<script>
+    // Altura Cards Responsive
+    document.addEventListener("DOMContentLoaded", function () {
+        const cardContainers = document.querySelectorAll(".mycard-container");
+        let maxHeight = 0;
+        cardContainers.forEach(container => {
+            const cardHeight = container.querySelector(".mycard").clientHeight;
+            if (cardHeight > maxHeight) {
+                maxHeight = cardHeight;
+            }
+        });
+        cardContainers.forEach(container => {
+            container.querySelector(".card").style.minHeight = `${maxHeight}px`;
+        });
+    });
+    // Altura Cards Responsive
+</script>
+<script src="/static/dropdown-submenu.js"></script>
 <script src="/static/assets/plugins/moment/moment.js"></script>
 <script src="/static/assets/plugins/moment/locale/es-us.js"></script>
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->

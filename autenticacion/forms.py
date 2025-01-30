@@ -8,6 +8,7 @@ from area_geografica.models import Pais, Ciudad, Provincia
 from autenticacion.models import Usuario, PerfilPersona
 from core.custom_models import ModelFormBase
 from core.validadores import es_cedula, es_ruc, es_pasaporte
+from landing.models import InscripcionConference
 
 
 class UserForm(ModelFormBase):
@@ -206,4 +207,50 @@ class GrupoUserForm(ModelFormBase):
             if ver:
                 self.fields[k].widget.attrs['disabled'] = 'disabled'
 
+
+class InscripcionConferenceForm(ModelFormBase):
+    class Meta:
+        model = InscripcionConference
+        fields = ('persona', 'role', 'fecha')
+
+    def __init__(self, *args, **kwargs):
+        ver = kwargs.pop('ver') if 'ver' in kwargs else False
+        instancia = kwargs["instance"] if 'instance' in kwargs else None
+        super(InscripcionConferenceForm, self).__init__(*args, **kwargs)
+        for k, v in self.fields.items():
+            self.fields[k].widget.attrs['class'] = "form-control"
+            self.fields[k].widget.attrs['col'] = "6"
+
+            if k in ('persona',):
+                self.fields[k].widget.attrs['col'] = "12"
+
+            if k in ('role',):
+                self.fields[k].widget.attrs['class'] = "select2-simple"
+            else:
+                self.fields[k].label = mark_safe(
+                    self.fields[k].label + '<span style="color:red;margin-left:2px;"><strong>*</strong></span>')
+                self.fields[k].widget.attrs['required'] = "true"
+                self.fields[k].required = True
+
+
+class ChangeInscripcionConferenceForm(ModelFormBase):
+    class Meta:
+        model = InscripcionConference
+        fields = ('role', 'fecha',)
+
+    def __init__(self, *args, **kwargs):
+        ver = kwargs.pop('ver') if 'ver' in kwargs else False
+        instancia = kwargs["instance"] if 'instance' in kwargs else None
+        super(ChangeInscripcionConferenceForm, self).__init__(*args, **kwargs)
+        for k, v in self.fields.items():
+            self.fields[k].widget.attrs['class'] = "form-control"
+            self.fields[k].widget.attrs['col'] = "6"
+
+            if k in ('role',):
+                self.fields[k].widget.attrs['class'] = "select2-simple"
+            else:
+                self.fields[k].label = mark_safe(
+                    self.fields[k].label + '<span style="color:red;margin-left:2px;"><strong>*</strong></span>')
+                self.fields[k].widget.attrs['required'] = "true"
+                self.fields[k].required = True
 

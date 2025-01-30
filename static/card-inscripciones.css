@@ -29,3 +29,8 @@
     margin-bottom: 20px; /* Espacio entre las tarjetas */
     /* Otros estilos de la tarjeta */
 }
+
+
+.dropdown-menu {
+    min-width: 300px;
+}

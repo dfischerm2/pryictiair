@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load templatefunctions %}
 {% block head %}
     <link rel="stylesheet" href="/static/card-inscripciones.css?1">
     <link rel="stylesheet" href="/static/acordeonpersonalizado.css">
@@ -55,7 +56,16 @@
         </div>
     </form>
 
-
+    <div class="mb-3">
+        <a href="javascript:void(0)"
+           onclick="formModal('{{ conference.pk|encrypt }}', 'Add inscription to {{ conference.title }}', 'addinscription')"
+           class="btn btn-success"><i
+                class="fa fa-circle-plus"></i> Adicionar inscripcion</a>
+        <a href="javascript:void(0)" onclick="genCertificadosMasivo({{ conference.pk }})" class="btn btn-primary"><i
+                class="fa fa-certificate"></i> Generar certificados masivo</a>
+        <a href="javascript:void(0);" class="btn btn-warning descargarcertificados"><i
+                class="fa fa-download"></i> Descargar Certificados</a>
+    </div>
     <div class="row">
         {% for l in listado %}
             <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
@@ -96,19 +106,70 @@
                                                 <i class="fa fa-ellipsis-v"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
+                                                <a href="javascript:void(0)"
+                                                   onclick="formModal('{{ l.pk|encrypt }}', 'Modify inscription {{ l.persona.datos }}', 'changeinscription')"
+                                                   class="dropdown-item"><i
+                                                        class="fa fa-edit"></i> Editar inscripcion</a>
+                                                <a href="javascript:void(0)"
+                                                   onclick="eliminarajax('{{ l.pk|encrypt }}', 'Inscripcion de {{ l.persona.datos }}', 'deleteinscription')"
+                                                   class="dropdown-item"><i class="fa fa-trash"></i>
+                                                    Eliminar Inscripcion</a>
                                                 {% if l.asistio %}
-                                                    <a class="certificado_view_pdf dropdown-item"
-                                                       href="javascript:;" idi="{{ l.id }}"><span class="fa fa-file-pdf mr-2"></span>&nbsp;Vista
-                                                        Previa Certificado</a>
                                                     {% if l.gen_certificado %}
-                                                        <a href="" class="dropdown-item"><i
-                                                                class="fa fa-times-circle"></i>
+                                                        <a href="javascript:void(0)"
+                                                           onclick="eliminarajax('{{ l.pk|encrypt }}', 'Certificado de {{ l.persona.datos }}', 'deletecertificado')"
+                                                           class="dropdown-item"><i class="fa fa-trash"></i>
                                                             Eliminar certificado</a>
                                                     {% else %}
-                                                        <a href="" class="dropdown-item"><i class="fa fa-print"></i>
-                                                            Generar certificado</a>
+                                                        <a class="certificado_view_pdf dropdown-item"
+                                                           href="javascript:;" idi="{{ l.id }}"><span
+                                                                class="fa fa-file-pdf mr-2"></span>&nbsp;Vista
+                                                            Previa Certificado</a>
+                                                        <a class="certificado_view_save_pdf dropdown-item"
+                                                           href="javascript:;"
+                                                           idi="{{ l.id }}"><span
+                                                                class="fa fa-print"></span> Generar Certificado</a>
                                                     {% endif %}
                                                 {% endif %}
+                                                <div class="dropdown-item dropdown-sublevel">
+                                                    <a class="dropdown-toggle dropdown-sublevel-button w-100 d-block">
+                                                        <i class="fas fa-wrench"></i> Gestión de Usuario
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        {% if l.persona.is_active %}
+                                                            <a class="dropdown-item"
+                                                               onclick="eliminarusuario({{ l.persona.pk }}, '{{ l.persona.datos }}', 'deleteuser')"
+                                                               href="javascript:void(0);">
+                                                                <i class="fas fa-trash"></i> Desactivar Usuario
+                                                            </a>
+                                                        {% else %}
+                                                            <a class="dropdown-item" title="Activar {{ modulo }}"
+                                                               onclick="activarusu({{ l.persona.pk }}, '{{ l.persona.datos }}', 'activate')"
+                                                               href="javascript:void(0);">
+                                                                <i class="fas fa-check-circle"></i> Activar Usuario
+                                                            </a>
+                                                        {% endif %}
+                                                        {% if l.persona.get_perfil_per %}
+                                                            <a class="dropdown-item" title="Eliminar {{ modulo }}"
+                                                               onclick="eliminarajax({{ l.pk }}, 'el perfil usuario de {{ l.persona }}', 'deleteperfilusuario')"
+                                                               href="javascript:void(0);">
+                                                                <i class="fas fa-trash"></i> Desactivar Perfil Usuario
+                                                            </a>
+                                                        {% else %}
+                                                            <a class="dropdown-item"
+                                                               onclick="crearperfilestudiante({{ l.pk }}, '{{ l.persona.datos }}', 'crearperfilusuario')"
+                                                               href="javascript:void(0);">
+                                                                <i class="fas fa-user-plus"></i> Activar Perfil Usuario
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <a class="dropdown-item"
+                                                   title="Ver como {{ l.persona.get_full_name }}"
+                                                   href="/seguridad/cambiar-sesion/?pk={{ l.persona.pk }}&path=/">
+                                                    <i class="fas fa-sign-in-alt"></i> Ver
+                                                    como {{ l.persona.get_full_name }}
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -123,8 +184,17 @@
                                     <a href="mailto:{{ l.persona.email }}"><i
                                             class="fa fa-envelope"></i> {{ l.persona.email }}</a><br>
                                 {% endif %}
-                                <span class="text-primary">F.registro : {{ l.fecha_registro|date:'d/m/Y' }} {{ l.hora_registro }}</span><br>
+                                <span class="text-primary">F.Inscripción : {{ l.fecha|date:'d/m/Y' }}</span><br>
                                 <span class="">¿Asistió al evento? : <i class="{{ l.get_asistio }}"></i></span><br>
+                                {% if l.gen_certificado %}
+                                    <a class="btn btn-default btn-mini mb-1 mt-1"
+                                       href="/media/{{ l.certificado }}"
+                                       target="_blank">
+                                        <span class="fa fa-file-pdf text-danger"></span> Certificado
+                                    </a><br>
+                                {% else %}
+                                    <span class="text-muted"><i class="fa fa-info-circle"></i> Sin certificado generado</span>
+                                {% endif %}
 
                                 <div id="modulos_{{ l.pk }}" class="accordion accordion-flush"
                                      role="tablist"
@@ -204,7 +274,6 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <form autocomplete="off" id="frmEliminar" method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <input type="hidden" id="id_dict_url_vars" name="dict_url_vars" value="">
                     <div class="modal-header">
                         <i class="fa fa-key"></i>&nbsp;
                         <h4 class="modal-title"></h4>
@@ -238,7 +307,6 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="frmActivar" method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <input type="hidden" id="id_dict_url_vars" name="dict_url_vars" value="">
                     <div class="modal-header">
                         <h4 class="modal-title">¿Seguro desea activar este registro?</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -267,7 +335,6 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="frmAdmin" method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <input type="hidden" id="id_dict_url_vars" name="dict_url_vars" value="">
                     <div class="modal-header">
                         <h4 class="modal-title">¿Seguro desea crear perfil administrativo para este usuario?</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -351,6 +418,56 @@
         </div>
     </div>
 
+    <div class="modal fade modalCarga" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel"
+         aria-hidden="true"
+         data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="mb-4"><i class="fa fa-certificate"></i> Generando certificados
+                        para {{ conference.title }}</h3>
+                    <div class="progress">
+                        <div id="loading-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                             role="progressbar" style="width: 0%;"></div>
+                    </div>
+                    <b id="loading-message">Cargando...</b><br><br>
+                    <br>
+                    <p class="text-warning"><i class="fa fa-info-circle"></i> ¡Estamos trabajando en tu solicitud! No
+                        cierres esta ventana por favor.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCrearEstudiante">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="frmestudiante" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <input type="hidden" id="id_dict_url_vars" name="dict_url_vars" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">¿Seguro desea crear/activar perfil usuario para este usuario?</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-primary m-b-0">
+                            <h5><i class="fa fa-info-circle"></i> Atención!</h5>
+                            <p>Estas a punto de crear/activar perfil usuario para '<b id="estudianteNombre"></b>'</p>
+                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="action" id="action">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><i class="fa fa-check-circle"></i> Crear</button>
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal"><i
+                                class="fa fa-window-close"></i> Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block jscript %}
@@ -383,65 +500,10 @@
                 dataType: "json"
             });
         }
-    </script>
-    <script>
 
-
-        function crearperfiladm(pk, nombre, accion, dict_url_vars = "") {
-            $('#frmAdmin #id').val(pk);
-            $('#frmAdmin #adminNombre').html(nombre);
-            $('#frmAdmin #action').val(accion);
-            $('#frmAdmin #id_dict_url_vars').val(dict_url_vars);
-            $('#modalCrearAdministrativo').modal({backdrop: 'static'}).modal('show');
-        }
-
-        function consultar(pk, nombre) {
-            $.ajax({
-                type: "GET",
-                url: "{{ ruta }}",
-                data: {'action': 'consultar', 'id': pk},
-                success: function (data) {
-                    if (data.result === true) {
-                        $('.tablaaqui').html(data.data)
-                        $('#frmConsulta #nombre').html(nombre);
-                        $('#modalConsulta').modal({backdrop: 'static'}).modal('show');
-                    } else {
-                        alert(data.mensaje);
-                    }
-                },
-                error: function () {
-                    alert("Error de conexión.");
-                },
-                dataType: "json"
-            });
-        }
-
-        function activarusu(pk, nombre, accion, dict_url_vars = "") {
-            $('#frmActivar #id').val(pk);
-            $('#frmActivar #elimNombre').html(nombre);
-            $('#frmActivar #action').val(accion);
-            $('#frmActivar #id_dict_url_vars').val(dict_url_vars);
-            $('#modalActivar').modal({backdrop: 'static'}).modal('show');
-        }
-
-        const modalChangePassword = $('#modalChangePassword');
-
-        function cambiarcontrasena(pk, nombre, dict_url_vars = "") {
-            modalChangePassword.find(".modal-header").children('h4').html(`Nueva Contraseña para ${nombre}`);
-            modalChangePassword.find(".modal-body").children('input[name=password]').val('');
-            modalChangePassword.find(".modal-body").children('input[name=pk]').val(pk.toString());
-            modalChangePassword.find(".modal-body").children('input[name=action]').val('change_password');
-            modalChangePassword.find('#id_dict_url_vars').val(dict_url_vars);
-            modalChangePassword.modal('show');
-        }
-
-        $(document).ready(function () {
-            $('.cloaked').inputCloak();
-        });
-
-        function eliminarajax(pk, nombre, accion, dict_url_vars = "", titulo = `Estas a punto de eliminar este registro ${nombre}`) {
+        function eliminarusuario(pk, nombre, accion) {
             Swal.fire({
-                title: titulo,
+                title: `Deseas desactivar el usuario ${nombre}`,
                 text: "Esta acción es irreversible",
                 type: 'warning',
                 showCancelButton: true,
@@ -453,66 +515,35 @@
             }).then((result) => {
                 if (result.value) {
                     pantallaespera();
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ reques.path }}',
-                        async: false,
-                        data: {
-                            csrfmiddlewaretoken: '{{ csrf_token }}',
-                            action: accion,
-                            id: pk,
-                            dict_url_vars: dict_url_vars,
-                        },
-                        dataType: "json",
-                        beforeSend: function () {
-                            pantallaespera();
-                        }
-                    }).done(function (data) {
-                        setTimeout($.unblockUI, 1);
+                    $.post("{{ request.path }}", {
+                        'action': accion,
+                        'id': pk
+                    }, function (data) {
+                        $.unblockUI();
                         if (data.error === false) {
                             location.reload();
+                        } else {
+                            alertaWarning(data.mensaje)
                         }
-                    }).fail(function (jqXHR, textStatus, errorThrown) {
-                        setTimeout($.unblockUI, 1);
-                        mensajeWarning('Error en el servidor');
-                    }).always(function () {
-                    });
+                    }, "json");
+                } else {
                 }
             })
         }
 
-
-        function verauditoria(id, mes, anio, persona) {
-            fecha = persona
-            pantallaespera();
-            $.ajax({
-                type: "GET",
-                url: "{{ ruta }}",
-                data: {'action': 'consultarauditoria', 'id': id},
-
-                success: function (data) {
-                    if (data.result === 'ok') {
-                        setTimeout($.unblockUI, 1);
-                        $('#ingresobono4').html(fecha);
-                        $(".panelbody4").html(data.data);
-                        $("#itemspanel5").modal({backdrop: 'static'}).modal('show');
-                    } else {
-                        setTimeout($.unblockUI, 1);
-                        smoke.alert(data.mensaje);
-                    }
-                },
-                error: function () {
-                    setTimeout($.unblockUI, 1);
-                    smoke.alert("Error de conexión.");
-                },
-                dataType: "json"
-            });
+        function activarusu(pk, nombre, accion) {
+            $('#frmActivar #id').val(pk);
+            $('#frmActivar #elimNombre').html(nombre);
+            $('#frmActivar #action').val(accion);
+            $('#modalActivar').modal({backdrop: 'static'}).modal('show');
         }
 
-        function verExperiencia(title, expText) {
-            $('#modalExpTitulo').html(title);
-            $('.detalleExp').html(`<p>${expText}</p>`);
-            $('#modalExp').modal({backdrop: 'static'}).modal('show');
+
+        function crearperfilestudiante(pk, nombre, accion) {
+            $('#frmestudiante #id').val(pk);
+            $('#frmestudiante #estudianteNombre').html(nombre);
+            $('#frmestudiante #action').val(accion);
+            $('#modalCrearEstudiante').modal({backdrop: 'static'}).modal('show');
         }
 
         $(function () {
@@ -522,6 +553,169 @@
                     action: 'preview_certificado', 'id': id
                 }, '_blank');
             });
+
+            $(".certificado_view_save_pdf").click(function () {
+                var id = $(this).attr('idi');
+                openwindow('POST', '{{ request.path }}', {
+                    action: 'gen_certificado', 'pk': id
+                }, '_blank');
+            });
+
+            $(".descargarcertificados").click(function () {
+                Swal.fire({
+                    html: `¿Está a punto de descargar {{ totgenerados }} certificados?`,
+                    text: "Esta acción es irreversible",
+                    type: 'warning',
+                    showCancelButton: true,
+                    allowOutsideClick: false,
+                    confirmButtonText: 'Sí, deseo hacerlo',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.value) {
+                        openwindow('GET', '{{ request.path }}', {
+                            action: 'download_certificados_zip',
+                            id: '{{ conference.id }}',
+                        }, '_blank');
+                    }
+                })
+            });
         })
+
+        const CONFIG = {
+            baseUrl: '{{ request.path }}',
+            csrf: '{{ csrf_token }}'
+        };
+
+
+        function showLoadingModal(message, progress = 0) {
+            $('#loading-message').text(message);
+            $('#loading-progress-bar').css('width', `${progress}%`);
+            $('#loadingModal').modal('show');
+        }
+
+
+        function updateLoadingModal(message, progress) {
+            $('#loading-message').text(message);
+            $('#loading-progress-bar').css('width', `${progress}%`);
+        }
+
+        function hideLoadingModal() {
+            $('#loadingModal').modal('hide');
+        }
+
+        function showMessage(type, message) {
+            const messageFunction = type === 'success' ? mensajeSuccess : mensajeDanger;
+            messageFunction(message);
+        }
+
+
+        async function fetchInscritos(pk) {
+            try {
+                const response = await $.ajax({
+                    url: CONFIG.baseUrl,
+                    method: 'GET',
+                    data: {action: 'fecth_inscritos', pk}
+                });
+
+                if (response.error) {
+                    throw response.message;
+                }
+                return response.data;
+            } catch (error) {
+                if (error.responseJSON) {
+                    throw error.responseJSON.message || 'Error en la respuesta del servidor';
+                }
+                if (typeof error === 'string') {
+                    throw error;
+                }
+                throw `Error al generar certificados: ${error.message || error}`;
+            }
+        }
+
+
+        async function processInscrito(inscritoid) {
+            try {
+                const response = await $.ajax({
+                    url: CONFIG.baseUrl,
+                    method: 'POST',
+                    data: {
+                        action: 'gen_certificado',
+                        type: '2',
+                        csrfmiddlewaretoken: CONFIG.csrf,
+                        pk: inscritoid
+                    }
+                });
+
+                if (response.error) {
+                    throw new Error(response.message);
+                }
+                return response;
+            } catch (error) {
+                if (error.responseJSON) {
+                    throw error.responseJSON.message;
+                }
+                throw error.message || 'Error en el servidor';
+            }
+        }
+
+        async function processBatch(queryset) {
+            const total = queryset.length;
+
+            for (let i = 0; i < total; i++) {
+                const inscrito = queryset[i];
+                const nombreCompleto = `${inscrito.persona__first_name} ${inscrito.persona__last_name}`;
+
+                updateLoadingModal(
+                    `Generando certificado ${i + 1}/${total} - ${nombreCompleto}...`,
+                    Math.floor((i / total) * 100)
+                );
+
+                try {
+                    await processInscrito(inscrito.id);
+                } catch (error) {
+                    throw `Error al generar certificado ${nombreCompleto}: ${error}`;
+                }
+            }
+        }
+
+        async function iniciarProcess(pk) {
+            showLoadingModal('Cargando Inscrito...', 0);
+
+            try {
+                const queryset = await fetchInscritos(pk);
+                await processBatch(queryset);
+
+                updateLoadingModal('Proceso completado.', 100);
+                setTimeout(() => {
+                    hideLoadingModal();
+                    showMessage('success', 'Proceso finalizado');
+                }, 1000);
+            } catch (error) {
+                showMessage('danger', error);
+                hideLoadingModal();
+            } finally {
+                setTimeout(() => {
+                    hideLoadingModal();
+                }, 1000);
+            }
+        }
+
+        function genCertificadosMasivo(pk) {
+            Swal.fire({
+                title: '¿Estás seguro de que deseas generar los certificados para la conferencia {{ conference.title }}?',
+                text: 'Esta acción es irreversible',
+                type: 'warning',
+                showCancelButton: true,
+                allowOutsideClick: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, deseo hacerlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    iniciarProcess(pk);
+                }
+            });
+        }
     </script>
 {% endblock %}

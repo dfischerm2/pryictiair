@@ -46,4 +46,17 @@ def conviert_html_to_pdf(template_src, context_dict):
 
 
 
+def conviert_html_to_pdfsaveqrcertificado(template_src, context_dict, filename):
+    template = get_template(template_src)
+    html = template.render(context_dict).encode(encoding="UTF-8")
+    result = StringIO.BytesIO()
+    output_folder = os.path.join(MEDIA_ROOT, 'certificados')
+    filepdf = open(output_folder + os.sep + filename, "w+b")
+    pdf1 = pisa.pisaDocument(StringIO.BytesIO(html), encoding='utf-8', dest=filepdf, link_callback=link_callback)
+    pisaStatus = pisa.CreatePDF(StringIO.BytesIO(html), result,encoding='utf-8', link_callback=link_callback)
+    if not pdf1.err:
+        return True
+    return JsonResponse({"result": "bad", "mensaje": u"Problemas al ejecutar el reporte."})
+
+
 

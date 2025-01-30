@@ -3,6 +3,12 @@
 
 {% block head %}
     <link rel="stylesheet" href="/static/landing.css">
+    <style>
+        .img-landing {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -406,6 +412,85 @@
                             {% endfor %}
                         </ul>
                     </div>
+                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="cameraready">
+                        <h1>Camera Ready</h1>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
+                    <div class="de_tab_content text-left">
+                        <div id="tab1" class="tab_single_content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p><b>Dear Authors,</b> <br>
+                                        We would like to congratulate you for the acceptance of your paper. Your
+                                        contribution will be very important for the academic community. However, to
+                                        formalize the publication of your document on IET editorial, you need to comply
+                                        with 2 phases, and submit your final version by February 16, 2025:
+                                    </p>
+                                    <ol>
+                                        <li>Paper style adjustment according to the IET conference paper template
+                                        </li>
+                                        <li>Final version submission to CMT platform</li>
+                                    </ol>
+                                    <h4>Phase 1. Paper style adjustment according to the IET conference paper
+                                        template</h4>
+                                    <p><b>1.</b> At this stage it is needed to adjust the paper style according to the
+                                        IET
+                                        format: Title, Authors, Affiliation and Keywords, see Figure 1. Note that:
+                                    </p>
+                                    <ol>
+                                        <li>Both title and keywords and in CAPITAL LETTERS</li>
+                                        <li>Authors are in <b>bold letters</b> and italic letters</li>
+                                        <li>Affiliations are in italic letters</li>
+                                    </ol>
+                                    <p><b>2. </b>Please, be attentive to the information of the authors and
+                                        affiliations.</p>
+                                    <p><b>3. </b>Use the IET reference style. Some examples are provided in the Word
+                                        template.
+                                        Users of Latex/Overleaf are strongly suggested to use the .bst file included in
+                                        the Latex template, which is ready for using the \bibliographystyle environment.
+                                        For example:</p>
+                                    <p><b>4. </b>Consider that you must adhere to the <b>Page Length</b></p>
+                                    <p>The paper should be between <b>4 and 6</b> double-column pages. Beyond this
+                                        length, a
+                                        charge per additional page will be applied. The maximum number of pages allowed
+                                        is <b>8</b>.</p>
+                                    <p>Please, go to the Menu <b>“For Authors/Templates”</b>. Papers without
+                                        following the required formatting will not be published in the conference
+                                        proceedings.</p>
+                                    <h4>Phase 2. Final version submission on CMT platform</h4>
+                                    <p><b>1. </b>Login to the submission center <b>CMT through the ICTIAIR 2025 web
+                                        page</b> in the Menu <b>“For Authors/ Submit your
+                                        paper”</b>, or
+                                        go directly on <a href="https://shorturl.at/5roLU" target="_blank"
+                                                          class="btn-link">https://shorturl.at/5roLU</a></p>
+                                    <p><b>2. </b>Once the formatting issues are solved and the reviewers’ suggestions
+                                        are included, if apply, click on the <b>“create camera ready submission”</b>
+                                        button</p>
+                                    <p><b>3. </b>Update your author information in the space in Figure 4, if needed,
+                                        such as title, abstract, author information. Note that on this point, <b>only
+                                            minor changes are allowed </b>in this metadata</p>
+                                    <p><b>4. </b> inally, upload your final version and submit it.
+                                        You can upload from 1 to 3 files. Maximum file size is 3 Mb. We accept <b>doc,
+                                            docx, pdf</b> formats
+                                    </p>
+                                    <ul class="list-group list-group-flush" id="template_cameraready">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div class="file-info">
+                                                <img src="/static/images/landing/doc.png" class="file-icon"
+                                                     alt="Camera ready Icon">
+                                                <span>Camera Ready Guide</span>
+                                            </div>
+                                            <a href="/static/Guidelines.docx" download="Guidelines.docx"
+                                               class="btn btn-primary btn-lg" target="_blank">
+                                                <i class="fa fa-download"></i> Download the full guide
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -547,6 +632,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
                                                     {% if cp.linkedin %}{{ cp.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                                  class="btn btn-primary btn-rounded btn-mini"><i
                                                     class="fa fa-linkedin"></i></a></h4>
@@ -620,6 +718,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
                                                         {% if c.linkedin %}{{ c.linkedin }}{% else %}javascript:void(0){% endif %}"
                                                                     class="btn btn-primary btn-rounded btn-mini"><i
                                                         class="fa fa-linkedin"></i></a></h4>
@@ -656,7 +767,7 @@
                                 <div style="background: #101010!important;"
                                      class="pricing-s1 mb30 wow fadeInUp h-100 w-100 d-flex flex-column">
                                     <div class="top">
-                                    {% if item.special_price %}
+                                        {% if item.special_price %}
                                             Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)<br>
                                         {% endif %}
                                         <h2>{{ item.get_role_display }}</h2>

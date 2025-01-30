@@ -110,8 +110,6 @@ class Usuario(AbstractUser, ModeloBase):
     def es_persona(self):
         return self.perfilpersona_set.filter(status=True).exists()
 
-
-
     def get_perfil_adm(self):
         return self.perfiladministrativo_set.filter(status=True).first()
 

@@ -21,7 +21,7 @@ def index(request):
     from landing.models import Summary, GuidelineType, TopicCategory, CommitteeCategory, SponsorCategory, ImportantDate, \
         CallForPapers
     data = {
-        'titulo': 'Landing page',
+        'titulo': 'Home',
         'ruta': request.path,
         'fecha': datetime.now(),
     }

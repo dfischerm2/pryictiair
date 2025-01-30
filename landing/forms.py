@@ -338,7 +338,6 @@ class ScheduleConferenceForm(ModelFormBase):
                 self.fields[k].widget.attrs['col'] = "12"
 
 
-
 class DetailScheduleConferenceForm(ModelFormBase):
     class Meta:
         model = DetailScheduleConference

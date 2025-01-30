@@ -47627,3 +47627,85 @@ table thead tr th {
     background-color: #f5f5f5 !important;
     border-color: #e4e7ea !important;
 }
+
+.dropdown-sublevel {
+    position: relative;
+}
+
+.dropdown-sublevel .dropdown-menu {
+    top: 0;
+    right: 100%;
+    margin-top: -1px;
+    min-width: 250px;
+}
+
+.dropdown-sublevel > a::after {
+    content: '\f078';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-left: 5px;
+    float: right;
+    transform: rotate(0deg); /* Ícono apuntando hacia abajo por defecto */
+    transition: transform 0.2s ease;
+}
+
+.dropdown-sublevel > a.active::after {
+    transform: rotate(-180deg); /* Gira 180 grados cuando está activo */
+}
+
+.dropdown-sublevel .dropdown-menu .dropdown-item {
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.4;
+    padding: 8px 12px;
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+    .dropdown-sublevel:hover > .dropdown-menu {
+        display: block;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .dropdown-sublevel .dropdown-menu {
+        position: absolute;
+        top: 0;
+        right: 25%;
+        min-width: 200px;
+        max-width: calc(100vw - 60px);
+        background: #fff;
+        border: 1px solid rgba(0,0,0,.15);
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        z-index: 1001;
+    }
+
+    .dropdown-sublevel.show > .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .dropdown-sublevel .dropdown-menu .dropdown-item {
+        padding: 8px 15px;
+        border: none;
+        background: transparent;
+        font-size: 0.9em;
+    }
+
+    .dropdown-sublevel .dropdown-menu .dropdown-item:hover {
+        background: rgba(0,0,0,0.03);
+    }
+}
+
+.dropdown-sublevel-button {
+    cursor: pointer !important;
+    user-select: none;
+    width: 100%;
+    display: block;
+    position: relative;
+}
