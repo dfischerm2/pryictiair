@@ -133,7 +133,7 @@ def myProfileView(request):
             elif action == 'inscriptions':
                 try:
                     # filtros, url_vars = Q(status=True), f'&action={action}'
-                    filtros, url_vars = Q(status=True, user=persona), f'&action={action}'
+                    filtros, url_vars = Q(status=True, persona=persona), f'&action={action}'
                     data['title'] = 'My Inscriptions'
                     listado = InscripcionConference.objects.filter(filtros)
                     data["list_count"] = listado.count()
