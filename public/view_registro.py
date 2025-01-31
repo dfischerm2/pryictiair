@@ -102,8 +102,6 @@ def registerView(request):
                         subject = f'¡Welcome to ICTIAIR – Registration Complete!'
                         to = user_.email
                         send_html_mail(subject, "email/registro_usuario.html", datos, [to], [], [])
-                    if not request.user.is_authenticated:
-                        login(request, user_)
 
                     if Pedido.objects.filter(user=user_, status=True, estado='PENDIENTE', cuota__conference=filtro.conference).exists():
                         raise NameError('You already have a pending request awaiting approval for this event.')
@@ -159,6 +157,8 @@ def registerView(request):
                     subject = f'¡Order Received!'
                     to = user_.email
                     send_html_mail(subject, "email/pedido_recibido.html", datos, [to], [], [])
+                    if not request.user.is_authenticated:
+                        login(request, user_)
                     log(f"Registró pedido para evento {pedido.__str__()}", request, "add", obj=pedido.id, user=user_)
                     messages.success(request, f'Your registration has been successfully completed. You will receive an email with the details of your registration.')
                     res_json.append({'error': False, 'to': '/'})
