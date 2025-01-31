@@ -51,8 +51,11 @@ def registerView(request):
                     first_name, last_name, email, country, institution = form.cleaned_data['first_name'].strip(), form.cleaned_data['last_name'].strip(), form.cleaned_data['email'].strip(), form.cleaned_data['country'], form.cleaned_data['institution'].strip()
 
                     if filtro.role == 1:
-                        details = request.POST.get('papers', [])
+                        details = request.POST.get('papers', None)
                         if not details:
+                            raise NameError('You must add at least 1 paper to be able to register your registration for the event')
+                        details_ = json.loads(details)
+                        if len(details_) == 0:
                             raise NameError('You must add at least 1 paper to be able to register your registration for the event')
                     elif filtro.role == 3 or filtro.special_price:
                         if not 'archivo_evidencia' in request.FILES:
