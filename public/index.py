@@ -96,7 +96,7 @@ def index_copy(request):
     from landing.models import Summary, GuidelineType, TopicCategory, CommitteeCategory, SponsorCategory, ImportantDate, \
         CallForPapers, PrincipalCarrousel
     data = {
-        'titulo': 'Landing page',
+        'titulo': 'Home',
         'ruta': request.path,
         'fecha': datetime.now(),
     }
