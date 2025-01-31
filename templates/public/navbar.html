@@ -42,7 +42,7 @@
                             </li>
                         </ul>
                     </li>
-                    {% if not request.user.is_is_authenticated %}
+                    {% if not request.user.is_authenticated %}
                         <li>
                             <a href="{% if request.path == '/' %}/#section-register{% else %}/{% endif %}">Register<span></span></a>
                         </li>
