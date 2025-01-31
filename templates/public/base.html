@@ -8,7 +8,8 @@
     <title>{{ titulo }} | {{ nombreempresa }}</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
     <meta name="description" content="{{ nombreempresa }}">
-    <meta name="keywords" content="ICTIAIR, congreso internacional, inteligencia artificial, investigación, tecnología, evento académico, autores, innovación tecnológica, AI research, call for papers, conferencia internacional, UNEMI, International Conference on Technological Innovation and AI Research">
+    <meta name="keywords"
+          content="ICTIAIR, congreso internacional, inteligencia artificial, investigación, tecnología, evento académico, autores, innovación tecnológica, AI research, call for papers, conferencia internacional, UNEMI, International Conference on Technological Innovation and AI Research">
     <meta name="theme-color" content="#2874A6">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://ictiair.tiacon.org/">
@@ -304,9 +305,15 @@
 <link rel="stylesheet" href="/static/assets/plugins/switchery/switchery.min.css">
 
 <script>
+    window.onload = function () {
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire('{{ message }}', '{{ nombreempresa }}', '{% if message.tags %}{{ message.tags }}{% endif %}');
+            {% endfor %}
+        {% endif %}
+    }
 
     jQuery(document).ready(function () {
-        // revolution slider
         jQuery("#slider-revolution").revolution({
             sliderType: "standard",
             sliderLayout: "fullwidth",
@@ -333,14 +340,6 @@
             disableProgressBar: "on"
         });
     });
-
-   window.onload = function () {
-        {% if messages %}
-            {% for message in messages %}
-                Swal.fire('{{ message }}', '{{ nombreempresa }}', '{% if message.tags %}{{ message.tags }}{% endif %}');
-            {% endfor %}
-        {% endif %}
-    }
 
 
     function pantallaespera() {

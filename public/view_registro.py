@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
+from area_geografica.models import Pais
 from autenticacion.models import Usuario, PerfilPersona
 from core.custom_models import FormError
 from core.email_config import send_html_mail
@@ -161,8 +162,7 @@ def registerView(request):
                         login(request, user_)
                     log(f"Registró pedido para evento {pedido.__str__()}", request, "add", obj=pedido.id, user=user_)
                     messages.success(request, f'Your registration has been successfully completed. You will receive an email with the details of your registration.')
-                    res_json.append({'error': False, 'to': '/'})
-
+                    res_json.append({'error': False, 'to': '/profile/?action=payments'})
         except ValueError as ex:
             res_json.append({'error': True, "message": str(ex)})
         except FormError as ex:
@@ -173,7 +173,17 @@ def registerView(request):
     elif request.method == 'GET':
         if 'action' in request.GET:
             data["action"] = action = request.GET['action']
-            pass
+            if action == 'buscarpais':
+                try:
+                    search = request.GET.get('q', '').strip()
+                    queryset = Pais.objects.filter(status=True).order_by('nombre')
+                    if search:
+                        queryset = queryset.filter(nombre__icontains=search)
+                    data = {"result": "ok", "results": [{"id": x.pk, "name": f"{x.__str__()}"} for x in queryset.distinct()[:10]]}
+                    return JsonResponse(data)
+                except Exception as ex:
+                    data = {"result": "ok", "results": []}
+                    return JsonResponse(data)
 
         id = request.GET.get('id', '')
         if not id:
@@ -188,9 +198,15 @@ def registerView(request):
             dict['first_name'] = request.user.first_name
             dict['last_name'] = request.user.last_name
             dict['email'] = request.user.email
-            dict['country'] = request.user.ciudad.id if request.user.ciudad else None
+            dict['country'] = request.user.pais.id if request.user.pais else None
             dict['institution'] = request.user.institucion
 
-        data['form'] = RegisterUserForm(initial=dict)
+        data['form'] = form = RegisterUserForm(initial=dict)
+        if request.user.is_authenticated and request.user.pais:
+            form.fields['country'].queryset = Pais.objects.filter(pk=request.user.pais.id)
+        else:
+            form.fields['country'].queryset = Pais.objects.none()
+
+
 
         return render(request, 'public/landing/register.html', data)

@@ -42,7 +42,11 @@
                             </li>
                         </ul>
                     </li>
-
+                    {% if not request.user.is_is_authenticated %}
+                        <li>
+                            <a href="{% if request.path == '/' %}/#section-register{% else %}/{% endif %}">Register<span></span></a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a href="{% if request.path == '/' %}/#section-topics{% else %}/s{% endif %}">Topics<span></span></a>
                     </li>
@@ -64,9 +68,6 @@
                         US<span></span></a></li>
                     {% if not request.user.is_authenticated %}
                         <li><a href="/login/">Login<span></span></a></li>
-                        <li>
-                            <a href="{% if request.path == '/' %}/#section-register{% else %}/{% endif %}">Register<span></span></a>
-                        </li>
                     {% else %}
                         <li><a href="javascript:void(0)">Hello, {{ request.user.primernombre }}<span></span></a>
                             <ul>

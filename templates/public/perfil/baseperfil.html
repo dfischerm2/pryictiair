@@ -125,6 +125,14 @@
 {% block jscript %}
     <script src="/static/js/forms.js?version=11"></script>
     <script>
+        window.onload = function () {
+            {% if messages %}
+                {% for message in messages %}
+                    Swal.fire('{{ message }}', '{{ nombreempresa }}', '{% if message.tags %}{{ message.tags }}{% endif %}');
+                {% endfor %}
+            {% endif %}
+        }
+
         function formModal(id, text, action,) {
             pantallaespera()
             $.ajax({

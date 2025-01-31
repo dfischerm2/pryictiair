@@ -35,6 +35,7 @@ if __name__ == '__main__':
                             ciudad = Ciudad.objects.get(nombre=nciudad, provincia_id=estado.pk, status=True)
                         else:
                             ciudad = Ciudad.objects.create(nombre=nciudad, provincia_id=estado.pk)
-
+                print(f'Pais: {pais.nombre}')
+            print('Proceso terminado')
     except Exception as ex:
         print("Error: " + str(ex))
