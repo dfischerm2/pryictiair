@@ -37,7 +37,8 @@
                                 <a href="{% if request.path == '/' %}/#callforpapers{% else %}/{% endif %}">Templates</a>
                             </li>
                             <li>
-                                <a href="{% if request.path == '/' %}/#cameraready{% else %}/{% endif %}">Camera Ready</a>
+                                <a href="{% if request.path == '/' %}/#cameraready{% else %}/{% endif %}">Camera
+                                    Ready</a>
                             </li>
                         </ul>
                     </li>
@@ -63,6 +64,9 @@
                         US<span></span></a></li>
                     {% if not request.user.is_authenticated %}
                         <li><a href="/login/">Login<span></span></a></li>
+                        <li>
+                            <a href="{% if request.path == '/' %}/#section-register{% else %}/{% endif %}">Register<span></span></a>
+                        </li>
                     {% else %}
                         <li><a href="javascript:void(0)">Hello, {{ request.user.primernombre }}<span></span></a>
                             <ul>
@@ -79,7 +83,6 @@
                             </ul>
                         </li>
                     {% endif %}
-                    {#                    <li><a href="/register/">Register<span></span></a></li>#}
                 </ul>
             </div>
         </div>
