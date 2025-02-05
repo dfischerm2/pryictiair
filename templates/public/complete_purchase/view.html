@@ -5,8 +5,24 @@
     <link rel="stylesheet" href="/static/profile_views.css">
     <script src="/static/fontawesome-6.6.0/js/all.js"></script>
     <link rel="stylesheet" href="/static/fontawesome-6.6.0/css/all.min.css">
-    {% block extrahead %}
-    {% endblock %}
+    <style>
+        .fs-sm {
+            font-size: 0.8rem;
+        }
+
+        .select2-selection {
+            height: 50px !important;
+            padding-top: 10px;
+        }
+
+        .fw-medium {
+            font-size: 18px !important;
+        }
+
+        .text-body {
+            font-size: 14px !important;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -72,16 +88,82 @@
                                                    value="{{ order.user.institucion|default:'' }}">
                                         </div>
                                     </div>
+                                    {#                                    <div class="col-lg-12">#}
+                                    {#                                        <label for="invoiceOption">Do you#}
+                                    {#                                            need an#}
+                                    {#                                            electronic invoice?<span#}
+                                    {#                                                    style="color:red;margin-left:2px;"><strong>*</strong></span>#}
+                                    {#                                            :</label>#}
+                                    {#                                        <select id="invoiceOption" class="form-control select2" name="invoiceOption">#}
+                                    {#                                            <option value="" disabled selected>Select an option</option>#}
+                                    {#                                            {% for i in INVOICE_OPTIONS %}#}
+                                    {#                                                <option value="{{ i.0 }}">{{ i.1 }}</option>#}
+                                    {#                                            {% endfor %}#}
+                                    {#                                        </select>#}
+                                    {#                                    </div>#}
+                                    <div class="col-lg-12 mt-2">
+                                        <div class="form-check">
+                                            <label class="form-check-label ms-2" for="factura-info">
+                                                ¿Do you want the invoice to be generated with different details than
+                                                those in your user account?
+                                            </label>
+
+                                            <input type="checkbox" class="form-check-input" id="factura-info">
+                                        </div>
+                                    </div>
+                                    <div id="billing-details" style="display: none;">
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="billing_name" class="form-label">Name or Business Name
+                                                        <span style="color:red;margin-left:2px;"><strong>*</strong></span></label>
+                                                    <input type="text" class="form-control" id="billing_name"
+                                                           name="billing_name">
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="billing_tax_id" class="form-label">Tax ID (RUC, NIF,
+                                                        etc.) <span
+                                                                style="color:red;margin-left:2px;"><strong>*</strong></span></label>
+                                                    <input type="text" class="form-control" id="billing_tax_id"
+                                                           name="billing_tax_id">
+                                                </div>
+
+                                                <div class="col-12 mb-3">
+                                                    <label for="billing_address" class="form-label">Address <span
+                                                            style="color:red;margin-left:2px;"><strong>*</strong></span></label>
+                                                    <input type="text" class="form-control" id="billing_address"
+                                                           name="billing_address">
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="billing_email" class="form-label">Email Address <span
+                                                            style="color:red;margin-left:2px;"><strong>*</strong></span></label>
+                                                    <input type="email" class="form-control" id="billing_email"
+                                                           name="billing_email">
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="billing_phone" class="form-label">Phone Number
+                                                        (optional)</label>
+                                                    <input type="tel" class="form-control" id="billing_phone"
+                                                           name="billing_phone">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="col-lg-12">
                                         <div class="form-group p-1">
                                             <label class="form-label" for="id_first_name">Observation for payment
                                                 (Optional):</label><br>
-                                            <textarea name="observacion" class="form-control" rows="5"></textarea>
+                                            <textarea name="observacion" id="observaciones" class="form-control"
+                                                      rows="5"></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-5">
+                            <div class="col-lg-6">
                                 <h3>Order summary</h3>
                                 <h6 class="fw-normal text-body text-uppercase">3.<span
                                         class="text-decoration-underline ms-1">Detail</span></h6>
@@ -98,7 +180,8 @@
                                                             UCLM))</b>
                                                     </h3>
                                                 {% endif %}
-                                                <h3 class="h6 mb-2">Conference: {{ order.cuota.conference.title }} </h3>
+                                                <h3 class="h6 mb-2">
+                                                    Conference: {{ order.cuota.conference.title }} </h3>
                                             </div>
                                         </div>
                                     </div>
@@ -108,13 +191,18 @@
                                     {% for l in order.get_papers %}
                                         <div class="d-flex align-items-center justify-content-between border-top pt-2 py-1">
                                             <span>
-                                                <b>ID: </b>{{ l.id }}
+                                                <b>ID: </b>{{ l.id }} <span
+                                                    class="text-warning fs-sm">{% if l.principal %} (Main) {% else %}
+                                                (Additional){% endif %}</span>
                                             </span>
                                             <span>
                                             {{ l.title }}
                                             </span>
                                             <span>
                                                 {{ l.sheets }} Sheets
+                                            </span>
+                                            <span>
+                                                $ {{ l.value|floatformat:2 }}
                                             </span>
                                         </div>
                                     {% endfor %}
@@ -137,16 +225,72 @@
                                 <h6 class="fw-normal text-body text-uppercase pt-2">4.<span
                                         class="text-decoration-underline ms-1">Payment method</span></h6>
                                 <div class="form-check mb-4">
-                                    <input class="form-check-input metodo_pago" type="radio" name="metodo_pago" required
+                                    <input class="form-check-input metodo_pago" type="radio" name="metodo_pago"
+                                           required
                                            id="id_metodo_pago_transferencia" value="TRANSFERENCIA_BANCARIA">
-                                    <label class="form-check-label" for="id_metodo_pago_transferencia"><span><span
-                                            class="d-block text-dark fw-medium mb-1">Bank Transfer / Deposit</span><span
-                                            class="text-body">Pay from your preferred bank.</span></span></label><br>
-                                    <input class="form-check-input metodo_pago" type="radio" name="metodo_pago" required
-                                           id="id_metodo_pago_paypal" value="PAYPAL">
-                                    <label class="form-check-label" for="id_metodo_pago_paypal"><span><span
-                                            class="d-block text-dark fw-medium mb-1">Paypal</span><span
-                                            class="text-body">Pay from the platform.</span></span></label><br>
+                                    <label class="form-check-label" for="id_metodo_pago_transferencia">
+                                    <span>
+                                        <span class="d-block text-dark fw-medium mb-1">Bank Transfer / Deposit</span>
+                                        <span class="text-body">For national payments (ECUADOR).</span>
+                                    </span>
+                                    </label>
+                                    <br>
+
+                                    <div id="cuentas_bancarias_container" style="display: none;">
+                                        {% for c in cuentas_bancarias %}
+                                            <div class="card mb-2">
+                                                <div class="card-body">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input cuenta_bancaria" type="radio"
+                                                               name="cuenta_bancaria" required
+                                                               id="cuenta_bancaria_{{ forloop.counter }}"
+                                                               value="{{ c.id }}">
+                                                        <label class="form-check-label w-100"
+                                                               style="cursor: pointer;"
+                                                               for="cuenta_bancaria_{{ forloop.counter }}">
+                                                            <div class="row no-gutters d-flex align-items-center">
+                                                                <div class="col-auto text-right">
+                                                                    <img style="width: 80px;height: 80px;object-fit: contain;"
+                                                                         src="{{ c.ent_fin.get_logo }}"
+                                                                         class="img-fluid rounded" alt="">
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="card-block px-2">
+                                                                        <div class="card-title"
+                                                                             style="font-size: 12px;">{{ c.ent_fin.nombre }}</div>
+                                                                        <div class="card-text"
+                                                                             style="font-size: 12px;">
+                                                                            <b>{{ c.num_cuenta }}</b>
+                                                                            ({{ c.get_tipo_display }})
+                                                                            <div>
+                                                                                {{ c.get_tipo_documento_display }} {{ c.documento }}
+                                                                            </div>
+                                                                            <div>
+                                                                                {{ c.nombres }}
+                                                                            </div>
+                                                                            <div style="text-transform: lowercase;">
+                                                                                {{ c.email|default:''|lower }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    {#                                    <input class="form-check-input metodo_pago" type="radio" name="metodo_pago" required#}
+                                    {#                                           id="id_metodo_pago_paypal" value="PAYPAL">#}
+                                    <label class="form-check-label" for="id_metodo_pago_paypal">
+                                    <span>
+                                        <span class="d-block text-dark fw-medium mb-1">Paypal <span
+                                                class="ms-2 text-danger">* Available soon.</span></span>
+                                        <span class="text-body">Pay from the platform. (for international payments)</span>
+                                    </span>
+                                    </label>
                                 </div>
                                 <div class=" d-lg-block pt-2 mt-n3">
                                     <div class="form-check mb-1 mt-1">
@@ -155,8 +299,9 @@
                                                 class="btn-link" href="/termsandconditions/" target="_blank">privacy
                                             policy</a></label>
                                     </div>
-                                    <button class="btn btn-lg btn-success" id="submit" type="submit">Complete Order
-                                    </button>
+                                    <a class="btn btn-lg btn-success" href="javascript:void(0)"
+                                       onclick="completeOrder('{{ order.pk|encrypt }}')">Complete Order
+                                    </a>
 
                                 </div>
                             </div>
@@ -184,11 +329,103 @@
         </div>
     </div>
 
+
+
+    <div class="modal fade" id="modalPagoTransferencia" tabindex="-1" aria-labelledby="modalPagoTransferenciaNombre"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}" class="needs-validation"
+                      id="frmPago">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <i class="fa fa-money-bill me-2"></i>
+                            <b id="modalPagoTransferenciaNombre"></b>
+                        </h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body detalleModalTransferencia">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block jscript %}
+    <link href="/static/selectmultiple/select2.min.css?1" rel="stylesheet">
+    <script src="/static/selectmultiple/select2.min.js"></script>
     <script src="/static/js/forms.js?version=11"></script>
     <script>
+        $(document).ready(function () {
+            const $container = $('#cuentas_bancarias_container');
+            const $metodoPagoInputs = $('.metodo_pago');
+            const $cuentaBancariaInputs = $('.cuenta_bancaria');
+            const $billingDetails = $('#billing-details');
+            const $facturaInfo = $('#factura-info');
+
+            $facturaInfo.on('change', function () {
+                if ($(this).is(':checked')) {
+                    $billingDetails.slideDown(300);
+                    $billingDetails.find('input').prop('required', true);
+                } else {
+                    $billingDetails.slideUp(300);
+                    $billingDetails.find('input').prop('required', false);
+                    $billingDetails.find('input').val('');
+                }
+            });
+
+            function toggleCuentasBancarias() {
+                const isTransferencia = $('#id_metodo_pago_transferencia').is(':checked');
+
+                if (isTransferencia) {
+                    $container.slideDown(300);
+                } else {
+                    $container.slideUp(300);
+                    $cuentaBancariaInputs.prop('checked', false);
+                }
+            }
+
+            $metodoPagoInputs.on('change', toggleCuentasBancarias);
+
+            toggleCuentasBancarias();
+
+        })
+
+        $(function () {
+            $('.metodo_pago').on('change', function () {
+                var valor_ = $(this).val();
+                if (valor_ === 'TRANSFERENCIA_BANCARIA') {
+                    $('.impuesto_').html('{{ SIMBOLO_MONEDA }}0,00');
+                    $('.total_').html('{{ SIMBOLO_MONEDA }}{{ subtotal_aplicable|floatformat:2 }}');
+                } else {
+                    $('.impuesto_').html('{{ SIMBOLO_MONEDA }}{{ impuesto_pago_online|floatformat:2 }}');
+                    $('.total_').html('{{ SIMBOLO_MONEDA }}{{ total|floatformat:2 }}');
+                }
+            });
+
+        })
+
+        function toggleDropdown(event, button) {
+            event.stopPropagation();
+            document.querySelectorAll(".dropdown-menu").forEach(menu => {
+                menu.style.display = "none";
+            });
+
+            let menu = button.nextElementSibling;
+            menu.style.display = "block";
+        }
+
+        document.addEventListener("click", function () {
+            document.querySelectorAll(".dropdown-menu").forEach(menu => {
+                menu.style.display = "none";
+            });
+        });
+
         function formModal(id, text, action,) {
             pantallaespera()
             $.ajax({
@@ -216,35 +453,89 @@
             });
         }
 
-        function toggleDropdown(event, button) {
-            event.stopPropagation();
+        function completeOrder(id) {
+            const paymentMethod = $('input[name="metodo_pago"]:checked');
+            const termsandconditions = $('#save-info');
 
-            document.querySelectorAll(".dropdown-menu").forEach(menu => {
-                menu.style.display = "none";
-            });
+            if (!termsandconditions.is(':checked')) {
+                mensajeWarning('You must accept the terms and conditions.');
+                return;
+            }
 
-            let menu = button.nextElementSibling;
-            menu.style.display = "block";
+            if (paymentMethod.length === 0) {
+                mensajeWarning('Select a valid payment method.');
+                return;
+            }
+
+            const paymentMethodval = paymentMethod.val();
+
+            if (paymentMethodval === 'TRANSFERENCIA_BANCARIA') {
+                const selectedAccount = $('input[name="cuenta_bancaria"]:checked');
+
+                if (selectedAccount.length === 0) {
+                    mensajeWarning('Please select a bank account for the transfer.');
+                    return;
+                }
+
+                pantallaespera();
+                $.ajax({
+                    type: "GET",
+                    url: `{{ request.path }}`,
+                    data: {
+                        'action': 'pago_transferencia',
+                        'id': id,
+                        'cuenta_id': selectedAccount.val() || 0,
+                    },
+                    success: function (data) {
+                        setTimeout($.unblockUI, 1);
+                        if (data.result === true) {
+                            $('#modalPagoTransferenciaNombre').html('Upload your transaction receipt to complete your order.');
+                            $('.detalleModalTransferencia').html(data.data);
+                            $('#modalPagoTransferencia').modal({backdrop: 'static'}).modal('show');
+                        } else {
+                            mensajeWarning(data.message);
+                        }
+                    },
+                    error: function () {
+                        setTimeout($.unblockUI, 1);
+                        mensajeWarning("Error de conexión.");
+                    },
+                    dataType: "json"
+                });
+            } else if (paymentMethodval === 'PAYPAL') {
+                // Lógica para PayPal
+            } else {
+                mensajeWarning('Select a valid payment method.');
+            }
         }
 
-        document.addEventListener("click", function () {
-            document.querySelectorAll(".dropdown-menu").forEach(menu => {
-                menu.style.display = "none";
+        function funcionAntesDeGuardar() {
+            const billingFields = ['billing_info', 'billing_name', 'billing_tax_id', 'billing_address', 'billing_email', 'billing_phone'];
+            billingFields.forEach(field => {
+                $(`#frmPago input[type="hidden"][name="${field}"]`).remove();
             });
-        });
 
-        $(function () {
-            $('.metodo_pago').on('change', function () {
-                var valor_ = $(this).val();
-                if (valor_ === 'TRANSFERENCIA_BANCARIA') {
-                    $('.impuesto_').html('{{ SIMBOLO_MONEDA }}0,00');
-                    $('.total_').html('{{ SIMBOLO_MONEDA }}{{ subtotal_aplicable|floatformat:2 }}');
-                } else {
-                    $('.impuesto_').html('{{ SIMBOLO_MONEDA }}{{ impuesto_pago_online|floatformat:2 }}');
-                    $('.total_').html('{{ SIMBOLO_MONEDA }}{{ total|floatformat:2 }}');
+            const formData = {
+                observacion: $('#observaciones').val(),
+            };
+
+            if ($('#factura-info').is(':checked')) {
+                formData.billing_info = true;
+                formData.billing_name = $('#billing_name').val();
+                formData.billing_tax_id = $('#billing_tax_id').val();
+                formData.billing_address = $('#billing_address').val();
+                formData.billing_email = $('#billing_email').val();
+                formData.billing_phone = $('#billing_phone').val();
+            } else {
+                formData.billing_info = false;
+            }
+
+            for (const [key, value] of Object.entries(formData)) {
+                if (value !== undefined) {
+                    const sanitizedValue = String(value).replace(/"/g, '&quot;');
+                    $('#frmPago').append(`<input type="hidden" name="${key}" value="${sanitizedValue}">`);
                 }
-            });
-
-        })
+            }
+        }
     </script>
 {% endblock %}

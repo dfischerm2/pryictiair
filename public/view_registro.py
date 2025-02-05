@@ -17,12 +17,14 @@ from area_geografica.models import Pais
 from autenticacion.models import Usuario, PerfilPersona
 from core.custom_models import FormError
 from core.email_config import send_html_mail
-from core.funciones import addData, paginador, secure_module, log, generar_nombre, validate_email_sponsor
+from core.funciones import addData, paginador, secure_module, log, generar_nombre, validate_email_sponsor, \
+    calcular_item_precio
 from django.contrib import messages
 
 from landing.forms import ConferenceForm
 from landing.models import Conference, ConferenceFee, TopicCategory
-from pedidos.models import Pedido, PapersAuthorPedido, TopicsAttendeePedido, HistorialPedido
+from pedidos.models import Pedido, PapersAuthorPedido, TopicsAttendeePedido, HistorialPedido, PAYMENT_ORIGIN, \
+    INVOICE_OPTIONS
 from pryictiair.settings import ID_GRUPO_USUARIO, EXT_EMAILS_COLABORATORS, DEFAULT_PASSWORD_REGISTER
 from public.forms import RegisterUserForm, StudentAttendeeForm
 from seguridad.templatetags.templatefunctions import encrypt
@@ -50,14 +52,20 @@ def registerView(request):
                         raise NameError('Error trying to register')
 
                     first_name, last_name, email, country, institution = form.cleaned_data['first_name'].strip(), form.cleaned_data['last_name'].strip(), form.cleaned_data['email'].strip(), form.cleaned_data['country'], form.cleaned_data['institution'].strip()
+                    total = 0 if filtro.role == 1 else filtro.value
+                    # paymentOrigin = request.POST.get('paymentOrigin', 0)
+                    # invoiceOption = request.POST.get('invoiceOption', 0)
 
                     if filtro.role == 1:
-                        details = request.POST.get('papers', None)
-                        if not details:
-                            raise NameError('You must add at least 1 paper to be able to register your registration for the event')
-                        details_ = json.loads(details)
-                        if len(details_) == 0:
-                            raise NameError('You must add at least 1 paper to be able to register your registration for the event')
+                        id_principal, title_principal, sheets_principal = request.POST.get('id_principal', None), request.POST.get('title_principal', None), request.POST.get('sheets_principal', None)
+                        if not all([id_principal, title_principal, sheets_principal]):
+                            raise NameError('You must complete all fields for the principal paper to finalize your order.')
+                        if int(sheets_principal) > filtro.conference.max_sheets:
+                            raise NameError(f'The number of pages for the principal paper exceeds the maximum allowed for this event ({filtro.conference.max_sheets} pages).')
+                        # if not paymentOrigin:
+                        #     raise NameError('You must select the origin of the payment to finalize your order. You can make this selection in the second step. ')
+                        # if not invoiceOption:
+                        #     raise NameError('You must select the invoice option to finalize your order. You can make this selection in the second step.')
                     elif filtro.role == 3 or filtro.special_price:
                         if not 'archivo_evidencia' in request.FILES:
                             if filtro.special_price:
@@ -104,26 +112,47 @@ def registerView(request):
                         to = user_.email
                         send_html_mail(subject, "email/registro_usuario.html", datos, [to], [], [])
 
-                    if Pedido.objects.filter(user=user_, status=True, estado='PENDIENTE', cuota__conference=filtro.conference).exists():
-                        raise NameError('You already have a pending request awaiting approval for this event.')
-                    if Pedido.objects.filter(user=user_, status=True, estado='EN_ESPERA', cuota__conference=filtro.conference).exists():
-                        raise NameError('You already have a pending payment for this event.')
-                    if Pedido.objects.filter(user=user_, status=True, estado='COMPLETADO', cuota__conference=filtro.conference).exists():
-                        raise NameError('You are already registered for this event.')
+                    if filtro.role != 1:
+                        if Pedido.objects.filter(user=user_, status=True, estado='PENDIENTE', cuota__conference=filtro.conference).exists():
+                            raise NameError('You already have a pending request awaiting approval for this event.')
+                        if Pedido.objects.filter(user=user_, status=True, estado='EN_ESPERA', cuota__conference=filtro.conference).exists():
+                            raise NameError('You already have a pending payment for this event.')
+                        if Pedido.objects.filter(user=user_, status=True, estado='COMPLETADO', cuota__conference=filtro.conference).exists():
+                            raise NameError('You are already registered for this event.')
+                    else:
+                        if Pedido.objects.filter(user=user_, cuota__conference=filtro.conference, status=True).exclude(estado='RECHAZADO').count() >= 2:
+                            raise NameError('You have reached the maximum registration limit for this event. Only up to 2 registrations are allowed.')
 
-                    total_ = Decimal(request.POST['total_value'])
-
+                    estado_ = 'PENDIENTE'
                     pedido = Pedido.objects.create(
                         user_id=user_.id,
-                        estado="PENDIENTE",
-                        subtotal=total_,
-                        cuota=filtro
+                        cuota=filtro,
+                        # payment_origin=paymentOrigin,
+                        # invoice_option=invoiceOption,
                     )
 
                     if filtro.role == 1:
-                        details = json.loads(details)
-                        for item in details:
-                            PapersAuthorPedido.objects.create(pedido=pedido,idpaper=item['idpaper'],  title=item['title'], sheets=item['sheets'], value=item['value'])
+                        estado_ = 'PENDIENTE_PAGO'
+                        principal_paper = PapersAuthorPedido(pedido=pedido, idpaper=id_principal, title=title_principal, sheets=sheets_principal, principal=True)
+                        resp, result = calcular_item_precio(filtro.conference, filtro.value, int(sheets_principal), True)
+                        if not resp:
+                            raise NameError(result)
+                        principal_paper.value = result
+                        principal_paper.save()
+                        total += result
+                        details = request.POST.get('papers', None)
+                        if details:
+                            details = json.loads(details)
+                            for item in details:
+                                if item['sheets'] > filtro.conference.max_sheets:
+                                    raise NameError(f'The number of pages for the paper "ID: {item["idpaper"]}" exceeds the maximum allowed for this event ({filtro.conference.max_sheets} pages).')
+                                item_ = PapersAuthorPedido(pedido=pedido,idpaper=item['idpaper'],  title=item['title'], sheets=item['sheets'])
+                                resp_, result_ = calcular_item_precio(filtro.conference, filtro.value, item['sheets'], False)
+                                if not resp_:
+                                    raise NameError(result_)
+                                item_.value = result_
+                                item_.save()
+                                total += result_
                     else:
                         if filtro.role == 3 or filtro.special_price:
                             newfile = request.FILES['archivo_evidencia']
@@ -147,22 +176,31 @@ def registerView(request):
                             topic_ = TopicCategory.objects.get(id=item['id'])
                             TopicsAttendeePedido.objects.create(pedido=pedido, topic=topic_)
 
+                    pedido.estado = estado_
+                    pedido.subtotal = total
                     pedido.save()
-                    historial_ = HistorialPedido(pedido=pedido, user=user_, estado='PENDIENTE', detalle=f'Conference registration request')
+                    historial_ = HistorialPedido(pedido=pedido, user=user_, estado=estado_, detalle=f'Conference registration request')
                     historial_.save()
+
                     datos = {
                         'filtro': pedido,
                         'user': user_,
                         'url': f'{data["DOMINIO_DEL_SISTEMA"]}',
+                        'payment_link': f'{data["DOMINIO_DEL_SISTEMA"]}/complete_purchase/?order={encrypt(pedido.id)}',
+                        'conference': filtro.conference,
                     }
                     subject = f'¡Order Received!'
                     to = user_.email
                     send_html_mail(subject, "email/pedido_recibido.html", datos, [to], [], [])
                     if not request.user.is_authenticated:
                         login(request, user_)
+                    if filtro.role == 1:
+                        to = f'/complete_purchase/?order={encrypt(pedido.id)}'
+                    else:
+                        to = '/profile/?action=payments'
+                        messages.success(request, f'Your registration has been successfully completed. You will receive an email with the details of your registration.')
                     log(f"Registró pedido para evento {pedido.__str__()}", request, "add", obj=pedido.id, user=user_)
-                    messages.success(request, f'Your registration has been successfully completed. You will receive an email with the details of your registration.')
-                    res_json.append({'error': False, 'to': '/profile/?action=payments'})
+                    res_json.append({'error': False, 'to': to })
         except ValueError as ex:
             res_json.append({'error': True, "message": str(ex)})
         except FormError as ex:
@@ -206,7 +244,10 @@ def registerView(request):
             form.fields['country'].queryset = Pais.objects.filter(pk=request.user.pais.id)
         else:
             form.fields['country'].queryset = Pais.objects.none()
-
-
-
-        return render(request, 'public/landing/register.html', data)
+        template = 'public/landing/register.html'
+        if filtro.role == 1:
+            data['PAYMENT_ORIGIN'] = PAYMENT_ORIGIN
+            data['INVOICE_OPTIONS'] = INVOICE_OPTIONS
+            template = 'public/landing/register_autors.html'
+        return render(request, template, data)
+        # return render(request, 'public/landing/available_soon.html', data)

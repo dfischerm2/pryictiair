@@ -226,7 +226,9 @@
             let initialPrice = $('#value-counter').text();
 
             if (config.ROLES_EVIDENCIA.includes(config.ROLE)) {
-                $('#additionalMessage_email').html('*Registration must be with institutional email');
+                if (config.ROLE === 3 || config.SPECIAL_PRICE) {
+                    $('#additionalMessage_email').html('*Registration must be with institutional email');
+                }
                 if (config.SPECIAL_PRICE) {
                     $('.upload-description').html(`We need to verify that you are affiliated with one of the following institutions: UNEMI, VIU, or UCLM. Please upload a document that confirms your affiliation.`);
                 } else {

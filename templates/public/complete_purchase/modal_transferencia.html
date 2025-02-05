@@ -1,0 +1,38 @@
+<div class="row">
+    <input type="hidden" value="{{ filtro.id }}" name="pk">
+    <input type="hidden" name="action" value="{{ action }}"/>
+    <input type="hidden" name="cuenta_id" value="{{ cuenta_id }}"/>
+    {% for field in form %}
+        {% if field.is_hidden %}
+            {{ field }}
+        {% else %}
+            <div class="col-lg-{{ field.field.widget.attrs.col }}" id="box_{{ field.name }}">
+                <div class="form-group">
+                    <label class="form-label" for="id_{{ field.name }}">{{ field.label }}:</label><br>
+                    {{ field }}
+                    <div class="invalid-feedback" id="errorMessage{{ field.name }}"></div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class="modal-footer d-flex justify-content-end">
+    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-window-close me-2"></i>Close
+    </button>
+    <button type="submit" class="btn btn-success ms-2"><i class="fa fa-save me-2"></i>Submit Payment</button>
+</div>
+
+{{ form.media }}
+<script src="/static/dropzone/dropzone.js"></script>
+<link rel="stylesheet" href="/static/dropzone/dropzone.css">
+<script>
+    $(document).ready(function () {
+        $('#id_archivo').makeDropzone({
+            icon: 'cloud-upload',
+            maxSize: 4,
+            acceptedFormats: '.jpg,.jpeg,.png'
+        });
+
+    });
+</script>

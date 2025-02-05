@@ -763,3 +763,23 @@ def validate_email_sponsor(email):
     if re.match(r'^(.*\.)?universidadviu\.com$', ext_email):
         return True
     return False
+
+
+def calcular_item_precio(conference, cuote_base, pages, principal=False):
+    try:
+        if not conference or pages <= 0:
+            raise NameError("Error calculating the value of the item")
+
+        if not principal:
+            precio = float(conference.value_adittional_paper)
+        else:
+            precio = float(cuote_base)
+
+        if pages > conference.base_sheets:
+            hojas_extra = pages - conference.base_sheets
+            precio_extra = float(conference.value_adittional_sheet) * hojas_extra
+            precio += precio_extra
+
+        return True, precio
+    except Exception as ex:
+        return False, str(ex)

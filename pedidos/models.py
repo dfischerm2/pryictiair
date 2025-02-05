@@ -53,6 +53,16 @@ ESTADO_PEDIDO = (
     ("ERROR_METODO_PAGO", "Payment method error")
 )
 
+PAYMENT_ORIGIN = (
+    (1, 'ECUADOR'),
+    (2, 'INTERNACIONAL'),
+)
+
+
+INVOICE_OPTIONS = (
+    (1, 'Generate Invoice'),
+    (2, 'Final Consumer Receipt'),
+)
 
 TIPO_ENTORNO = ((True, "Producción"), (False, "Test"),)
 
@@ -61,6 +71,8 @@ class Pedido(ModeloBase):
     ip = models.CharField(max_length=1000, blank=True, null=True, verbose_name='Ip')
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name="Usuario que hizo el pedido", related_name='+')
     cuota = models.ForeignKey("landing.ConferenceFee", on_delete=models.PROTECT, verbose_name="Cuota")
+    payment_origin = models.PositiveIntegerField("Origen del pago", choices=PAYMENT_ORIGIN, default=0)
+    invoice_option = models.PositiveIntegerField("Opción de factura", choices=INVOICE_OPTIONS, default=0)
     archivo_evidencia = models.FileField(upload_to=UserUploadToPath("pedidos/archives/", funcUser), null=True, blank=True)
     special_price_student = models.BooleanField("Precio especial para estudiantes", default=False)
     observacion = models.TextField("Notas de pedido", null=True, blank=True, default='')
@@ -81,6 +93,12 @@ class Pedido(ModeloBase):
     razon_reverso = models.TextField(default='', blank=True, null=True)
     pago_reversado_por = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name="Pago reversado por", null=True, blank=True, related_name="venta_pedido_pago_reversado_por")
     modo_pago = models.BooleanField("Ejecución de Paypal", choices=TIPO_ENTORNO, default=1)
+    # BILLING DATA
+    billing_tax_id = models.CharField("Tax ID", max_length=255, null=True, blank=True)
+    billing_company_name = models.CharField("Company Name", max_length=255, null=True, blank=True)
+    billing_address = models.CharField("Address", max_length=255, null=True, blank=True)
+    billing_email_address = models.CharField("Email Address", max_length=255, null=True, blank=True)
+    billing_phone_number = models.CharField("Phone Number", max_length=255, null=True, blank=True)
 
     def get_papers(self):
         return self.papersauthorpedido_set.filter(status=True)
@@ -182,6 +200,7 @@ class PapersAuthorPedido(ModeloBase):
     title = models.CharField(verbose_name="title", max_length=500, blank=True, null=True)
     sheets = models.IntegerField(verbose_name="Hojas", default=0)
     value = models.DecimalField(verbose_name="Valor", default=0, max_digits=30, decimal_places=2)
+    principal = models.BooleanField(verbose_name="Principal", default=False)
 
     def __str__(self):
         return f"ID: {self.idpaper} {self.title} - {self.sheets} hojas"
@@ -197,6 +216,10 @@ class TopicsAttendeePedido(ModeloBase):
 
     def __str__(self):
         return self.topic.__str__()
+
+    class Meta:
+        verbose_name = "Topics Pedido"
+        verbose_name_plural = "Topics Autor Pedido"
 
 
 class PagoTransferencia(ModeloBase):

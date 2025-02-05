@@ -304,14 +304,20 @@
 <script src="/static/js/renderSwicheryControl.js"></script>
 <link rel="stylesheet" href="/static/assets/plugins/switchery/switchery.min.css">
 
+<!-- SMART WIZARD -->
+<link rel="stylesheet" href="/static/jquery-smartwizard/dist/css/smart_wizard_all.min.css">
+<script src="/static/jquery-smartwizard/dist/js/jquery.smartWizard.js"></script>
+
 <script>
-    window.onload = function () {
-        {% if messages %}
+    {% if messages %}
+        document.addEventListener('DOMContentLoaded', function () {
             {% for message in messages %}
-                Swal.fire('{{ message }}', '{{ nombreempresa }}', '{% if message.tags %}{{ message.tags }}{% endif %}');
+                Swal.fire('{{ message }}',
+                    '{{ nombreempresa }}',
+                    '{% if message.tags %}{{ message.tags }}{% endif %}');
             {% endfor %}
-        {% endif %}
-    }
+        });
+    {% endif %}
 
     jQuery(document).ready(function () {
         jQuery("#slider-revolution").revolution({

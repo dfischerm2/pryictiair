@@ -68,10 +68,12 @@
                                 {{ l.subtitle }}
                             </td>
                             <td class="text-left">
+                                <b>Base: </b>{{ l.base_papers }}<br>
                                 <b>Max: </b>{{ l.max_papers }}<br>
                                 <b>Value per adittional paper: </b>{{ l.value_per_paper|default:'0.00'|floatformat:2 }}
                             </td>
                             <td class="text-left">
+                                <b>Base: </b> {{ l.base_sheets }}<br>
                                 <b>Max: </b> {{ l.max_sheets }}<br>
                                 <b> Value per adittional sheet:</b> {{ l.value_adittional_sheet|default:'0.00'|floatformat:2 }}
                             </td>

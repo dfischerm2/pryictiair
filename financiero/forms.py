@@ -1,5 +1,7 @@
+from core.custom_forms import FormModeloBase, ExtFileField
 from core.custom_models import ModelFormBase
 from financiero.models import EntidadFinanciera, CuentaFinancieraEmpresa
+from django import forms
 
 
 class EntidadFinancieraForm(ModelFormBase):
@@ -33,7 +35,7 @@ class CuentaFinancieraForm(ModelFormBase):
         for k, v in self.fields.items():
             self.fields[k].widget.attrs['class'] = "form-control"
             if k in ('ent_fin','tipo',):
-                self.fields[k].widget.attrs['class'] = "form-control select2-simple"
+                self.fields[k].widget.attrs['class'] = "form-control select2"
             if ver:
                 self.fields[k].widget.attrs['readonly'] = 'readonly'
 
@@ -48,3 +50,7 @@ class CuentaFinancieraForm(ModelFormBase):
     def clean_documento(self):
         documento = self.cleaned_data["documento"]
         return documento.replace(' ', '').upper()
+
+
+class PagoTransferenciaForm(FormModeloBase):
+    archivo = ExtFileField(label=u'Transfer receipt', required=True, help_text=u'Tamaño Maximo permitido 4Mb jpg, png, jpeg', ext_whitelist=(".jpg", ".png", ".jpeg"), max_upload_size=16194304, widget=forms.FileInput(attrs={'class': 'dropify', 'col': '12'}))

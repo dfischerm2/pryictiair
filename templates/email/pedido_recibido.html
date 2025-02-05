@@ -3,16 +3,67 @@
     <div style="color:#555555; line-height:1.5; font-family:Arial,'Helvetica Neue',Helvetica,sans-serif; padding:10px;">
         <div style="font-size:14px; color:#555555; text-align:left;">
             <p style="margin:0;">Hello {{ user.datos }},</p>
-            <p style="margin:0;">We are pleased to inform you that your order has been successfully received and is
-                currently under validation.</p>
-            <p style="margin:0;">As soon as an administrator validates your order, you will receive a notification along
-                with a payment link to complete your purchase.</p>
+            {% if filtro.cuota.role != 1 %}
+                <p style="margin:0;">We are pleased to inform you that your order has been successfully received and is
+                    currently under validation.</p>
+                <p style="margin:0;">As soon as an administrator validates your order, you will receive a notification
+                    along
+                    with a payment link to complete your purchase.</p>
 
-            <p style="margin:0; text-align:center; padding-top:20px;">
-                <a href="{{ url }}" target="_blank"
-                   style="font-weight:bold; text-decoration:none; color:#007BFF; background-color:#f8f9fa; padding:10px 20px; border-radius:5px; border:1px solid #ddd;">View
-                    Your Order</a>
-            </p>
+                <p style="margin:0; text-align:center; padding-top:20px;">
+                    <a href="{{ url }}" target="_blank"
+                       style="font-weight:bold; text-decoration:none; color:#007BFF; background-color:#f8f9fa; padding:10px 20px; border-radius:5px; border:1px solid #ddd;">View
+                        Your Order</a>
+                </p>
+            {% else %}
+                <p style="margin:0;">
+                    Thank you for your application to participate as an author in the
+                    <strong>“{{ conference.title }}”</strong> conference. Below, you will find the details of your
+                    submission:
+                </p> <br>
+                <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; text-align: center; border: 1px solid #dee2e6;">
+                    <thead>
+                    <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                        <th style="padding: 8px; border: 1px solid #dee2e6; width: 5%;">#</th>
+                        <th style="padding: 8px; border: 1px solid #dee2e6;">Id</th>
+                        <th style="padding: 8px; border: 1px solid #dee2e6;">Title</th>
+                        <th style="padding: 8px; border: 1px solid #dee2e6;"># Sheets</th>
+                        <th style="padding: 8px; border: 1px solid #dee2e6;">Subtotal</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for paper in filtro.get_papers %}
+                        <tr style="border-bottom: 1px solid #dee2e6;">
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">{{ forloop.counter }}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">
+                                {{ paper.idpaper }} <br>{% if paper.principal %} (main) {% else %}
+                                (additional){% endif %}
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">{{ paper.title }}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">{{ paper.sheets }}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">$ {{ paper.value|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr style="font-weight: bold; background-color: #f8f9fa; border-top: 2px solid #dee2e6;">
+                        <td colspan="4" style="padding: 8px; border: 1px solid #dee2e6; text-align: right;">Total</td>
+                        <td style="padding: 8px; border: 1px solid #dee2e6;">$
+                            <b>{{ filtro.subtotal|floatformat:2 }}</b></td>
+                    </tr>
+                    </tfoot>
+                </table>
+                <p style="margin: 10px 0 0;">
+                    To finalize your participation, please complete the payment process by clicking the button below:
+                </p><br>
+
+                <div style="text-align:center;">
+                    <a href="{{ payment_link }}"
+                       style="display:inline-block; padding:12px 24px; background-color:#4CAF50; color:#ffffff; font-size:16px; font-weight:bold; text-decoration:none; border-radius:5px;">
+                        Complete Payment
+                    </a>
+                </div> <br>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

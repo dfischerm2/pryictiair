@@ -259,7 +259,7 @@ class ConferenceForm(ModelFormBase):
         for k, v in self.fields.items():
             self.fields[k].widget.attrs['class'] = "form-control"
 
-            if k in ('start_date','end_date','max_papers', 'value_adittional_paper','max_sheets', 'value_adittional_sheet','certificado_autores', 'certificado_asistentes',):
+            if k in ('start_date','end_date','max_papers', 'value_adittional_paper','max_sheets', 'value_adittional_sheet','certificado_autores', 'certificado_asistentes','base_papers', 'base_sheets',):
                 self.fields[k].widget.attrs['col'] = "6"
             if k in ('certificado_autores', 'certificado_asistentes',):
                 self.fields[k].widget.attrs['class'] = "select2-simple"
