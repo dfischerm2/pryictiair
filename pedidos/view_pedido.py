@@ -159,7 +159,7 @@ def pedidoView(request):
                     TopicsAttendeePedido.objects.filter(status=True, pedido=filtro).update(status=False)
                     filtro.status = False
                     filtro.estado = 'ANULADO'
-                    filtro.save()
+                    filtro.save(request)
                     log(f"Elimino pedido {filtro.__str__()}", request, "delete",obj=filtro.id)
                     messages.success(request, "Carrousel eliminado exitosamente")
                     res_json = {'error': False}
