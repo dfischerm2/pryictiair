@@ -45,7 +45,7 @@ def completePurchaseView(request):
                         exte = extension[tam - 1]
                         if newfile.size > 4194304:
                             raise NameError(f"Error: The file size exceeds 4 MB.")
-                        if exte in ['jpg', 'jpeg', 'png', 'jpeg']:
+                        if exte in ['pdf',]:
                             newfile._name = generar_nombre("order_", newfile._name)
                         else:
                             raise NameError(f"Error: Only .png, .jpg, and .jpeg files are allowed.")
