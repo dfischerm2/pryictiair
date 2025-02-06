@@ -100,8 +100,8 @@ def myProfileView(request):
                 return render(request, 'public/perfil/changepass.html', data)
             elif action == 'payments':
                 try:
-                    filtros, url_vars = Q(status=True), f'&action={action}'
-                    # filtros, url_vars = Q(status=True, user=persona), f'&action={action}'
+                    # filtros, url_vars = Q(status=True), f'&action={action}'
+                    filtros, url_vars = Q(status=True, user=persona), f'&action={action}'
                     data['title'] = 'My orders'
                     listado = Pedido.objects.filter(filtros)
                     data["list_count"] = listado.count()
