@@ -100,7 +100,9 @@
                             <h6 class=""><i class="fa fa-certificate tu"
                                             title="Conference"></i> {{ l.cuota.conference.title }}</h6>
                             <h6 class="text-success"><i class="fa fa-file-invoice tu"
-                                                        title="Fee type"></i> {{ l.cuota.get_role_display }} {% if l.cuota.special_price %}(Special Price for Sponsor Universities (UNEMI, VIU, or UCLM)){% endif %}</h6>
+                                                        title="Fee type"></i> {{ l.cuota.get_role_display }}
+                                {% if l.cuota.special_price %}(Special Price for Sponsor Universities (UNEMI, VIU, or
+                                    UCLM)){% endif %}</h6>
                             <div id="modulos_{{ l.pk }}" class="accordion accordion-flush"
                                  role="tablist"
                                  aria-multiselectable="true">
@@ -175,6 +177,13 @@
                                         <a href="javascript:void(0)" class="dropdown-item"
                                            onclick="formModal('{{ l.pk|encrypt }}', 'Validar solicitud Cod. {{ l.pk }}', 'validateRequest')">
                                             <i class="fas fa-check-circle"></i> Validar
+                                        </a>
+                                    {% endif %}
+                                    {% if request.user.is_superuser %}
+                                        <a class="dropdown-item" title="Eliminar {{ modulo }}"
+                                           onclick="eliminarajax({{ l.pk }}, '{{ l.pk }}', 'deletepedido')"
+                                           href="javascript:void(0);">
+                                            <i class="fas fa-trash"></i> Eliminar
                                         </a>
                                     {% endif %}
                                 </div>

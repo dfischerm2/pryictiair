@@ -22,7 +22,7 @@ from django.views.decorators.csrf import csrf_exempt
 from core.metodos_de_pago import reversar_pago_paypal
 from landing.models import InscripcionConference, PapersInscripcionConference, TopicsInscripcionConference
 from seguridad.templatetags.templatefunctions import encrypt
-from .models import Pedido, ESTADO_PEDIDO, METODO_PAGOS, HistorialPedido
+from .models import Pedido, ESTADO_PEDIDO, METODO_PAGOS, HistorialPedido, PapersAuthorPedido, TopicsAttendeePedido
 import os
 
 from django.db.models import Value, Count, Sum, F, FloatField
@@ -153,6 +153,16 @@ def pedidoView(request):
                         res_json.append({'error': True,
                                          "message": "Error en el formulario"
                                          })
+                elif action == 'deletepedido':
+                    filtro = Pedido.objects.get(pk=int(request.POST['id']))
+                    PapersAuthorPedido.objects.filter(status=True, pedido=filtro).update(status=False)
+                    TopicsAttendeePedido.objects.filter(status=True, pedido=filtro).update(status=False)
+                    filtro.status = False
+                    filtro.estado = 'ANULADO'
+                    filtro.save()
+                    log(f"Elimino pedido {filtro.__str__()}", request, "delete",obj=filtro.id)
+                    messages.success(request, "Carrousel eliminado exitosamente")
+                    res_json = {'error': False}
 
         except Exception as ex:
             res_json.append({'error': True,

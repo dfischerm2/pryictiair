@@ -18,7 +18,8 @@ from django.contrib import messages
 from landing.models import InscripcionConference, TopicsInscripcionConference
 from seguridad.templatetags.templatefunctions import encrypt
 from .forms import ValidateRequestInscriptionForm
-from .models import Pedido, ESTADO_PEDIDO, HistorialPedido
+from .models import Pedido, ESTADO_PEDIDO, HistorialPedido, PapersAuthorPedido, TopicsAttendeePedido
+
 
 @login_required
 @secure_module
@@ -87,6 +88,16 @@ def solicitudesRegistroView(request):
                     log(f"Validó la solicitud de inscripción {filtro.__str__()}", request, "change", obj=filtro.id)
                     messages.success(request, "Solicitud validada con éxito")
                     res_json.append({'error': False, "reload": True})
+                elif action == 'deletepedido':
+                    filtro = Pedido.objects.get(pk=int(request.POST['id']))
+                    PapersAuthorPedido.objects.filter(status=True, pedido=filtro).update(status=False)
+                    TopicsAttendeePedido.objects.filter(status=True, pedido=filtro).update(status=False)
+                    filtro.status = False
+                    filtro.estado = 'ANULADO'
+                    filtro.save()
+                    log(f"Elimino pedido {filtro.__str__()}", request, "delete",obj=filtro.id)
+                    messages.success(request, "Carrousel eliminado exitosamente")
+                    res_json = {'error': False}
         except ValueError as ex:
             res_json.append({'error': True, "message": str(ex)})
         except FormError as ex:
