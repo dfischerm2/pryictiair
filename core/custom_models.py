@@ -146,7 +146,7 @@ class MySelect2MultipleWidget(ModelSelect2MultipleWidget):
 
 class FormError(Exception):
     def __init__(self, form, prefix="", sufix=""):
-        super().__init__("Error en el formulario")
+        super().__init__("Form error, please contact the administrator.")
         if isinstance(form, list) or isinstance(form, tuple):
             self.errors = []
             for x in form:
@@ -157,7 +157,7 @@ class FormError(Exception):
         self.dict_error = {
             'error': True,
             "form": self.errors,
-            "message": "Datos incorrectos, revise la información registrada."
+            "message": "Incorrect data. Please check the entered information."
         }
 
 

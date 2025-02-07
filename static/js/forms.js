@@ -91,6 +91,14 @@ if ($('head').children('meta[name=formsJsValidator]').length === 0) {
                                 $("#" + value.input_id).addClass("is-invalid");
                                 $("#" + value.div_id).html(value.message);
                             } else if (value.form) {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    type: 'error',
+                                    title: 'Complete todos los datos requeridos',
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
                                 value.form.forEach(function (val, indx) {
                                     var keys = Object.keys(val);
                                     keys.forEach(function (val1, indx1) {
@@ -105,7 +113,7 @@ if ($('head').children('meta[name=formsJsValidator]').length === 0) {
                                     });
                                 });
                                 try {
-                                    if (HAY_UN_SMART_WIZARD && value.message) {
+                                    if (value.message) {
                                         Swal.fire(value.message, '', 'error');
                                     }
                                 } catch (e) {

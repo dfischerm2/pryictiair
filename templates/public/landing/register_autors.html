@@ -178,7 +178,7 @@
                                                             <td><input type="text" class="form-control"
                                                                        name="title_principal"
                                                                        required placeholder="Enter title"></td>
-                                                            <td><input type="number" class="form-control" min="1"
+                                                            <td><input type="number" class="form-control" min="1" max="{{ conference.max_sheets }}"
                                                                        name="sheets_principal" value="1" required>
                                                             </td>
                                                         </tr>
@@ -451,7 +451,7 @@
                     <input type="text" class="form-control" placeholder="Enter title" required>
                 </td>
                 <td class="text-center">
-                    <input type="number" class="form-control" min="1" value="1" required>
+                    <input type="number" class="form-control" min="1" value="1" max="{{ conference.max_sheets }}" required>
                 </td>
             </tr>
         `;

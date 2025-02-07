@@ -53,4 +53,4 @@ class CuentaFinancieraForm(ModelFormBase):
 
 
 class PagoTransferenciaForm(FormModeloBase):
-    archivo = ExtFileField(label=u'Transfer receipt', required=True, help_text=u'Tamaño Maximo permitido 4Mb pdf', ext_whitelist=(".pdf"), max_upload_size=16194304, widget=forms.FileInput(attrs={'class': 'dropify', 'col': '12'}))
+    archivo = ExtFileField(label=u'Transfer receipt', required=False, help_text=u'Tamaño Maximo permitido 4Mb pdf', ext_whitelist=(".pdf",), max_upload_size=4194304, widget=forms.FileInput(attrs={'class': 'dropify', 'col': '12'}))
