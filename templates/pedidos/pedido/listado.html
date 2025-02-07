@@ -111,7 +111,7 @@
                             <i class="fa fa-building"></i> {{ l.user.institucion|default:'Unregistered'|upper }}
                         </td>
                         <td class="text-center" style="width: 10%">
-                            <b>$ {{ l.total|floatformat:2 }}</b>
+                            <b>$ {{ l.get_total_by_state|floatformat:2 }}</b>
                         </td>
                         <td class="text-center" style="font-size: 14px">
                             {% if l.estado == 'PENDIENTE_PAGO' %}
