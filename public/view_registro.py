@@ -199,7 +199,7 @@ def registerView(request):
                         to = f'/complete_purchase/?order={encrypt(pedido.id)}'
                     else:
                         to = '/profile/?action=payments'
-                        messages.success(request, f'Your registration has been successfully completed. You will receive an email with the details of your registration.')
+                    messages.success(request, f'Your registration has been successfully completed. You will receive an email with the details of your registration. Please check your spam folder if you dont see it in your inbox')
                     log(f"Registró pedido para evento {pedido.__str__()}", request, "add", obj=pedido.id, user=user_)
                     res_json.append({'error': False, 'to': to })
         except ValueError as ex:

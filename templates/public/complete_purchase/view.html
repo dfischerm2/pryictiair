@@ -188,28 +188,31 @@
                                 </div>
                                 {% if order.cuota.role == 1 and order.get_papers %}
                                     <h6 class="h6 mb-2 mt-2"><i class="fa fa-file-pdf"></i> Papers list</h6>
-                                    {% for l in order.get_papers %}
-                                        <div class="d-flex align-items-center justify-content-between border-top pt-2 py-1">
-                                            <span>
-                                                <b>ID: </b>{{ l.id }} <span
-                                                    class="text-warning fs-sm">{% if l.principal %} (Main) {% else %}
-                                                (Additional){% endif %}</span>
-                                            </span>
-                                            <span>
-                                            {{ l.title }}
-                                            </span>
-                                            <span>
-                                                {{ l.sheets }} Sheets
-                                            </span>
-                                            <span>
-                                                $ {{ l.value|floatformat:2 }}
-                                            </span>
+                                   <div class="d-flex flex-column">
+                                        <div class="d-flex align-items-center border-bottom py-2">
+                                            <div class="flex-1" style="width: 25%">ID</div>
+                                            <div class="flex-1" style="width: 35%">Title</div>
+                                            <div class="text-center" style="width: 20%">Pages</div>
+                                            <div class="text-center" style="width: 20%">Cost</div>
                                         </div>
-                                    {% endfor %}
+
+                                        {% for l in order.get_papers %}
+                                        <div class="d-flex align-items-center py-2 border-bottom">
+                                            <div style="width: 25%">
+                                                <b>ID:</b> {{ l.idpaper }}
+                                                <span class="text-warning fs-sm">
+                                                    {% if l.principal %}(Main){% else %}(Additional){% endif %}
+                                                </span>
+                                            </div>
+                                            <div style="width: 35%">{{ l.title }}</div>
+                                            <div class="text-center" style="width: 20%">{{ l.sheets }} pages</div>
+                                            <div class="text-center" style="width: 20%">$ {{ l.value|floatformat:2 }}</div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
                                 {% endif %}
                                 <div class="d-flex align-items-center justify-content-between fs-xl pt-4">
-                                    Subtotal :<span
-                                        class="fw-semibold ms-2 suubtotal_">$ {{ order.subtotal|floatformat:2 }}</span>
+                                    Subtotal :<span class="fw-semibold ms-2 suubtotal_">$ {{ order.subtotal|floatformat:2 }}</span>
                                 </div>
                                 {% if impuesto_pago_online %}
                                     <li class="d-flex justify-content-between mb-2">

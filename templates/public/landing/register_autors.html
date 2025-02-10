@@ -178,7 +178,7 @@
                                                             <td><input type="text" class="form-control"
                                                                        name="title_principal"
                                                                        required placeholder="Enter title"></td>
-                                                            <td><input type="number" class="form-control" min="1" max="{{ conference.max_sheets }}"
+                                                            <td><input type="number" class="form-control" min="1" max="{{ conference.max_sheets }}" id="pages_principal"
                                                                        name="sheets_principal" value="1" required>
                                                             </td>
                                                         </tr>
@@ -257,7 +257,6 @@
                                                         <table class="table" id="summaryTable">
                                                             <thead>
                                                             <tr>
-                                                                <th class="text-center">¿Principal?</th>
                                                                 <th class="text-center">ID Paper</th>
                                                                 <th class="text-center">Title</th>
                                                                 <th class="text-center">Pages</th>
@@ -268,10 +267,10 @@
                                                             </tbody>
                                                             <tfoot>
                                                             <tr>
-                                                                <td colspan="3" class="text-right">
+                                                                <td class="text-center">
                                                                     <strong>Total:</strong>
                                                                 </td>
-                                                                <td class="text-right">
+                                                                <td class="text-right"  colspan="3">
                                                                     <div class="price-highlight">
                                                                         <i class="fa fa-money mr-2"></i> $ <span
                                                                             id="summaryTotal"
@@ -282,6 +281,7 @@
                                                             </tfoot>
                                                         </table>
                                                     </div>
+                                                     <p class="mt-2"><i class="fa fa-info-circle me-2"></i><b>IMPORTANT: ALL DETAILS OF YOUR REGISTRATION AND ORDER, INCLUDING YOUR USERNAME AND PASSWORD, WILL BE SENT TO YOUR EMAIL. CHECK YOUR SPAM FOLDER IF YOU DON’T SEE THEM IN YOUR INBOX.</b></p>
                                                     <p class="mt-2"><i class="fa fa-info-circle me-2"></i>Upon
                                                         completing
                                                         your
@@ -365,8 +365,8 @@
         };
 
         $(document).ready(function () {
-            $('#invoiceOption').select2({width: '100%',})
-            $('#paymentOrigin').select2({width: '100%',})
+            $('#pages_principal').on('change', validatePages);
+            $('#tbPapers').on('change', '.additional_paper', validatePages);
 
             {% if request.user.is_authenticated %}
                 $('#id_email').prop('readonly', true);
@@ -396,18 +396,33 @@
             generateOrderSummary();
         });
 
+        function validatePages() {
+            const value = parseInt($(this).val());
+            const maxSheets = {{ conference.max_sheets }};
+
+            if (value > maxSheets) {
+                $(this).val(maxSheets);
+                alertaWarning(`The maximum number of pages allowed is ${maxSheets}`);
+                return;
+            }
+            if (value < 1) {
+                $(this).val(1);
+                alertaWarning('The minimum number of pages is 1');
+            }
+        }
+
         function createPaperOptions() {
             const select = `
-        <div class="mb-2">
-        <label for="paperCount"><b>If you have additional paper:</b></label>
-            <select id="paperCount" class="form-control select2">
-                <option value="0" selected>0 (No additional paper)</option>
-                ${Array.from({length: config.MAX_PAPERS}, (_, i) => i + 1)
-                .map(num => `<option value="${num}">${num}</option>`)
-                .join('')}
-            </select>
-        </div>
-    `;
+                    <div class="mb-2">
+                    <label for="paperCount"><b>If you have additional paper:</b></label>
+                        <select id="paperCount" class="form-control select2">
+                            <option value="0" selected>0 (No additional paper)</option>
+                            ${Array.from({length: config.MAX_PAPERS}, (_, i) => i + 1)
+                            .map(num => `<option value="${num}">${num}</option>`)
+                            .join('')}
+                        </select>
+                    </div>
+                `;
             $('#addPapersContainer').html(select);
         }
 
@@ -443,21 +458,22 @@
 
             for (let i = 0; i < count; i++) {
                 const row = `
-            <tr>
-                <td class="text-center">
-                    <input type="text" class="form-control" placeholder="Enter ID" required>
-                </td>
-                <td class="text-center">
-                    <input type="text" class="form-control" placeholder="Enter title" required>
-                </td>
-                <td class="text-center">
-                    <input type="number" class="form-control" min="1" value="1" max="{{ conference.max_sheets }}" required>
-                </td>
-            </tr>
-        `;
+                    <tr>
+                        <td class="text-center">
+                            <input type="text" class="form-control paper_id" placeholder="Enter ID" required>
+                        </td>
+                        <td class="text-center">
+                            <input type="text" class="form-control paper_title" placeholder="Enter title" required>
+                        </td>
+                        <td class="text-center">
+                            <input type="number" class="form-control additional_paper" min="1" value="1" max="{{ conference.max_sheets }}" required>
+                        </td>
+                    </tr>
+                `;
                 $('#tbPapers').append(row);
             }
         }
+
 
         function calculateMainPaperPrice() {
             const basePrice = parseInt($('#summaryTotal').data('base-price')) || 0;
@@ -510,14 +526,13 @@
             }
 
             tbody.append(`
-        <tr>
-            <td class="text-center"><i class="text-success fa fa-check-circle"></i></td>
-            <td class="text-center">${mainPaperId || '(Pending)'}</td>
-            <td class="text-center">${mainPaperTitle || '(Pending)'}</td>
-            <td class="text-center">${mainPaperSheets || 0}</td>
-            <td class="text-right">${mainPaperValue.toLocaleString()}</td>
-        </tr>
-    `);
+                <tr>
+                    <td class="text-center">${mainPaperId || '(Pending)'}</td>
+                    <td class="text-center">${mainPaperTitle || '(Pending)'}</td>
+                    <td class="text-center">${mainPaperSheets || 0}</td>
+                    <td class="text-right">${mainPaperValue.toLocaleString()}</td>
+                </tr>
+            `);
             totalCost += mainPaperValue;
 
             // Solo procesar papers adicionales si hay alguno seleccionado
@@ -538,14 +553,13 @@
                     }
 
                     tbody.append(`
-                <tr>
-                    <td class="text-center"><i class="text-danger fa fa-times-circle"></i></td>
-                    <td class="text-center">${idpaper || '(Pending)'}</td>
-                    <td class="text-center">${title || '(Pending)'}</td>
-                    <td class="text-center">${sheets || 0}</td>
-                    <td class="text-right">${paperValue.toLocaleString()}</td>
-                </tr>
-            `);
+                        <tr>
+                            <td class="text-center">${idpaper || '(Pending)'}</td>
+                            <td class="text-center">${title || '(Pending)'}</td>
+                            <td class="text-center">${sheets || 0}</td>
+                            <td class="text-right">${paperValue.toLocaleString()}</td>
+                        </tr>
+                    `);
                     totalCost += paperValue;
                 });
             }
@@ -649,6 +663,10 @@
                 keyboard: {
                     keyNavigation: false,
                 },
+            }).on("showStep", function(e, anchorObject, stepIndex, stepDirection) {
+                $('html, body').animate({
+                    scrollTop: $('#smartwizard').offset().top - 50
+                }, 400);
             });
 
             ItemsDisplay = function (item) {
@@ -701,6 +719,7 @@
             }).on("select2:select", function (evt) {
                 $("#id_country").attr({"value": (evt.params.data.id)});
             });
+
         });
     </script>
 {% endblock %}
