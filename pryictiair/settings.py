@@ -355,10 +355,11 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     'https://ictiair.tiacon.org',
     'https://www.ictiair.tiacon.org',
-    'http://127.0.0.1:8080',
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:8003',
     'http://127.0.0.1',
-    'http://localhost:8000',
-    'http://localhost:8080',
+    'http://localhost:8003',
+    'http://localhost:8003',
     'http://localhost',
 ]
 
@@ -399,3 +400,5 @@ CORS_ALLOW_HEADERS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'

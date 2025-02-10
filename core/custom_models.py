@@ -99,7 +99,7 @@ class ModeloBase(NormalModel):
     usuario_creacion = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='+')
     fecha_registro = models.DateTimeField(verbose_name="Fecha de Registro", auto_now_add=True, editable=False)
     usuario_modificacion = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='+')
-    fecha_modificacion = models.DateTimeField(verbose_name="Fecha de Registro", blank=True, null=True, editable=False)
+    fecha_modificacion = models.DateTimeField(verbose_name="Fecha de modificación", blank=True, null=True, editable=False)
     status = models.BooleanField(default=True, editable=False)
 
     def fecha_hora_registro(self):

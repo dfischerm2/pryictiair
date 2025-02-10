@@ -50,9 +50,50 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <h3>Order</h3>
-                                <h6 class="fw-normal text-body text-uppercase">1.<span
-                                        class="text-decoration-underline ms-1">Billing data</span></h6>
-                                <div class="row">
+                                <h6 class="fw-normal text-body text-uppercase">1.<span  class="text-decoration-underline ms-1">Billing data</span></h6>
+                                {% if order.billing_info %}
+                                    <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="billing_name" class="form-label">Name or Business Name</label>
+                                                    <input type="text" class="form-control" disabled name="billing_name" value="{{ order.billing_company_name }}">
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="billing_tax_id" class="form-label">Tax ID (RUC, NIF,
+                                                        etc.) </label>
+                                                    <input type="text" class="form-control" id="billing_tax_id" disabled value="{{ order.billing_tax_id }}"  name="billing_tax_id">
+                                                </div>
+
+                                                <div class="col-12 mb-3">
+                                                    <label for="billing_address" class="form-label">Address</label>
+                                                    <input type="text" class="form-control" id="billing_address" disabled value="{{ order.billing_address }}"
+                                                           name="billing_address">
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="billing_email" class="form-label">Email Address </label>
+                                                    <input type="email" class="form-control" id="billing_email" disabled value="{{ order.billing_email_address }}"
+                                                           name="billing_email">
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="billing_phone" class="form-label">Phone Number</label>
+                                                    <input type="tel" class="form-control" id="billing_phone" disabled value="{{ order.billing_phone_number|default:'' }}"
+                                                           name="billing_phone">
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <p>You can access your generated invoice through the following link:</p>
+                                                     <a data-fancybox="iframe" data-type="iframe"
+                                                       class="btn text-danger tu" title="Ver Invoice" target="_blank"
+                                                       data-toggle="tooltip"
+                                                       href="/media/{{ order.factura }}"
+                                                       data-width="2048" data-height="1365">
+                                                        <i class="fa fa-file-pdf fs-4"></i> Invoice
+                                                    </a>
+                                                </div>
+                                            </div>
+                                {% else %}
+                                    <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group p-1">
                                             <label class="form-label" for="id_first_name">First Name:</label><br>
@@ -88,80 +129,8 @@
                                                    value="{{ order.user.institucion|default:'' }}">
                                         </div>
                                     </div>
-                                    {#                                    <div class="col-lg-12">#}
-                                    {#                                        <label for="invoiceOption">Do you#}
-                                    {#                                            need an#}
-                                    {#                                            electronic invoice?<span#}
-                                    {#                                                    style="color:red;margin-left:2px;"><strong>*</strong></span>#}
-                                    {#                                            :</label>#}
-                                    {#                                        <select id="invoiceOption" class="form-control select2" name="invoiceOption">#}
-                                    {#                                            <option value="" disabled selected>Select an option</option>#}
-                                    {#                                            {% for i in INVOICE_OPTIONS %}#}
-                                    {#                                                <option value="{{ i.0 }}">{{ i.1 }}</option>#}
-                                    {#                                            {% endfor %}#}
-                                    {#                                        </select>#}
-                                    {#                                    </div>#}
-                                    <div class="col-lg-12 mt-2">
-                                        <div class="form-check">
-                                            <label class="form-check-label ms-2" for="factura-info">
-                                                ¿Do you want the invoice to be generated with different details than
-                                                those in your user account?
-                                            </label>
-
-                                            <input type="checkbox" class="form-check-input" id="factura-info">
-                                        </div>
-                                    </div>
-                                    <div id="billing-details" style="display: none;">
-                                        <div class="col-lg-12">
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="billing_name" class="form-label">Name or Business Name
-                                                        <span style="color:red;margin-left:2px;"><strong>*</strong></span></label>
-                                                    <input type="text" class="form-control" id="billing_name"
-                                                           name="billing_name">
-                                                </div>
-
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="billing_tax_id" class="form-label">Tax ID (RUC, NIF,
-                                                        etc.) <span
-                                                                style="color:red;margin-left:2px;"><strong>*</strong></span></label>
-                                                    <input type="text" class="form-control" id="billing_tax_id"
-                                                           name="billing_tax_id">
-                                                </div>
-
-                                                <div class="col-12 mb-3">
-                                                    <label for="billing_address" class="form-label">Address <span
-                                                            style="color:red;margin-left:2px;"><strong>*</strong></span></label>
-                                                    <input type="text" class="form-control" id="billing_address"
-                                                           name="billing_address">
-                                                </div>
-
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="billing_email" class="form-label">Email Address <span
-                                                            style="color:red;margin-left:2px;"><strong>*</strong></span></label>
-                                                    <input type="email" class="form-control" id="billing_email"
-                                                           name="billing_email">
-                                                </div>
-
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="billing_phone" class="form-label">Phone Number
-                                                        (optional)</label>
-                                                    <input type="tel" class="form-control" id="billing_phone"
-                                                           name="billing_phone">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <div class="form-group p-1">
-                                            <label class="form-label" for="id_first_name">Observation for payment
-                                                (Optional):</label><br>
-                                            <textarea name="observacion" id="observaciones" class="form-control"
-                                                      rows="5"></textarea>
-                                        </div>
-                                    </div>
                                 </div>
+                                {% endif %}
                             </div>
                             <div class="col-lg-6">
                                 <h3>Order summary</h3>
@@ -281,30 +250,8 @@
                                             </div>
                                         {% endfor %}
                                     </div>
-
-                                    {#                                    <input class="form-check-input metodo_pago" type="radio" name="metodo_pago" required#}
-                                    {#                                           id="id_metodo_pago_paypal" value="PAYPAL">#}
-                                    <label class="form-check-label" for="id_metodo_pago_paypal">
-                                    <span>
-                                        <span class="d-block text-dark fw-medium mb-1">Paypal <span
-                                                class="ms-2 text-danger">* Available soon. We will send an email when it's ready.</span></span>
-                                        <span class="text-body">Pay from the platform. (for international payments)</span>
-                                    </span>
-                                    </label>
                                 </div>
                                 <div class=" d-lg-block pt-2 mt-n3">
-                                    <div class="form-check mb-1 mt-1">
-                                        <input class="form-check-input" type="checkbox" id="generate_invoice">
-                                        <label class="form-check-label" for="generate_invoice"><span class="text-muted">Do you require an invoice to be issued prior to making the payment? </span></label>
-                                    </div>
-                                </div>
-                                <div class=" d-lg-block pt-2 mt-n3">
-                                    <div class="form-check mb-1 mt-1">
-                                        <input class="form-check-input" type="checkbox" id="save-info">
-                                        <label class="form-check-label" for="save-info"><span class="text-muted">Your personal information will be used to process your order, to support your experience on this site and for other purposes described in the </span><a
-                                                class="btn-link" href="/termsandconditions/" target="_blank">privacy
-                                            policy</a></label>
-                                    </div>
                                     <a class="btn btn-lg btn-success" href="javascript:void(0)"
                                        onclick="completeOrder('{{ order.pk|encrypt }}')">Complete Order
                                     </a>
@@ -459,123 +406,52 @@
 
         function completeOrder(id) {
             const paymentMethod = $('input[name="metodo_pago"]:checked');
-            const termsandconditions = $('#save-info');
-            const generate_invoice  = $('#generate_invoice');
 
-            if (!termsandconditions.is(':checked')) {
-                mensajeWarning('You must accept the terms and conditions.');
+            if (paymentMethod.length === 0) {
+                mensajeWarning('Select a valid payment method.');
                 return;
             }
 
-            if (generate_invoice.is(':checked')) {
-                generateInvoice(id);
-            } else
-            {
-                if (paymentMethod.length === 0) {
-                    mensajeWarning('Select a valid payment method.');
+            const paymentMethodval = paymentMethod.val();
+
+            if (paymentMethodval === 'TRANSFERENCIA_BANCARIA') {
+                const selectedAccount = $('input[name="cuenta_bancaria"]:checked');
+
+                if (selectedAccount.length === 0) {
+                    mensajeWarning('Please select a bank account for the transfer.');
                     return;
                 }
 
-                const paymentMethodval = paymentMethod.val();
-
-                if (paymentMethodval === 'TRANSFERENCIA_BANCARIA') {
-                    const selectedAccount = $('input[name="cuenta_bancaria"]:checked');
-
-                    if (selectedAccount.length === 0) {
-                        mensajeWarning('Please select a bank account for the transfer.');
-                        return;
-                    }
-
-                    pantallaespera();
-                    $.ajax({
-                        type: "GET",
-                        url: `{{ request.path }}`,
-                        data: {
-                            'action': 'pago_transferencia',
-                            'id': id,
-                            'cuenta_id': selectedAccount.val() || 0,
-                        },
-                        success: function (data) {
-                            setTimeout($.unblockUI, 1);
-                            if (data.result === true) {
-                                $('#modalPagoTransferenciaNombre').html('Upload your transaction receipt to complete your order.');
-                                $('.detalleModalTransferencia').html(data.data);
-                                $('#modalPagoTransferencia').modal({backdrop: 'static'}).modal('show');
-                            } else {
-                                mensajeWarning(data.message);
-                            }
-                        },
-                        error: function () {
-                            setTimeout($.unblockUI, 1);
-                            mensajeWarning("Error de conexión.");
-                        },
-                        dataType: "json"
-                    });
-                } else if (paymentMethodval === 'PAYPAL') {
-                    // Lógica para PayPal
-                } else {
-                    mensajeWarning('Select a valid payment method.');
-                }
-            }
-        }
-
-        function generateInvoice(id) {
-            Swal.fire({
-                title: `Do you need an invoice before making the payment? Please double-check your billing details for accuracy before submitting your request.`,
-                text: "The invoice will be sent to the specified email once it is ready. Please note that this action is irreversible.",
-                type: 'warning',
-                showCancelButton: true,
-                allowOutsideClick: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, I want to proceed!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.value) {
-                    pantallaespera();
-                    let billingData = {};
-                    if ($('#factura-info').is(':checked')) {
-                        billingData = {
-                            billing_info: true,
-                            billing_name: $('#billing_name').val(),
-                            billing_tax_id: $('#billing_tax_id').val(),
-                            billing_address: $('#billing_address').val(),
-                            billing_email: $('#billing_email').val(),
-                            billing_phone: $('#billing_phone').val()
-                        };
-                    } else {
-                        billingData = {billing_info: false};
-                    }
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ request.path }}',
-                        async: false,
-                        data: {
-                            csrfmiddlewaretoken: '{{ csrf_token }}',
-                            action: 'request_invoice',
-                            pk: id,
-                            ...billingData
-
-                        },
-                        dataType: "json",
-                        beforeSend: function () {
-                            pantallaespera();
-                        }
-                    }).done(function (data) {
+                pantallaespera();
+                $.ajax({
+                    type: "GET",
+                    url: `{{ request.path }}`,
+                    data: {
+                        'action': 'cargar_comprobante',
+                        'id': id,
+                        'cuenta_id': selectedAccount.val() || 0,
+                    },
+                    success: function (data) {
                         setTimeout($.unblockUI, 1);
-                        const data_ = data[0]
-                        if (data_.error === false) {
-                            window.location.href = data_.to;
+                        if (data.result === true) {
+                            $('#modalPagoTransferenciaNombre').html('Upload your transaction receipt to complete your order.');
+                            $('.detalleModalTransferencia').html(data.data);
+                            $('#modalPagoTransferencia').modal({backdrop: 'static'}).modal('show');
                         } else {
-                            mensajeWarning(data_.message);
+                            mensajeWarning(data.message);
                         }
-                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                    },
+                    error: function () {
                         setTimeout($.unblockUI, 1);
-                        mensajeWarning('An error occurred on the server');
-                    }).always(function () {
-                    });
-                }
-            })
+                        mensajeWarning("Error de conexión.");
+                    },
+                    dataType: "json"
+                });
+            } else if (paymentMethodval === 'PAYPAL') {
+                // Lógica para PayPal
+            } else {
+                mensajeWarning('Select a valid payment method.');
+            }
         }
 
         function funcionAntesDeGuardar() {

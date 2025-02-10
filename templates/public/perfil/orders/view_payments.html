@@ -19,6 +19,7 @@
                             <th class="text-center">Conference</th>
                             <th class="text-center">Fee Type</th>
                             <th class="text-center">Total Amount</th>
+                            <th class="text-center">Invoice</th>
                             <th class="text-center">Status</th>
                             <th class="text-center"><i class="fa fa-cogs"></i></th>
                         </tr>
@@ -35,8 +36,27 @@
                                 </td>
                                 <td class="text-center">${{ l.get_total_by_state|floatformat:2 }}</td>
                                 <td class="text-center">
-                                    {% if l.estado == 'PENDIENTE_PAGO' %}
-                                        <a href="/complete_purchase/?order={{ l.pk|encrypt }}" class="btn btn-success btn-sm"><i class="fa fa-money-bill"></i> Proceed to payment</a>
+                                    {% if l.factura_cargada %}
+                                        <a class="btn btn-default btn-sm" data-fancybox="iframe" data-type="iframe"
+                                           title="View Invoice" target="_blank"
+                                           data-toggle="tooltip"
+                                           href="/media/{{ l.factura }}"
+                                           data-width="2048" data-height="1365"
+                                        ><i
+                                                class="fa fa-file-pdf text-danger"></i> Invoice</a>
+                                    {% else %}
+                                        <span class="badge badge-warning">Not available</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if l.estado == 'FACTURA_EMITIDA' %}
+                                        <a href="/complete_purchase/?order={{ l.pk|encrypt }}"
+                                           class="btn btn-success btn-sm"><i class="fa fa-cloud-upload"></i> Upload
+                                            Receipt</a>
+                                    {% elif l.estado == 'PENDIENTE_PAGO' %}
+                                        <a href="/complete_purchase/?order={{ l.pk|encrypt }}"
+                                           class="btn btn-success btn-sm"><i class="fa fa-money-bill"></i> Proceed to
+                                            payment</a>
                                     {% else %}
                                         <span class="badge badge-{{ l.estadoSTR }}">{{ l.get_estado_display }}</span>
                                     {% endif %}

@@ -47,14 +47,13 @@
                             </a>
                         </div>
                     </div>
-                    {% with resp_metodo_pago=compra.get_resp_metodo_pago %}
+                    {% with resp_metodo_pago=obj.get_resp_metodo_pago %}
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped">
                                 <thead class="thead-light">
                                 <tr>
                                     <th colspan="2">
-                                        <h3 class="modal-title">{{ compra.get_icon }} Payment
-                                            for {{ compra.get_metodo_pago_display }}</h3>
+                                        <h3 class="modal-title">{{ obj.get_icon }} Payment for {{ obj.get_metodo_pago_display }}</h3>
                                     </th>
                                 </tr>
                                 </thead>
@@ -62,7 +61,7 @@
                                 {% for r in resp_metodo_pago %}
                                     <tr>
                                         <th class="text-left">{{ r.nombre }}</th>
-                                        <td class="text-left">{{ r.valor }}</td>
+                                        <td class="text-left">{{ r.valor|default:'' }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
@@ -114,15 +113,16 @@
                                                 {% if obj.cuota.role == 1 %}
                                                     <thead>
                                                     <tr>
-                                                        <th class="text-center" colspan="5"><i class="fa fa-list"></i>
+                                                        <th class="text-center" colspan="6"><i class="fa fa-list"></i>
                                                             Details
                                                         </th>
                                                     </tr>
                                                     <tr>
                                                         <th class="text-center" width="5%">#</th>
+                                                        <th class="text-center">¿Principal?</th>
                                                         <th class="text-center" width="10%">Id</th>
                                                         <th class="text-center">Title</th>
-                                                        <th class="text-center"># Sheets</th>
+                                                        <th class="text-center"># Pages</th>
                                                         <th class="text-center">Subtotal</th>
                                                     </tr>
                                                     </thead>
@@ -130,6 +130,8 @@
                                                     {% for paper in obj.get_papers %}
                                                         <tr>
                                                             <td class="text-center">{{ forloop.counter }}</td>
+                                                            <td class="text-center"><i
+                                                                    class="{{ paper.get_principal }}"></i></td>
                                                             <td class="text-center">{{ paper.idpaper }}</td>
                                                             <td class="text-center">{{ paper.title }}</td>
                                                             <td class="text-center">{{ paper.sheets }}</td>
@@ -140,7 +142,7 @@
                                                     </tbody>
                                                     <tfoot>
                                                     <tr>
-                                                        <td colspan="4" class="text-right">Total</td>
+                                                        <td colspan="5" class="text-right">Total</td>
                                                         <td class="text-center">$
                                                             <b>{{ obj.subtotal|floatformat:2 }}</b></td>
                                                     </tr>

@@ -110,6 +110,7 @@ def registerView(request):
                         }
                         subject = f'¡Welcome to ICTIAIR – Registration Complete!'
                         to = user_.email
+                        # to = 'cozjosue0@gmail.com'
                         send_html_mail(subject, "email/registro_usuario.html", datos, [to], [], [])
 
                     if filtro.role != 1:

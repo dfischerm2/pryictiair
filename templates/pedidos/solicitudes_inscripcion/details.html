@@ -27,23 +27,57 @@
                 </tr>
                 <tr>
                     <td class="text-left text-bold">Fee type</td>
-                    <td class="text-left">{{ filtro.cuota.get_role_display }} {% if filtro.cuota.special_price %}<br><b>(Special Price for Sponsor Universities (UNEMI, VIU, or UCLM))</b>{% endif %}</td>
+                    <td class="text-left">{{ filtro.cuota.get_role_display }} {% if filtro.cuota.special_price %}<br>
+                        <b>(Special Price for Sponsor Universities (UNEMI, VIU, or UCLM))</b>{% endif %}</td>
                     <td class="text-left text-bold">Total</td>
                     <td class="text-left">$ {{ filtro.subtotal|floatformat:2 }}</td>
                 </tr>
                 </tbody>
             </table>
             <table class="table table-bordered table-td-valign-middle">
+                <thead>
+                <tr>
+                    <th class="text-center" colspan="4"><i class="fa fa-file-invoice"></i> Billing data</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-left text-bold">Name or Business Name</td>
+                    <td class="text-left" colspan="3">{{ filtro.billing_company_name }}</td>
+                </tr>
+                <tr>
+                    <td class="text-left text-bold">Email Address</td>
+                    <td class="text-left">
+                        {{ filtro.billing_email_address }}
+                    </td>
+                    <td class="text-left text-bold">Tax ID</td>
+                    <td class="text-left">
+                        {{ filtro.billing_tax_id }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left text-bold">Address</td>
+                    <td class="text-left">{{ filtro.billing_address }}</td>
+                    <td class="text-left text-bold">Phone Number</td>
+                    <td class="text-left">
+                        {{ filtro.billing_phone_number|default:'' }}
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+            <table class="table table-bordered table-td-valign-middle">
                 {% if filtro.cuota.role == 1 %}
                     <thead>
                     <tr>
-                        <th class="text-center" colspan="5"><i class="fa fa-list"></i> Details</th>
+                        <th class="text-center" colspan="6"><i class="fa fa-list"></i> Details</th>
                     </tr>
                     <tr>
                         <th class="text-center" width="5%">#</th>
+                        <th class="text-center">¿Principal?</th>
                         <th class="text-center" width="10%">Id</th>
                         <th class="text-center">Title</th>
-                        <th class="text-center"># Sheets</th>
+                        <th class="text-center"># Pages</th>
                         <th class="text-center">Subtotal</th>
                     </tr>
                     </thead>
@@ -51,6 +85,7 @@
                     {% for paper in filtro.get_papers %}
                         <tr>
                             <td class="text-center">{{ forloop.counter }}</td>
+                            <td class="text-center"><i class="{{ paper.get_principal }}"></i></td>
                             <td class="text-center">{{ paper.idpaper }}</td>
                             <td class="text-center">{{ paper.title }}</td>
                             <td class="text-center">{{ paper.sheets }}</td>
@@ -60,7 +95,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td colspan="4" class="text-right">Total</td>
+                        <td colspan="5" class="text-right">Total</td>
                         <td class="text-center">$ <b>{{ filtro.subtotal|floatformat:2 }}</b></td>
                     </tr>
                     </tfoot>
@@ -82,7 +117,7 @@
                             {{ filtro.cuota.get_role_display }}
                         </td>
                         <td class="text-center">
-                           <i class="{{ filtro.cuota.get_special_price }}"></i>
+                            <i class="{{ filtro.cuota.get_special_price }}"></i>
                         </td>
                         <td class="text-center">
                             {{ filtro.user.institucion|default:'Unregistered'|upper }}

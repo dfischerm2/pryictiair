@@ -527,6 +527,7 @@ class InscripcionConference(ModeloBase):
 
 class PapersInscripcionConference(ModeloBase):
     cab = models.ForeignKey(InscripcionConference, related_name='papers', on_delete=models.CASCADE, verbose_name='Cabecera')
+    principal = models.BooleanField(default=False, verbose_name='Principal')
     idpaper = models.CharField(verbose_name="ID Paper", max_length=100, blank=True, null=True)
     title = models.CharField(verbose_name="title", max_length=500, blank=True, null=True)
     sheets = models.IntegerField(verbose_name="Hojas", default=0)

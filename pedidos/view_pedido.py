@@ -12,8 +12,9 @@ from django.utils import timezone
 from core.correos_background import enviar_correo_html
 from core.custom_models import FormError
 from core.decoradores import custom_atomic_request
+from core.email_config import send_html_mail
 from core.funciones import addData, paginador, salva_auditoria, redirectAfterPostGet, secure_module, get_decrypt, \
-    get_datos_email_html, get_encrypt, log
+    get_datos_email_html, get_encrypt, log, generar_nombre
 from core.funciones_adicionales import customgetattr
 from django.contrib import messages
 from django.conf import settings
@@ -22,6 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 from core.metodos_de_pago import reversar_pago_paypal
 from landing.models import InscripcionConference, PapersInscripcionConference, TopicsInscripcionConference
 from seguridad.templatetags.templatefunctions import encrypt
+from .forms import UploadInvoiceForm
 from .models import Pedido, ESTADO_PEDIDO, METODO_PAGOS, HistorialPedido, PapersAuthorPedido, TopicsAttendeePedido
 import os
 
@@ -84,7 +86,7 @@ def pedidoView(request):
                             inscription_.save(request)
                             if papers_pedido:
                                 for paper in papers_pedido:
-                                    paper_ = PapersInscripcionConference(cab=inscription_, idpaper=paper.idpaper, title=paper.title, sheets=paper.sheets)
+                                    paper_ = PapersInscripcionConference(cab=inscription_, idpaper=paper.idpaper, title=paper.title, sheets=paper.sheets, principal=paper.principal)
                                     paper_.save(request)
                             if topics_pedido:
                                 for topic in topics_pedido:
@@ -163,11 +165,50 @@ def pedidoView(request):
                     log(f"Elimino pedido {filtro.__str__()}", request, "delete",obj=filtro.id)
                     messages.success(request, "Carrousel eliminado exitosamente")
                     res_json = {'error': False}
-
+                elif action == 'upload_invoice':
+                    filtro = Pedido.objects.get(id=int(request.POST['pk']))
+                    form = UploadInvoiceForm(request.POST, request.FILES)
+                    if not form.is_valid():
+                        raise FormError(form)
+                    if not 'archivo' in request.FILES:
+                        raise ValueError("No se ha cargado ningún archivo")
+                    newfile = request.FILES['archivo']
+                    extension = newfile._name.split('.')
+                    tam = len(extension)
+                    exte = extension[tam - 1]
+                    if newfile.size > 4194304:
+                        raise NameError(f"Error: The file size exceeds 4 MB.")
+                    if exte in ['pdf', ]:
+                        newfile._name = generar_nombre("factura_", newfile._name)
+                    else:
+                        raise NameError(f"Error: Only .pdf files are allowed.")
+                    filtro.factura = newfile
+                    filtro.estado = 'FACTURA_EMITIDA'
+                    filtro.factura_cargada = True
+                    filtro.save(request)
+                    historial_ = HistorialPedido(pedido=filtro, user=filtro.user, estado='FACTURA_EMITIDA',detalle='Invoice issued', archivo=newfile)
+                    historial_.save(request)
+                    user_ = filtro.user
+                    datos = {
+                        'user': user_,
+                        'conference': filtro.cuota.conference,
+                        'confi': data['confi'],
+                        'filtro': filtro,
+                        'url': f'{data["DOMINIO_DEL_SISTEMA"]}/profile/?action=payments',
+                    }
+                    subject = f'Invoice successfully issued - ICTIAIR'
+                    to = user_.email
+                    # to = 'cozjosue0@gmail.com'
+                    send_html_mail(subject, "email/factura_cargada.html", datos, [to], [], [], [filtro.factura])
+                    log(f"Subio factura {filtro.__str__()}", request, "change",obj=filtro.id)
+                    messages.success(request, "Factura enviada correctamente")
+                    res_json.append({'error': False, 'reload': True})
+        except ValueError as ex:
+            res_json.append({'error': True, "message": str(ex)})
+        except FormError as ex:
+            res_json.append(ex.dict_error)
         except Exception as ex:
-            res_json.append({'error': True,
-                             "message": f"Intente Nuevamente, {ex}"
-                             })
+            res_json.append({'error': True, "message": f"{ex}"})
         return JsonResponse(res_json, safe=False)
     elif request.method == 'GET':
         if 'action' in request.GET:
@@ -224,6 +265,17 @@ def pedidoView(request):
                     filtro = Pedido.objects.get(pk=id)
                     data['filtro'] = filtro
                     template = get_template("pedidos/solicitudes_inscripcion/details.html")
+                    return JsonResponse({"result": True, 'data': template.render(data)})
+                except Exception as ex:
+                    return JsonResponse({'result': False, 'message': f"{ex}"})
+
+            elif action == 'upload_invoice':
+                try:
+                    id = int(encrypt(request.GET['id']))
+                    filtro = Pedido.objects.get(pk=id)
+                    data['filtro'] = filtro
+                    data['form'] = UploadInvoiceForm()
+                    template = get_template("pedidos/solicitudes_inscripcion/formModal.html")
                     return JsonResponse({"result": True, 'data': template.render(data)})
                 except Exception as ex:
                     return JsonResponse({'result': False, 'message': f"{ex}"})

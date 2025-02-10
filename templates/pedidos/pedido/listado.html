@@ -78,6 +78,9 @@
                         Método de pago
                     </th>
                     <th class="text-center">
+                        Factura
+                    </th>
+                    <th class="text-center">
                         Estado
                     </th>
                     <th class="text-center">
@@ -132,6 +135,18 @@
                             {% endif %}
                         </td>
                         <td class="text-center">
+                            {% if  l.factura_cargada %}
+                                 <a data-fancybox="iframe" data-type="iframe"
+                                   class="btn text-danger tu" title="Ver Factura" target="_blank"
+                                   data-toggle="tooltip"
+                                   href="/media/{{ l.factura }}"
+                                   data-width="2048" data-height="1365">
+                                    <i class="fa fa-file-pdf fs-4"></i> Factura
+                                </a>
+                            {% endif %}
+
+                        </td>
+                        <td class="text-center">
                             {{ l.estado_pedido }}
                         </td>
                         <td class="with-btn-group text-center" nowrap>
@@ -162,11 +177,13 @@
                                             <i class="fa fa-money-bill"></i> Enlace de pago
                                         </a>
                                     {% endif %}
-                                    <a data-toggle="modal" data-target="#modalMetodoPago{{ l.id }}"
-                                       class="dropdown-item"
-                                       href="javascript:;">
-                                        {{ l.get_icon }} Ver detalle del pago
-                                    </a>
+                                    {% if l.estado == 'GENERAR_FACTURA' or not l.factura_cargada %}
+                                        <a class="dropdown-item"
+                                           href="javascript:void(0)"
+                                           onclick="formModal('{{ l.pk|encrypt }}', 'Subir factura', 'upload_invoice')">
+                                            <i class="fa fa-upload"></i> Subir factura
+                                        </a>
+                                    {% endif %}
 
                                     {% if not l.estado == 'ERROR_METODO_PAGO' %}
                                         {% if l.estado != 'ANULADO' %}
@@ -297,9 +314,6 @@
             {% endif %}
         {% endwith %}
     {% endfor %}
-
-    <link rel="stylesheet" href="/static/lightbox/css/lightbox.min.css">
-    <script src="/static/lightbox/js/lightbox-plus-jquery.min.js"></script>
 {% endblock %}
 
 {% block jscript %}
@@ -336,7 +350,6 @@
             });
         }
     </script>
-    <script src="/static/fancybox/js/core.js"></script>
     <script>
 
         const ModalAdd = $('#ModalAdd');

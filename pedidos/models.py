@@ -19,6 +19,10 @@ def _estado_pedido(self):
     s = ""
     if self.estado == "PENDIENTE":
         s = '<i class="text-info fas fa-ellipsis-h"></i> Pendiente de validar'
+    elif self.estado == "GENERAR_FACTURA":
+        s = '<i class="text-info fas fa-ellipsis-h"></i> Solicitó emisión de factura'
+    elif self.estado == "FACTURA_EMITIDA":
+        s = '<i class="text-info fas fa-ellipsis-h"></i> Factura emitida, pendiente cargar comprobante de pago'
     elif self.estado == "RECHAZADO":
         s = '<i class="text-danger fas fa-times-circle"></i> Inscripción rechazada'
     elif self.estado == "PENDIENTE_PAGO":
@@ -46,6 +50,8 @@ ESTADO_PEDIDO = (
     ("PENDIENTE", "Pending validation"),
     ("RECHAZADO", "Registration rejected"),
     ("PENDIENTE_PAGO", "Pending payment"),
+    ("GENERAR_FACTURA", "Requested invoice issuance"),
+    ("FACTURA_EMITIDA", "Invoice issued"),
     ("EN_ESPERA", "Waiting for approval"),
     ("ANULADO", "Canceled"),
     ("COMPLETADO", "Completed"),
@@ -94,14 +100,18 @@ class Pedido(ModeloBase):
     pago_reversado_por = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name="Pago reversado por", null=True, blank=True, related_name="venta_pedido_pago_reversado_por")
     modo_pago = models.BooleanField("Ejecución de Paypal", choices=TIPO_ENTORNO, default=1)
     # BILLING DATA
+    billing_info = models.BooleanField("Billing Info", default=False)
     billing_tax_id = models.CharField("Tax ID", max_length=255, null=True, blank=True)
     billing_company_name = models.CharField("Company Name", max_length=255, null=True, blank=True)
     billing_address = models.CharField("Address", max_length=255, null=True, blank=True)
     billing_email_address = models.CharField("Email Address", max_length=255, null=True, blank=True)
     billing_phone_number = models.CharField("Phone Number", max_length=255, null=True, blank=True)
+    # ARCHIVOS
+    factura_cargada = models.BooleanField("Factura cargada", default=False)
+    factura = models.FileField(upload_to=UserUploadToPath("pedidos/facturas/", funcUser), null=True, blank=True)
 
     def get_papers(self):
-        return self.papersauthorpedido_set.filter(status=True)
+        return self.papersauthorpedido_set.filter(status=True).order_by('-principal')
 
     def get_topics_interest(self):
         return self.topicsattendeepedido_set.filter(status=True)
@@ -201,6 +211,9 @@ class PapersAuthorPedido(ModeloBase):
     sheets = models.IntegerField(verbose_name="Hojas", default=0)
     value = models.DecimalField(verbose_name="Valor", default=0, max_digits=30, decimal_places=2)
     principal = models.BooleanField(verbose_name="Principal", default=False)
+
+    def get_principal(self):
+        return 'text-success fa fa-check-circle' if self.principal else 'text-danger fa fa-times-circle'
 
     def __str__(self):
         return f"ID: {self.idpaper} {self.title} - {self.sheets} hojas"

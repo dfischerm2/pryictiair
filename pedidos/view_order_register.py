@@ -82,8 +82,8 @@ def solicitudesRegistroView(request):
                         'profile_link': f'{data["DOMINIO_DEL_SISTEMA"]}/profile/',
                     }
                     subject = f'Validation of Your Registration Request for: {filtro.cuota.conference.title}'
-                    # to = user_.email
-                    to = 'cozjosue0@gmail.com'
+                    to = user_.email
+                    # to = 'cozjosue0@gmail.com'
                     send_html_mail(subject, "email/validacion_inscripcion.html", datos, [to], [], [])
                     log(f"Validó la solicitud de inscripción {filtro.__str__()}", request, "change", obj=filtro.id)
                     messages.success(request, "Solicitud validada con éxito")
