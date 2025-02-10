@@ -32,7 +32,7 @@ from seguridad.templatetags.templatefunctions import encrypt
 
 def registerView(request):
     data = {
-        'titulo': 'Registro',
+        'titulo': 'Register',
         'modulo': 'Landing',
         'ruta': request.path,
         'fecha': str(date.today())
