@@ -187,10 +187,10 @@ def registerView(request):
                         'filtro': pedido,
                         'user': user_,
                         'url': f'{data["DOMINIO_DEL_SISTEMA"]}',
-                        'payment_link': f'{data["DOMINIO_DEL_SISTEMA"]}/complete_purchase/?order={encrypt(pedido.id)}',
+                        'payment_link': f'{data["DOMINIO_DEL_SISTEMA"]}/profile/?action=payments',
                         'conference': filtro.conference,
                     }
-                    subject = f'¡Order Received!'
+                    subject = f'¡Order Received! - ICTIAIR'
                     to = user_.email
                     send_html_mail(subject, "email/pedido_recibido.html", datos, [to], [], [])
                     if not request.user.is_authenticated:
@@ -199,7 +199,7 @@ def registerView(request):
                         to = f'/complete_purchase/?order={encrypt(pedido.id)}'
                     else:
                         to = '/profile/?action=payments'
-                    messages.success(request, f'Your registration has been successfully completed. You will receive an email with the details of your registration. Please check your spam folder if you dont see it in your inbox')
+                    messages.success(request, f'Your registration has been successfully completed. You will receive an email with the details of your registration. Please check your SPAM FOLDER if you dont see it in your inbox')
                     log(f"Registró pedido para evento {pedido.__str__()}", request, "add", obj=pedido.id, user=user_)
                     res_json.append({'error': False, 'to': to })
         except ValueError as ex:
