@@ -2,6 +2,7 @@ import os
 import time
 from django.core import mail
 from django.db.models import Q
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.template.loader import render_to_string, get_template
 from django.contrib.auth import authenticate
@@ -12,6 +13,7 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 from django.utils.html import strip_tags
 
+from area_geografica.models import Provincia, Pais
 from core.custom_forms import FormError
 from core.funciones import addData, salva_auditoria, secure_module, generar_nombre, paginador, log
 from autenticacion.models import Usuario
@@ -19,6 +21,7 @@ from datetime import timedelta, datetime, date
 
 from landing.models import InscripcionConference, Conference, ScheduleConference, DetailScheduleConference
 from pedidos.models import Pedido, HistorialPedido
+from public.forms import RegistroPersonaForm, EditProfileForm
 from seguridad.templatetags.templatefunctions import encrypt
 
 
@@ -85,6 +88,17 @@ def myProfileView(request):
                             res_json.append({'error': False, "url": f'{cronograma.link}'})
                         else:
                             raise NameError('Something went wrong. Contact the administrator for assistance.')
+                    elif action == 'editprofile':
+                        form = EditProfileForm(request.POST, request.FILES)
+                        if form.is_valid():
+                            persona.pais = form.cleaned_data['pais']
+                            persona.institucion = form.cleaned_data['institucion']
+                            persona.save(request)
+                            log(f"Edito el perfil de {request.user.__str__()}", request, "change", obj=request.user.id)
+                            messages.success(request, "Profile edited successfully")
+                            res_json.append({'error': False, "reload": True})
+                        else:
+                            raise FormError(form)
             except ValueError as ex:
                 res_json.append({'error': True, "message": str(ex)})
             except FormError as ex:
@@ -97,6 +111,7 @@ def myProfileView(request):
             data['action'] = action = request.GET['action']
             if action == 'changepass':
                 data['titulo'] = 'Cambiar Contraseña'
+                data['viewprofile'] = 4
                 return render(request, 'public/perfil/changepass.html', data)
             elif action == 'payments':
                 try:
@@ -165,6 +180,14 @@ def myProfileView(request):
                     filtro = InscripcionConference.objects.get(pk=id)
                     data['filtro'] = filtro
                     template = get_template("public/perfil/orders/papers_list.html")
+                    return JsonResponse({"result": True, 'data': template.render(data)})
+                except Exception as ex:
+                    return JsonResponse({'result': False, 'message': f"{ex}"})
+            elif action == 'editprofile':
+                try:
+                    form = EditProfileForm(initial=model_to_dict(persona))
+                    data['form'] = form
+                    template = get_template("public/perfil/form.html")
                     return JsonResponse({"result": True, 'data': template.render(data)})
                 except Exception as ex:
                     return JsonResponse({'result': False, 'message': f"{ex}"})

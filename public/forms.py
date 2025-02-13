@@ -84,3 +84,12 @@ class StudentAttendeeForm(FormModeloBase):
                            help_text=u'We kindly request verification of your student status. To complete this process, please upload an official document as proof of your academic record.',
                            ext_whitelist=(".pdf", ".jpg", ".jpeg", ".png",), max_upload_size=4194304,
                            widget=forms.FileInput(attrs={'col': '12', 'class': 'dropify'}))
+
+
+class EditProfileForm(FormModeloBase):
+    first_name = forms.CharField(label=u'First Name', max_length=500, widget=forms.TextInput(attrs={'col': '6', 'data-parsley-group': 'step-0'}), required=False, disabled=True)
+    last_name = forms.CharField(label=u'Last Name', max_length=500, widget=forms.TextInput(attrs={'col': '6', 'data-parsley-group': 'step-0'}), required=False, disabled=True)
+    email = forms.CharField(label=u'Email', max_length=500, widget=forms.TextInput(attrs={'col': '6', 'data-parsley-group': 'step-0'}), required=False, disabled=True)
+    telefono = forms.CharField(label=u'Phone', max_length=500, widget=forms.TextInput(attrs={'col': '6', 'data-parsley-group': 'step-0'}), required=False, disabled=True)
+    pais = forms.ModelChoiceField(label=u'Country', queryset=Pais.objects.filter(status=True), widget=forms.Select(attrs={'col': '6', 'class': 'select2'}), required=True)
+    institucion = forms.CharField(label=u'Institute', max_length=500, widget=forms.TextInput(attrs={'col': '6', 'data-parsley-group': 'step-0'}), required=False)

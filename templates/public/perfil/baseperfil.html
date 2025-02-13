@@ -5,6 +5,12 @@
     <link rel="stylesheet" href="/static/profile_views.css">
     <script src="/static/fontawesome-6.6.0/js/all.js"></script>
     <link rel="stylesheet" href="/static/fontawesome-6.6.0/css/all.min.css">
+    <style>
+        .select2-selection {
+            height: 35px !important;
+            padding-top: 3px !important;
+        }
+    </style>
     {% block extrahead %}
     {% endblock %}
 {% endblock %}
@@ -56,7 +62,7 @@
                         <div class="position-lg-sticky" style="top: 1rem;">
                             <div class="sidebar-profile">
                                 <div class="profile-header">
-                                    <h3 class="profile-name h5 mb-1">Hola {{ request.user.first_name }}</h3>
+                                    <h3 class="profile-name h5 mb-1">Hello {{ request.user.first_name }}</h3>
                                     <p class="profile-role mb-0">ICTIAIR</p>
                                 </div>
 
@@ -123,7 +129,9 @@
 {% endblock %}
 
 {% block jscript %}
-    <script src="/static/js/forms.js?version=11"></script>
+    <script src="/static/js/forms.js?version=13"></script>
+    <link href="/static/selectmultiple/select2.min.css?1" rel="stylesheet">
+    <script src="/static/selectmultiple/select2.min.js"></script>
     <script>
         window.onload = function () {
             {% if messages %}
@@ -177,6 +185,7 @@
             });
         });
     </script>
+
     {% block extra_js %}
     {% endblock %}
 {% endblock %}

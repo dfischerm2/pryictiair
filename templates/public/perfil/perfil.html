@@ -7,40 +7,65 @@
         <!-- Basic info-->
         <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
             <div class="card-body">
-                <div class="d-flex align-items-center mt-sm-n1 mb-0 mb-lg-1"><i
-                        class="ai-user text-primary lead pe-1 me-2"></i>
-                    <h2 class="h4 mb-0">Información Personal</h2>
+                <div class="d-flex align-items-center mt-sm-n1 mb-0 mb-lg-1 justify-content-between">
+                    <div>
+                        <i class="fa fa-user lead pe-1 me-2"></i>
+                        <h2 class="h4 mb-0">Personal Information</h2>
+                    </div>
+                    <a href="javascript:void(0);" onclick="formModal(0, 'Edit Profile', 'editprofile')"
+                       class="btn btn-primary">
+                        <i class="fa fa-edit text-white"></i>
+                    </a>
                 </div>
                 <div class="row py-4 mb-2 mb-sm-3">
-                  <div class="col-md-6 mb-4 mb-md-0">
-                    <table class="table mb-0">
-                      <tr>
-                        <td class="border-0 text-muted py-1 px-0">Nombres</td>
-                        <td class="border-0 text-dark fw-medium py-1 ps-3">{{ request.user.first_name }}</td>
-                      </tr>
-                      <tr>
-                        <td class="border-0 text-muted py-1 px-0">Apellidos</td>
-                        <td class="border-0 text-dark fw-medium py-1 ps-3">{{ request.user.last_name }}</td>
-                      </tr>
-                      <tr>
-                        <td class="border-0 text-muted py-1 px-0">Correo</td>
-                        <td class="border-0 text-dark fw-medium py-1 ps-3">{{ request.user.email }}</td>
-                      </tr>
-                      <tr>
-                        <td class="border-0 text-muted py-1 px-0">Teléfonos</td>
-                        <td class="border-0 text-dark fw-medium py-1 ps-3">{{ request.user.telefono }}</td>
-                      </tr>
-                    </table>
-                  </div>
-                  <div class="col-md-6 mb-4 mb-md-0">
-                    <table class="table mb-0">
-                    </table>
-                  </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <span class="text-muted d-block">Name</span>
+                            <span class="text-dark fw-medium">{{ request.user.first_name }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="text-muted d-block">Last Name</span>
+                            <span class="text-dark fw-medium">{{ request.user.last_name }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="text-muted d-block">Email</span>
+                            <span class="text-dark fw-medium">{{ request.user.email }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <span class="text-muted d-block">Phone</span>
+                            <span class="text-dark fw-medium">{{ request.user.telefono }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="text-muted d-block">Country</span>
+                            <span class="text-dark fw-medium">{{ request.user.pais }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="text-muted d-block">Institute</span>
+                            <span class="text-dark fw-medium">{{ request.user.institucion }}</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
         </section>
     </div>
 
+    {#    <div class="modal fade" id="modalDetalle">#}
+    {#        <div class="modal-dialog">#}
+    {#            <div class="modal-content">#}
+    {#                <form method="post" enctype="multipart/form-data" action="{{ ruta }}"#}
+    {#                      class="form-horizontal form-label-left">#}
+    {#                    {% csrf_token %}#}
+    {#                    <div class="modal-header">#}
+    {#                        <h4 class="modal-title"><b id="modalNombre"></b></h4>#}
+    {#                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>#}
+    {#                    </div>#}
+    {#                    <div class="modal-body detalleProd">#}
+    {#                    </div>#}
+    {#                </form>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
 {% endblock %}
 
 {% block extra_js %}
