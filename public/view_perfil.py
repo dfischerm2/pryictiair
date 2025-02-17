@@ -15,10 +15,11 @@ from django.utils.html import strip_tags
 
 from area_geografica.models import Provincia, Pais
 from core.custom_forms import FormError
-from core.funciones import addData, salva_auditoria, secure_module, generar_nombre, paginador, log
+from core.funciones import addData, salva_auditoria, secure_module, generar_nombre, paginador, log, get_client_ip
 from autenticacion.models import Usuario
 from datetime import timedelta, datetime, date
 
+from financiero.forms import PagoTransferenciaForm
 from landing.models import InscripcionConference, Conference, ScheduleConference, DetailScheduleConference
 from pedidos.models import Pedido, HistorialPedido
 from public.forms import RegistroPersonaForm, EditProfileForm
@@ -88,6 +89,35 @@ def myProfileView(request):
                             res_json.append({'error': False, "url": f'{cronograma.link}'})
                         else:
                             raise NameError('Something went wrong. Contact the administrator for assistance.')
+                    elif action == 'cargar_comprobante_paypal':
+                        pedido = Pedido.objects.get(pk=int(request.POST['pk']))
+                        form = PagoTransferenciaForm(request.POST, request.FILES)
+                        if not form.is_valid():
+                            raise FormError(form)
+                        if not 'archivo' in request.FILES:
+                            raise NameError("You must upload a file")
+                        newfile = request.FILES['archivo']
+                        extension = newfile._name.split('.')
+                        tam = len(extension)
+                        exte = extension[tam - 1]
+                        if newfile.size > 4194304:
+                            raise NameError(f"Error: The file size exceeds 4 MB.")
+                        if exte in ['pdf',]:
+                            newfile._name = generar_nombre("order_", newfile._name)
+                        else:
+                            raise NameError(f"Error: Only .pdf files are allowed.")
+                        pedido.ip = get_client_ip(request)
+                        pedido.modo_pago = True
+                        pedido.metodo_pago = 'PAYPAL'
+                        pedido.archivo_pago = newfile
+                        pedido.estado = "EN_ESPERA"
+                        pedido.total = pedido.subtotal
+                        pedido.save(request)
+                        historial_ = HistorialPedido(pedido=pedido, user=pedido.user, estado='EN_ESPERA', detalle='PayPal payment receipt uploaded ', archivo=newfile)
+                        historial_.save(request)
+                        log(f"Payment by bank transfer for order {pedido.__str__()}", request, "add", obj=pedido.id)
+                        messages.success(request,f"Your order has been completed, and your payment is currently under review, once your payment receipt has been validated, you will receive an email with the details . Please check your SPAM FOLDER if you dont see it in your inbox")
+                        res_json.append({'error': False, "to": '/profile/?action=payments'})
                     elif action == 'editprofile':
                         form = EditProfileForm(request.POST, request.FILES)
                         if form.is_valid():
@@ -180,6 +210,17 @@ def myProfileView(request):
                     filtro = InscripcionConference.objects.get(pk=id)
                     data['filtro'] = filtro
                     template = get_template("public/perfil/orders/papers_list.html")
+                    return JsonResponse({"result": True, 'data': template.render(data)})
+                except Exception as ex:
+                    return JsonResponse({'result': False, 'message': f"{ex}"})
+            elif action == 'cargar_comprobante_paypal':
+                try:
+                    id = int(encrypt(request.GET['id']))
+                    filtro = Pedido.objects.get(pk=id)
+                    form = PagoTransferenciaForm()
+                    data['filtro'] = filtro
+                    data['form'] = form
+                    template = get_template("public/complete_purchase/modal_transferencia.html")
                     return JsonResponse({"result": True, 'data': template.render(data)})
                 except Exception as ex:
                     return JsonResponse({'result': False, 'message': f"{ex}"})

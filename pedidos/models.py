@@ -21,6 +21,10 @@ def _estado_pedido(self):
         s = '<i class="text-info fas fa-ellipsis-h"></i> Pendiente de validar'
     elif self.estado == "GENERAR_FACTURA":
         s = '<i class="text-info fas fa-ellipsis-h"></i> Solicitó emisión de factura'
+    elif self.estado == "PENDIENTE_PAYPAL":
+        s = '<i class="text-info fas fa-ellipsis-h"></i> En espera de validar pago por PayPal'
+    elif self.estado == "COMPROBANTE_PAYPAL":
+        s = '<i class="text-info fas fa-ellipsis-h"></i> En espera de cargar comprobante de pago por PayPal'
     elif self.estado == "FACTURA_EMITIDA":
         s = '<i class="text-info fas fa-ellipsis-h"></i> Factura emitida, pendiente cargar comprobante de pago'
     elif self.estado == "RECHAZADO":
@@ -52,6 +56,8 @@ ESTADO_PEDIDO = (
     ("PENDIENTE_PAGO", "Pending payment"),
     ("GENERAR_FACTURA", "Requested invoice issuance"),
     ("FACTURA_EMITIDA", "Invoice issued"),
+    ("PENDIENTE_PAYPAL", "Waiting for PayPal method approval"),
+    ("COMPROBANTE_PAYPAL", "Waiting for upload paypal payment proof"),
     ("EN_ESPERA", "Waiting for approval"),
     ("ANULADO", "Canceled"),
     ("COMPLETADO", "Completed"),
@@ -59,16 +65,6 @@ ESTADO_PEDIDO = (
     ("ERROR_METODO_PAGO", "Payment method error")
 )
 
-PAYMENT_ORIGIN = (
-    (1, 'ECUADOR'),
-    (2, 'INTERNACIONAL'),
-)
-
-
-INVOICE_OPTIONS = (
-    (1, 'Generate Invoice'),
-    (2, 'Final Consumer Receipt'),
-)
 
 TIPO_ENTORNO = ((True, "Producción"), (False, "Test"),)
 
@@ -77,8 +73,6 @@ class Pedido(ModeloBase):
     ip = models.CharField(max_length=1000, blank=True, null=True, verbose_name='Ip')
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name="Usuario que hizo el pedido", related_name='+')
     cuota = models.ForeignKey("landing.ConferenceFee", on_delete=models.PROTECT, verbose_name="Cuota")
-    payment_origin = models.PositiveIntegerField("Origen del pago", choices=PAYMENT_ORIGIN, default=0)
-    invoice_option = models.PositiveIntegerField("Opción de factura", choices=INVOICE_OPTIONS, default=0)
     archivo_evidencia = models.FileField(upload_to=UserUploadToPath("pedidos/archives/", funcUser), null=True, blank=True)
     special_price_student = models.BooleanField("Precio especial para estudiantes", default=False)
     observacion = models.TextField("Notas de pedido", null=True, blank=True, default='')
@@ -109,6 +103,8 @@ class Pedido(ModeloBase):
     # ARCHIVOS
     factura_cargada = models.BooleanField("Factura cargada", default=False)
     factura = models.FileField(upload_to=UserUploadToPath("pedidos/facturas/", funcUser), null=True, blank=True)
+    # Enlace Pago
+    enlace_pago = models.CharField("Enlace de pago", max_length=255, null=True, blank=True)
 
     def get_papers(self):
         return self.papersauthorpedido_set.filter(status=True).order_by('-principal')

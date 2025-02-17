@@ -23,7 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 from core.metodos_de_pago import reversar_pago_paypal
 from landing.models import InscripcionConference, PapersInscripcionConference, TopicsInscripcionConference
 from seguridad.templatetags.templatefunctions import encrypt
-from .forms import UploadInvoiceForm
+from .forms import UploadInvoiceForm, ValidarSolPagoPaypalForm
 from .models import Pedido, ESTADO_PEDIDO, METODO_PAGOS, HistorialPedido, PapersAuthorPedido, TopicsAttendeePedido
 import os
 
@@ -203,6 +203,36 @@ def pedidoView(request):
                     log(f"Subio factura {filtro.__str__()}", request, "change",obj=filtro.id)
                     messages.success(request, "Factura enviada correctamente")
                     res_json.append({'error': False, 'reload': True})
+                elif action == 'validar_solicitud_paypal':
+                    pedido = Pedido.objects.get(id=int(request.POST['pk']))
+                    form = ValidarSolPagoPaypalForm(request.POST)
+                    if not form.is_valid():
+                        raise FormError(form)
+                    estado = int(form.cleaned_data['estado_val'])
+                    estado_pedido = 'COMPROBANTE_PAYPAL' if estado == 1 else 'PENDIENTE_PAGO'
+                    estadoStr = 'Approved Paypal payment' if estado == 1 else 'Rejected Paypal payment'
+                    if estado == 1:
+                        pedido.enlace_pago = form.cleaned_data['enlace_pago']
+                    pedido.estado = estado_pedido
+                    pedido.save(request)
+                    historial_ = HistorialPedido(pedido=pedido, user=pedido.user, estado=estado_pedido, detalle=estadoStr, archivo=None)
+                    historial_.save(request)
+                    user_ = pedido.user
+                    datos = {
+                        'user': user_,
+                        'estado': estado,
+                        'confi': data['confi'],
+                        'filtro': pedido,
+                        'url': f'{data["DOMINIO_DEL_SISTEMA"]}/profile/?action=payments',
+                        'payment_link': form.cleaned_data['enlace_pago'] if estado == 1 else '',
+                    }
+                    subject = f'✅ Paypal Payment Been Approved - Ictiar' if estado == 1 else '❌ Paypal Payment Rejected - Ictiar'
+                    # to = user_.email
+                    to = 'cozjosue0@gmail.com'
+                    send_html_mail(subject, "email/pedido_paypalsolicitud.html", datos, [to], [], [],)
+                    log(f"Valido solicitud paypal {pedido.__str__()}", request, "change",obj=pedido.id)
+                    messages.success(request, "Solicitud de pago validada correctamente")
+                    res_json.append({'error': False, 'reload': True})
         except ValueError as ex:
             res_json.append({'error': True, "message": str(ex)})
         except FormError as ex:
@@ -276,6 +306,17 @@ def pedidoView(request):
                     data['filtro'] = filtro
                     data['form'] = UploadInvoiceForm()
                     template = get_template("pedidos/solicitudes_inscripcion/formModal.html")
+                    return JsonResponse({"result": True, 'data': template.render(data)})
+                except Exception as ex:
+                    return JsonResponse({'result': False, 'message': f"{ex}"})
+
+            elif action == 'validar_solicitud_paypal':
+                try:
+                    id = int(encrypt(request.GET['id']))
+                    filtro = Pedido.objects.get(pk=id)
+                    data['filtro'] = filtro
+                    data['form'] = ValidarSolPagoPaypalForm()
+                    template = get_template("pedidos/solicitudes_inscripcion/form_solpaypal.html")
                     return JsonResponse({"result": True, 'data': template.render(data)})
                 except Exception as ex:
                     return JsonResponse({'result': False, 'message': f"{ex}"})

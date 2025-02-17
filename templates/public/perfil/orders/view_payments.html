@@ -49,7 +49,15 @@
                                     {% endif %}
                                 </td>
                                 <td class="text-center">
-                                    {% if l.estado == 'FACTURA_EMITIDA' %}
+                                    {% if l.estado == 'COMPROBANTE_PAYPAL' %}
+                                        <a href="javascript:void(0)"
+                                           onclick="cargarComprobantePaypal('{{ l.pk|encrypt }}')"
+                                           class="btn btn-success btn-sm"><i class="fa fa-upload"></i> Upload
+                                            Receipt</a>
+                                        <br>
+                                        <a href="{{ l.enlace_pago }}" class="btn-link text-primary" target="_blank"><i
+                                                class="fa-brands fa-paypal me-2"></i>Paypal link</a>
+                                    {% elif l.estado == 'FACTURA_EMITIDA' %}
                                         <a href="/complete_purchase/?order={{ l.pk|encrypt }}"
                                            class="btn btn-success btn-sm"><i class="fa fa-cloud-upload"></i> Upload
                                             Receipt</a>
@@ -91,9 +99,59 @@
         </div>
     </div>
 
+
+
+    <div class="modal fade" id="modalPagoTransferencia" tabindex="-1" aria-labelledby="modalPagoTransferenciaNombre"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="{{ ruta }}" class="needs-validation"
+                      id="frmPago">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <i class="fa fa-money-bill me-2"></i>
+                            <b id="modalPagoTransferenciaNombre"></b>
+                        </h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body detalleModalTransferencia">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block extra_js %}
     <script>
+        function cargarComprobantePaypal(id) {
+            pantallaespera();
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                data: {
+                    'action': 'cargar_comprobante_paypal',
+                    'id': id,
+                },
+                success: function (data) {
+                    setTimeout($.unblockUI, 1);
+                    if (data.result === true) {
+                        $('#modalPagoTransferenciaNombre').html('Upload your Paypal receipt to complete your order.');
+                        $('.detalleModalTransferencia').html(data.data);
+                        $('#modalPagoTransferencia').modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        mensajeWarning(data.message);
+                    }
+                },
+                error: function () {
+                    setTimeout($.unblockUI, 1);
+                    mensajeWarning("Error de conexión.");
+                },
+                dataType: "json"
+            });
+        }
     </script>
 {% endblock %}

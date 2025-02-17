@@ -11,7 +11,7 @@ from core.funciones import addData, generar_nombre, get_client_ip, log
 
 from financiero.forms import PagoTransferenciaForm
 from financiero.models import CuentaFinancieraEmpresa
-from pedidos.models import Pedido, HistorialPedido, INVOICE_OPTIONS, PagoTransferencia
+from pedidos.models import Pedido, HistorialPedido, PagoTransferencia
 from seguridad.templatetags.templatefunctions import encrypt
 
 @login_required
@@ -178,6 +178,43 @@ def completePurchaseView(request):
                         log(f"Payment by bank transfer for order {pedido.__str__()}", request, "add", obj=pedido.id)
                         messages.success(request,f"Your order has been completed, and your payment is currently under review. Once your payment receipt has been validated, a notification will be sent to the email address associated with your account.")
                         res_json.append({'error': False, "to": '/profile/?action=payments'})
+                    elif action == 'pago_paypal':
+                        pedido = Pedido.objects.get(pk=int(encrypt(request.POST['pk'])))
+                        if not pedido:
+                            raise NameError("Error: Order not found")
+                        billing_info = request.POST.get('billing_info', None)
+                        if billing_info == 'true':
+                            billing_name = request.POST.get('billing_name', None)
+                            billing_email = request.POST.get('billing_email', None)
+                            billing_phone = request.POST.get('billing_phone', None)
+                            billing_tax_id = request.POST.get('billing_tax_id', None)
+                            billing_address = request.POST.get('billing_address', None)
+                            if not all([billing_name, billing_email, billing_tax_id, billing_address]):
+                                raise NameError("Error: You must complete all the required fields for invoicing.")
+                        else:
+                            billing_name = pedido.user.datos()
+                            billing_phone = ''
+                            billing_tax_id = ''
+                            billing_email = pedido.user.email
+                            billing_address = pedido.user.pais.__str__()
+                        pedido.billing_info = billing_info == 'true'
+                        pedido.billing_tax_id = billing_tax_id
+                        pedido.billing_company_name = billing_name
+                        pedido.billing_email_address = billing_email
+                        pedido.billing_phone = billing_phone
+                        pedido.billing_address = billing_address
+                        pedido.estado = "PENDIENTE_PAYPAL"
+                        pedido.total = pedido.subtotal
+                        pedido.metodo_pago = 'PAYPAL'
+                        observaciones = request.POST.get('observacion', '')
+                        if observaciones:
+                            pedido.observacion = observaciones
+                        pedido.save(request)
+                        historial_ = HistorialPedido(pedido=pedido, user=pedido.user, estado='PENDIENTE_PAYPAL',detalle=observaciones if observaciones else 'Requested for PayPal method approval')
+                        historial_.save(request)
+                        log(f"Requested for PayPal method approval for order {pedido.__str__()}", request, "add", obj=pedido.id)
+                        messages.success(request, f"Your order is being processed. Once the administrator approves it, you will receive an email with instructions and the payment link. Please check your spam folder if you don’t see it in your inbox.")
+                        res_json.append({'error': False, "to": '/profile/?action=payments'})
             except ValueError as ex:
                 res_json.append({'error': True, "message": str(ex)})
             except FormError as ex:
@@ -233,7 +270,6 @@ def completePurchaseView(request):
             data['subtotal_aplicable'] = subtotal_aplicable
             data['impuesto_pago_online'] = impuesto_pago_online = round(float(subtotal_aplicable * float((data['confi'].porcentaje_pagoonline / Decimal('100')))), 2) if data['confi'].porcentaje_pagoonline else 0
             data['total'] = total_ = subtotal_aplicable + impuesto_pago_online
-            data['INVOICE_OPTIONS'] = INVOICE_OPTIONS
             data['cuentas_bancarias'] = CuentaFinancieraEmpresa.objects.filter(status=True)
             if order.estado == 'FACTURA_EMITIDA':
                 return render(request, 'public/complete_purchase/cargar_comprobante.html', data)

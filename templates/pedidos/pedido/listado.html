@@ -136,7 +136,7 @@
                         </td>
                         <td class="text-center">
                             {% if  l.factura_cargada %}
-                                 <a data-fancybox="iframe" data-type="iframe"
+                                <a data-fancybox="iframe" data-type="iframe"
                                    class="btn text-danger tu" title="Ver Factura" target="_blank"
                                    data-toggle="tooltip"
                                    href="/media/{{ l.factura }}"
@@ -165,6 +165,11 @@
                                        href="javascript:;">
                                         <i class="fas fa-history"></i> Historial
                                     </a>
+                                    {% if l.estado == 'PENDIENTE_PAYPAL' %}
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="formModal('{{ l.pk|encrypt }}', 'Validar solicitud Paypal', 'validar_solicitud_paypal')">
+                                            <i class="fas fa-check-double"></i> Validar solicitud Paypal
+                                        </a>
+                                    {% endif %}
                                     {% if l.estado == 'EN_ESPERA' %}
                                         <a class="dropdown-item"
                                            href="{{ ruta }}?pk={{ l.pk }}&action=pago_pendiente&{{ dict_url_vars }}">
@@ -192,7 +197,7 @@
                                                 <i class="fas fa-times-circle"></i> Anular
                                             </a>
                                         {% endif %}
-                                        {% if request.user.is_superuser and l.es_pago_electronico and not l.pago_reversado %}
+                                        {% if request.user.is_superuser and l.estado == 'COMPLETADO' and l.es_pago_electronico and not l.pago_reversado %}
                                             <a class="dropdown-item text-warning" title="Reversar pago"
                                                href="?pk={{ l.pk|get_encrypt }}&pago_id={{ l.id|get_encrypt }}&action=reversar_pago">
                                                 <i class="fa-solid fa-money-bill-transfer"></i> Reversar pago

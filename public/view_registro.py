@@ -23,8 +23,7 @@ from django.contrib import messages
 
 from landing.forms import ConferenceForm
 from landing.models import Conference, ConferenceFee, TopicCategory
-from pedidos.models import Pedido, PapersAuthorPedido, TopicsAttendeePedido, HistorialPedido, PAYMENT_ORIGIN, \
-    INVOICE_OPTIONS
+from pedidos.models import Pedido, PapersAuthorPedido, TopicsAttendeePedido, HistorialPedido
 from pryictiair.settings import ID_GRUPO_USUARIO, EXT_EMAILS_COLABORATORS, DEFAULT_PASSWORD_REGISTER
 from public.forms import RegisterUserForm, StudentAttendeeForm
 from seguridad.templatetags.templatefunctions import encrypt
@@ -53,8 +52,6 @@ def registerView(request):
 
                     first_name, last_name, email, country, institution = form.cleaned_data['first_name'].strip(), form.cleaned_data['last_name'].strip(), form.cleaned_data['email'].strip(), form.cleaned_data['country'], form.cleaned_data['institution'].strip()
                     total = 0 if filtro.role == 1 else filtro.value
-                    # paymentOrigin = request.POST.get('paymentOrigin', 0)
-                    # invoiceOption = request.POST.get('invoiceOption', 0)
 
                     if filtro.role == 1:
                         id_principal, title_principal, sheets_principal = request.POST.get('id_principal', None), request.POST.get('title_principal', None), request.POST.get('sheets_principal', None)
@@ -62,10 +59,6 @@ def registerView(request):
                             raise NameError('You must complete all fields for the principal paper to finalize your order.')
                         if int(sheets_principal) > filtro.conference.max_sheets:
                             raise NameError(f'The number of pages for the principal paper exceeds the maximum allowed for this event ({filtro.conference.max_sheets} pages).')
-                        # if not paymentOrigin:
-                        #     raise NameError('You must select the origin of the payment to finalize your order. You can make this selection in the second step. ')
-                        # if not invoiceOption:
-                        #     raise NameError('You must select the invoice option to finalize your order. You can make this selection in the second step.')
                     elif filtro.role == 3 or filtro.special_price:
                         if not 'archivo_evidencia' in request.FILES:
                             if filtro.special_price:
@@ -128,8 +121,6 @@ def registerView(request):
                     pedido = Pedido.objects.create(
                         user_id=user_.id,
                         cuota=filtro,
-                        # payment_origin=paymentOrigin,
-                        # invoice_option=invoiceOption,
                     )
 
                     if filtro.role == 1:
@@ -247,8 +238,6 @@ def registerView(request):
             form.fields['country'].queryset = Pais.objects.none()
         template = 'public/landing/register.html'
         if filtro.role == 1:
-            data['PAYMENT_ORIGIN'] = PAYMENT_ORIGIN
-            data['INVOICE_OPTIONS'] = INVOICE_OPTIONS
             template = 'public/landing/register_autors.html'
         return render(request, template, data)
         # return render(request, 'public/landing/available_soon.html', data)
