@@ -5,6 +5,7 @@ from .acerade import acercade
 from .index import index, index_copy
 from .view_changepass import changepass
 from .view_complete_purchase import completePurchaseView
+from .view_keynote import keynoteView
 
 #from .view_pago import pagoView
 from .view_registro import registerView
@@ -28,5 +29,6 @@ urlpatterns = [
     re_path(r'^restoreusername/', recordarusername),
     re_path(r'^changepass/', changepass),
     re_path(r'^register/', registerView),
+    re_path(r'^keynotes/', keynoteView),
 
 ]

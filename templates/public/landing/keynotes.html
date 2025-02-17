@@ -1,0 +1,355 @@
+{% extends 'public/base.html' %}
+{% load templatefunctions %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/landing.css">
+    <style>
+        .img-landing {
+            width: 600px;
+            height: 400px;
+        }
+        .subtitle_custom{
+            margin-bottom: 0 !important;
+            margin-top: 20px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+{#    <section id="section-hero" class="fullwidthbanner-container text-light" aria-label="section-slider"#}
+{#             data-bgcolor="#101010">#}
+{#        <div id="slider-revolution">#}
+{#            <ul>#}
+{#                {% for ca in carrousel %}#}
+{##}
+{#                    <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">#}
+{#                        <!--  BACKGROUND IMAGE -->#}
+{#                        {% if ca.image %}#}
+{#                            <img alt="{{ ca.name }}" class="rev-slidebg" data-bgparallax="0"#}
+{#                                 src="{{ ca.image.url }}">#}
+{#                        {% else %}#}
+{#                            <img alt="{{ ca.name }}" class="rev-slidebg" data-bgparallax="0"#}
+{#                                 src="/static/images/landing/3d-rendering-dark-earth-space.jpg">#}
+{#                        {% endif %}#}
+{#                    </li>#}
+{#                {% empty %}#}
+{#                    <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">#}
+{#                        <!--  BACKGROUND IMAGE -->#}
+{#                        <img alt="" class="rev-slidebg" data-bgparallax="0"#}
+{#                             src="/static/images/landing/3d-rendering-dark-earth-space.jpg">#}
+{#                    </li>#}
+{##}
+{#                    <li data-transition="random-premium" data-slotamount="10" data-masterspeed="200" data-thumb="">#}
+{#                        <!--  BACKGROUND IMAGE -->#}
+{#                        <img alt="" class="rev-slidebg" data-bgparallax="0" src="/static/images/landing/9067755.jpg">#}
+{#                    </li>#}
+{#                {% endfor %}#}
+{##}
+{#            </ul>#}
+{##}
+{#            <div style="" class="tp-static-layers">#}
+{#                <div#}
+{#                        class="text-center tp-caption size-28 font-weight-bold text-white tp-static-layer"#}
+{#                        data-x="['center','center','center','center']"#}
+{#                        data-hoffset="['0']"#}
+{#                        data-y="['top','top','top','top']"#}
+{#                        data-voffset="['185']"#}
+{#                        data-lineheight="['90','90','90','90']"#}
+{#                        data-width="none"#}
+{#                        data-height="none"#}
+{#                        data-whitespace="nowrap"#}
+{#                        data-type="text"#}
+{#                        data-responsive_offset="on"#}
+{#                        data-startslide="0"#}
+{#                        data-endslide="3"#}
+{#                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"}]'#}
+{#                        data-textAlign="['center','center','center','center']"#}
+{#                        data-paddingtop="[0,0,0,0]"#}
+{#                        data-paddingright="[0,0,0,0]"#}
+{#                        data-paddingbottom="[0,0,0,0]"#}
+{#                        data-paddingleft="[0,0,0,0]"#}
+{#                >#}
+{#                </div>#}
+{##}
+{#                <div#}
+{#                        class="text-center tp-caption size-50 font-weight-bold text-white tp-static-layer mb-3 mt-3"#}
+{#                        data-x="['center','center','center','center']"#}
+{#                        data-hoffset="['0']"#}
+{#                        data-y="['center','center','center','center']"#}
+{#                        data-lineheight="['70','70','70','70']"#}
+{#                        data-width="none"#}
+{#                        data-height="none"#}
+{#                        data-whitespace="nowrap"#}
+{#                        data-type="text"#}
+{#                        data-responsive_offset="on"#}
+{#                        data-startslide="0"#}
+{#                        data-endslide="3"#}
+{#                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"}]'#}
+{#                        data-textAlign="['center','center','center','center']"#}
+{#                        data-paddingtop="[0,0,0,0]"#}
+{#                        data-paddingright="[0,0,0,0]"#}
+{#                        data-paddingbottom="[0,0,0,0]"#}
+{#                        data-paddingleft="[0,0,0,0]"#}
+{#                >#}
+{#                    {% if summary %}#}
+{#                        {{ summary.title_principal|safe }}#}
+{#                    {% endif %}#}
+{#                </div>#}
+{##}
+{##}
+{#                <div#}
+{#                        class="text-center tp-caption size-20 text-white tp-static-layer"#}
+{#                        data-x="['center','center','center','center']"#}
+{#                        data-hoffset="['0']"#}
+{#                        data-y="['top','top','top','top']"#}
+{#                        data-voffset="['430']"#}
+{#                        data-lineheight="['90','90','90','90']"#}
+{#                        data-width="none"#}
+{#                        data-height="none"#}
+{#                        data-whitespace="nowrap"#}
+{#                        data-type="text"#}
+{#                        data-responsive_offset="on"#}
+{#                        data-startslide="0"#}
+{#                        data-endslide="3"#}
+{#                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"}]'#}
+{#                        data-textAlign="['center','center','center','center']"#}
+{#                        data-paddingtop="[0,0,0,0]"#}
+{#                        data-paddingright="[0,0,0,0]"#}
+{#                        data-paddingbottom="[0,0,0,0]"#}
+{#                        data-paddingleft="[0,0,0,0]"#}
+{#                >#}
+{##}
+{#                    <div class="spacer-single"></div>#}
+{#                    <div class="d-lg-flex justify-content-center !mt-4" style="padding-top: 0.75rem!important">#}
+{#                        <div class="h4 padding10"><i class="i_h3 fa fa-calendar-check-o id-color"></i><span#}
+{#                                class="text-white">{% if summary %}#}
+{#                            {{ summary.get_formatted_date_range }}#}
+{#                        {% endif %}</span></div>#}
+                        {#                                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-user id-color"></i><span class="text-white">12 Speakers</span></div>#}
+                        {#                                        <div class="h6 padding10 pt0 pb0"><i class="i_h3 fa fa-map-marker id-color"></i><span class="text-white">Palo Alto, California</span></div>#}
+{#                    </div>#}
+{#                    <div class="d-lg-flex justify-content-center">#}
+{#                        <div>#}
+{#                            <a class="btn btn-primary rounded" href="#guidelines">#}
+{#                                View More#}
+{#                            </a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#                <div#}
+{#                        class="tp-caption tp-static-layer"#}
+{#                        data-x="['center','center','center','center']"#}
+{#                        data-hoffset="['0']"#}
+{#                        data-y="['top','top','top','top']"#}
+{#                        data-voffset="['506']"#}
+{#                        data-width="none"#}
+{#                        data-height="none"#}
+{#                        data-whitespace="nowrap"#}
+{#                        data-type="button"#}
+{##}
+{#                        data-responsive_offset="on"#}
+{#                        data-responsive="off"#}
+{#                        data-startslide="0"#}
+{#                        data-endslide="3"#}
+{#                        data-frames='[{"from":"opacity:0;","speed":300,"to":"o:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":300,"to":"opacity:0;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255, 255, 255, 1.00);bg:rgba(255, 255, 255, 0.15);bw:2px 2px 2px 2px;"}]'#}
+{#                        data-textAlign="['center','center','center','center']"#}
+{#                        data-paddingtop="[12,12,12,12]"#}
+{#                        data-paddingright="[20,20,20,20]"#}
+{#                        data-paddingbottom="[12,12,12,12]"#}
+{#                        data-paddingleft="[20,20,20,20]"#}
+{#                >#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </section>#}
+    <!-- revolution slider close -->
+
+    <section id="section-importante" aria-label="section-services-tab" class="mt-5"
+             data-bgimage="url(static/images/landing/2.png) fixed center no-repeat">
+        <div class="wm wm-border wow fadeInDown ">keynotes</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="importantdates">
+                    <h1>Keynotes speakers</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+
+                <div class="col-md-12 wow fadeInUp mt-5">
+                    <div class="col-md-6 offset-md-3 text-center wow fadeInUp" id="guidelines">
+                        <h1>Ana María Osorio Flórez</h1>
+                        <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                        <div class="spacer-single"></div>
+                    </div>
+                    <div class="w-100 text-center">
+                        <img class="" src="/static/images/keynotes/Ana1.JPG" alt="" style="width: 296px; height: 296px; object-fit: contain">
+                    </div>
+                    <div class="de_tab_content text-left mt-5">
+                        <div id="tab1" class="tab_single_content" style="max-width: 900px; margin: 0 auto;">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <h4>Biography</h4>
+                                    <p>Environmental Engineer, Environmental Law Specialist, and Master in Law with a focus on Mining, Petroleum, and Energy Regulation. With 12 years of experience in corporate sustainability, environmental regulation, and strategic alliance management, he has led initiatives that integrate key stakeholders from the public, private, and academic sectors, promoting responsible and sustainable decision-making.</p>
+                                    <p>Approach is based on strategic planning, relationship management, and goal-oriented execution, driving processes that strengthen sustainability within organizations. As a determined, empathetic, and participatory leader, he fosters collaboration to generate long-term positive impacts.</p>
+                                    <h4>Experience</h4>
+                                    <p class="subtitle_custom"><b>DGROUPE S.A.S</b></p>
+                                    <p><b>Executive Director – Conexión</b> | <span class="text-muted">September 2024 – Present</span></p>
+                                    <p>Leads the development and optimization of strategic alliances for Conexión Summit, fostering connections among investors, startups, and key players in the entrepreneurship and entertainment ecosystem.</p>
+
+                                    <p class="subtitle_custom"><b>Universidad Pontificia Bolivariana</b></p>
+                                    <p><b>National Director of Sustainability</b> | <span class="text-muted">January 2018 – August 2024</span></p>
+                                    <p>Designed and implemented strategies to ensure sustainability goals, achieving carbon-neutral and zero-waste certifications from ICONTEC. He positioned the university as the first carbon-neutral certified institution in Latin America.</p>
+
+                                    <p class="subtitle_custom"><b>Área Metropolitana del Valle de Aburrá – Universidad Pontificia Bolivariana</b></p>
+                                    <p><b>Environmental Leader</b> | <span class="text-muted">April 2016 – December 2017</span></p>
+                                    <p>Supported the update of the Hazardous Waste Management Plan (Plan RESPEL) and conducted technological monitoring of waste management trends.</p>
+
+                                    <p class="subtitle_custom"><b>Ambiental Mente S.A.S</b></p>
+                                    <p><b>Environmental Management Coordinator</b> | <span class="text-muted">October 2013 – April 2016</span></p>
+                                    <p>Provided environmental consulting to companies, including permit management, sustainable investment guidance, and environmental impact assessments.</p>
+                                    <p>Committed to developing innovative and sustainable solutions, he continues to contribute to the responsible growth of organizations and their communities.</p>
+
+                                    <h4>Title: Industry 5.0: Accelerating the SDGs through Technological Innovation and
+                                        Collaboration</h4>
+                                    <p>Industry 5.0 is emerging as a transformative force with the potential to accelerate
+                                        the achievement of the Sustainable Development Goals (SDGs). This new
+                                        industrial era, which goes beyond the automation and connectivity of Industry 4.0,
+                                        focuses on creating a sustainable, resilient, and human-centered future.
+                                        In this presentation, we will explore how Industry 5.0 can contribute to the SDGs
+                                        through technological innovation and collaboration. We will analyze how mass
+                                        personalization, human-robot collaboration, and artificial intelligence can optimize
+                                        the use of resources, reduce carbon emissions, and promote social inclusion.
+                                        We will address concrete examples of how Industry 5.0 can drive sustainable
+                                        economic growth (SDG 8), promote industrial innovation (SDG 9), reduce
+                                        inequalities (SDG 10), and combat climate change (SDG 13), among others.
+                                        Furthermore, we will discuss the challenges and opportunities facing the
+                                        implementation of Industry 5.0 in the context of the SDGs, highlighting the
+                                        importance of international cooperation, investment in education, and the
+                                        development of ethical frameworks for technology.
+                                        Through case studies and trend analysis, we will demonstrate how Industry 5.0 can
+                                        be a powerful tool for building a more sustainable, equitable, and prosperous future
+                                        for all, in line with the global SDG agenda.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="section-contacts" class="text-light" data-bgcolor="#414657">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center wow fadeInUp">
+                    <h1>Contact Us</h1>
+                    <div class="separator"><span><i class="fa fa-square"></i></span></div>
+                    <div class="spacer-single"></div>
+                </div>
+
+                <div class="col-md-8 offset-md-2 wow fadeInUp">
+                    <form name="contactForm" id='contact_form' method="post">
+                        {% csrf_token %}
+                        <input type="hidden" value="send_mail" name="action" id="action">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id='name_error' class='error'>Please enter your name.</div>
+                                <div>
+                                    <input required type='text' name='name' id='name' class="form-control"
+                                           placeholder="Your Name">
+                                </div>
+
+                                <div id='email_error' class='error'>Please enter your valid E-mail ID.</div>
+                                <div>
+                                    <input required type='email' name='email' id='email' class="form-control"
+                                           placeholder="Your Email">
+                                </div>
+
+                                <div id='phone_error' class='error'>Please enter your phone number.</div>
+                                <div>
+                                    <input required type='text' name='phone' id='phone' class="form-control"
+                                           placeholder="Your Phone">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id='message_error' class='error'>Please enter your message.</div>
+                                <div>
+                                    <textarea required name='message' id='message' class="form-control"
+                                              placeholder="Additional Message"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <p>
+                                    <button type='submit' class="btn btn-primary">Send Email</button>
+                                </p>
+                                <div id='mail_success' class='success'>Your message has been sent successfully.</div>
+                                <div id='mail_fail' class='error'>Sorry, error occured this time sending your message.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+
+    </section>
+{% endblock %}
+
+{% block jscript %}
+    <script src="/static/js/forms.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('#defaultCountdown').countdown({until: new Date(2025, 2, 19, 8)}); // year, month, date, hour
+            });
+
+            $('#accordionTopics').on('show.bs.collapse', function (e) {
+                $(e.target).prev('.card-header').find('.rotate-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            });
+
+            $('#accordionTopics').on('hide.bs.collapse', function (e) {
+                $(e.target).prev('.card-header').find('.rotate-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            });
+
+            $('.owl-carousel').owlCarousel({
+                loop: true,
+                margin: 40,
+                nav: false,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    600: {
+                        items: 2
+                    },
+                    1000: {
+                        items: 4 // Muestra 4 elementos a la vez
+                    }
+                }
+            });
+
+
+        })
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#section-register') {
+                setTimeout(() => {
+                    document.getElementById('section-register').scrollIntoView({behavior: 'smooth'});
+                }, 1000);
+            }
+        });
+    </script>
+{% endblock %}
+
+
+

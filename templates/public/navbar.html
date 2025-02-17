@@ -40,6 +40,9 @@
                                 <a href="{% if request.path == '/' %}/#cameraready{% else %}/{% endif %}">Camera
                                     Ready</a>
                             </li>
+                            <li>
+                                <a href="/keynotes">Keynotes<span></span></a>
+                            </li>
                             {% if request.user.is_authenticated %}
                                 <li>
                                     <a href="{% if request.path == '/' %}/#section-register{% else %}/{% endif %}">Register<span></span></a>
