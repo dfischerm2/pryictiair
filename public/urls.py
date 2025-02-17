@@ -29,6 +29,6 @@ urlpatterns = [
     re_path(r'^restoreusername/', recordarusername),
     re_path(r'^changepass/', changepass),
     re_path(r'^register/', registerView),
-    re_path(r'^keynotes/', keynoteView),
+    re_path(r'^speakers/', keynoteView),
 
 ]

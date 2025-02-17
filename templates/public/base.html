@@ -172,6 +172,45 @@
             color: #ff8100;
         }
 
+        .header-container {
+            min-width: 100% !important;
+        }
+
+        .header-wrapper {
+            display: block;
+            align-items: center; /* Mantiene alineación vertical incluso en modo block */
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .main-menu {
+            letter-spacing: -0.3px !important;
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0;
+        }
+
+        .logo-image {
+            width: 160px;
+            height: 40px;
+            vertical-align: middle;
+        }
+
+        /* Desktop styles */
+        @media screen and (min-width: 992px) {
+            .header-wrapper {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+
     </style>
     <!-- Import Google Font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -180,7 +219,8 @@
           id="google-font">
     <!-- Import Google Font-->
     <link rel="stylesheet" media="screen" href="/static/landing/assets/vendor/swiper/swiper-bundle.min.css"/>
-    <link rel="stylesheet" media="screen"href="/static/landing/assets/vendor/lightgallery/css/lightgallery-bundle.min.css"/>
+    <link rel="stylesheet" media="screen"
+          href="/static/landing/assets/vendor/lightgallery/css/lightgallery-bundle.min.css"/>
     {#    <link rel="stylesheet" media="screen" href="/static/landing/assets/css/theme.min.css?15">#}
     {#    <link rel="stylesheet" media="screen" href="/static/extracss.css?23">#}
     <link rel="stylesheet" media="screen" href="/static/loading.css?1">

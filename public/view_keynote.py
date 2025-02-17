@@ -14,7 +14,7 @@ def keynoteView(request):
     from landing.models import Summary, GuidelineType, TopicCategory, CommitteeCategory, SponsorCategory, ImportantDate, \
         CallForPapers
     data = {
-        'titulo': 'Keynotes',
+        'titulo': 'Speakers',
         'ruta': request.path,
         'fecha': datetime.now(),
     }
